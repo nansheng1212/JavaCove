@@ -21,7 +21,7 @@ public class ArticleConditionList {
      * 文章列表
      */
     @ApiModelProperty(value = "文章列表")
-    private List<ArticleConditionVO> articleconditionQueryVOList;
+    private List<ArticleConditionVO> articleConditionVOList;
 
     /**
      * 条件名

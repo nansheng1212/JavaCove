@@ -105,14 +105,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     @Override
     public ArticleConditionList listArticleCategory(ConditionQuery conditionQuery) {
-        List<ArticleConditionVO> articleconditionQueryList = articleMapper.listArticleByCondition(PageUtils.getLimit(),
+        List<ArticleConditionVO> articleConditionQueryList = articleMapper.listArticleByCondition(PageUtils.getLimit(),
                 PageUtils.getSize(), conditionQuery);
         String name = categoryMapper.selectOne(new LambdaQueryWrapper<Category>()
                 .select(Category::getCategoryName)
                 .eq(Category::getId, conditionQuery.getCategoryId()))
                 .getCategoryName();
         return ArticleConditionList.builder()
-                .articleconditionQueryVOList(articleconditionQueryList)
+                .articleConditionVOList(articleConditionQueryList)
                 .name(name)
                 .build();
     }

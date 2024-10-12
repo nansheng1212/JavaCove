@@ -129,7 +129,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
                 isAdmin = isAdmin(onlineVO);
             }
         }
-        List<ArticleConditionVO> articleconditionQueryList = isAdmin ?
+        List<ArticleConditionVO> articleConditionQueryList = isAdmin ?
                 articleMapper.listArticleByConditionByAdmin(PageUtils.getLimit(), PageUtils.getSize(), conditionQuery) :
                 articleMapper.listArticleByCondition(PageUtils.getLimit(), PageUtils.getSize(), conditionQuery);
         String name = tagMapper.selectOne(new LambdaQueryWrapper<Tag>()
@@ -137,7 +137,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
                         .eq(Tag::getId, conditionQuery.getTagId()))
                 .getTagName();
         return ArticleConditionList.builder()
-                .articleconditionQueryVOList(articleconditionQueryList)
+                .articleConditionVOList(articleConditionQueryList)
                 .name(name)
                 .build();
     }

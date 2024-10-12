@@ -55,6 +55,21 @@
         </collection>
     </resultMap>
 
+    <resultMap id="articleConditionVO" type="com.ican.entity.vo.ArticleConditionVO">
+        <id column="id" property="id"/>
+        <result column="article_cover" property="articleCover"/>
+        <result column="article_title" property="articleTitle"/>
+        <result column="create_time" property="createTime"/>
+        <association property="category" javaType="com.ican.entity.vo.CategoryOptionVO">
+            <id column="category_id" property="id"/>
+            <result column="category_name" property="categoryName"/>
+        </association>
+        <collection property="tagVOList" ofType="com.ican.entity.vo.TagOptionVO">
+            <id column="tag_id" property="id"/>
+            <result column="tag_name" property="tagName"/>
+        </collection>
+    </resultMap>
+
     <resultMap id="articleconditionQueryVO" type="com.ican.entity.vo.ArticleConditionVO">
         <id column="id" property="id"/>
         <result column="article_cover" property="articleCover"/>
@@ -370,6 +385,58 @@
     </select>
 
     <select id="listArticleByconditionQueryByAdmin" resultMap="articleconditionQueryVO">
+        SELECT a.id,
+        article_cover,
+        article_title,
+        a.create_time,
+        c.id AS category_id,
+        c.category_name,
+        t.id AS tag_id,
+        tag_name
+        FROM t_article a
+        INNER JOIN t_category c ON a.category_id = c.id
+        INNER JOIN t_article_tag tat ON a.id = tat.article_id
+        INNER JOIN t_tag t ON tat.tag_id = t.id
+        <where>
+            is_delete = 0 and (`status` = 1 or `status` = 2)
+            <if test="conditionQuery.categoryId != null">
+                and category_id = #{conditionQuery.categoryId}
+            </if>
+            <if test="conditionQuery.tagId != null">
+                and tag_id = #{conditionQuery.tagId}
+            </if>
+        </where>
+        ORDER BY a.id DESC
+        LIMIT #{limit}, #{size}
+    </select>
+
+    <select id="listArticleByCondition" resultMap="articleConditionVO">
+        SELECT a.id,
+        article_cover,
+        article_title,
+        a.create_time,
+        c.id AS category_id,
+        c.category_name,
+        t.id AS tag_id,
+        tag_name
+        FROM t_article a
+        INNER JOIN t_category c ON a.category_id = c.id
+        INNER JOIN t_article_tag tat ON a.id = tat.article_id
+        INNER JOIN t_tag t ON tat.tag_id = t.id
+        <where>
+            is_delete = 0 and `status` = 1
+            <if test="conditionQuery.categoryId != null">
+                and category_id = #{conditionQuery.categoryId}
+            </if>
+            <if test="conditionQuery.tagId != null">
+                and tag_id = #{conditionQuery.tagId}
+            </if>
+        </where>
+        ORDER BY a.id DESC
+        LIMIT #{limit}, #{size}
+    </select>
+
+    <select id="listArticleByConditionByAdmin" resultMap="articleConditionVO">
         SELECT a.id,
         article_cover,
         article_title,
