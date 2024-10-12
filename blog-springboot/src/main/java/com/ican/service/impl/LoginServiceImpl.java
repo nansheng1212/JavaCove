@@ -5,25 +5,25 @@ import cn.hutool.captcha.generator.RandomGenerator;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.ican.entity.SiteConfig;
-import com.ican.entity.User;
-import com.ican.entity.UserRole;
+import com.ican.entity.form.CodeForm;
+import com.ican.entity.form.LoginForm;
+import com.ican.entity.form.RegisterForm;
+import com.ican.entity.form.SmsForm;
+import com.ican.entity.po.SiteConfig;
+import com.ican.entity.po.User;
+import com.ican.entity.po.UserRole;
 import com.ican.enums.LoginTypeEnum;
 import com.ican.mapper.UserMapper;
 import com.ican.mapper.UserRoleMapper;
-import com.ican.model.dto.CodeDTO;
-import com.ican.model.dto.LoginDTO;
-import com.ican.model.dto.RegisterDTO;
-import com.ican.model.dto.SmsDTO;
 import com.ican.service.LoginService;
 import com.ican.service.RedisService;
 import com.ican.service.SmsService;
 import com.ican.strategy.context.SocialLoginStrategyContext;
 import com.ican.utils.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 import static com.ican.constant.CommonConstant.*;
@@ -40,28 +40,28 @@ import static com.ican.enums.RoleEnum.USER;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
-    @Autowired
+    @Resource
     private UserRoleMapper userRoleMapper;
 
 
-    @Autowired
+    @Resource
     private RedisService redisService;
 
-    @Autowired
+    @Resource
     private SocialLoginStrategyContext socialLoginStrategyContext;
 
-    @Autowired
+    @Resource
     private SmsService smsService;
 
     @Override
-    public String login(LoginDTO login) {
+    public String login(LoginForm loginForm) {
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
                 .select(User::getId)
-                .eq(User::getUsername, login.getUsername())
-                .eq(User::getPassword, SecurityUtils.sha256Encrypt(login.getPassword())));
+                .eq(User::getUsername, loginForm.getUsername())
+                .eq(User::getPassword, SecurityUtils.sha256Encrypt(loginForm.getPassword())));
         Assert.notNull(user, "用户不存在或密码错误");
         // 校验指定账号是否已被封禁，如果被封禁则抛出异常 `DisableServiceException`
         StpUtil.checkDisable(user.getId());
@@ -74,33 +74,33 @@ public class LoginServiceImpl implements LoginService {
     public void sendCode(String username) {
         RandomGenerator randomGenerator = new RandomGenerator("0123456789", 6);
         String code = randomGenerator.generate();
-        SmsDTO smsDTO = SmsDTO.builder()
+        SmsForm smsForm = SmsForm.builder()
                 .toPhone(username)
                 .subject(CAPTCHA)
                 .content(code)
                 .build();
         // 发送验证码
-        smsService.sendSms(smsDTO);
+        smsService.sendSms(smsForm);
         // 验证码存入redis
         redisService.setObject(CODE_KEY + username, code, CODE_EXPIRE_TIME, TimeUnit.MINUTES);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void register(RegisterDTO register) {
-        verifyCode(register.getUsername(), register.getCode());
+    public void register(RegisterForm registerForm) {
+        verifyCode(registerForm.getUsername(), registerForm.getCode());
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
                 .select(User::getUsername)
-                .eq(User::getUsername, register.getUsername()));
+                .eq(User::getUsername, registerForm.getUsername()));
         Assert.isNull(user, "手机已注册！");
         SiteConfig siteConfig = redisService.getObject(SITE_SETTING);
         // 添加用户
         User newUser = User.builder()
-                .username(register.getUsername())
-                .phone(register.getUsername())
+                .username(registerForm.getUsername())
+                .phone(registerForm.getUsername())
                 .nickname(USER_NICKNAME + IdWorker.getId())
                 .avatar(siteConfig.getUserAvatar())
-                .password(SecurityUtils.sha256Encrypt(register.getPassword()))
+                .password(SecurityUtils.sha256Encrypt(registerForm.getPassword()))
                 .loginType(PHONE.getLoginType())
                 .isDisable(FALSE)
                 .build();
@@ -115,20 +115,20 @@ public class LoginServiceImpl implements LoginService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String giteeLogin(CodeDTO data) {
-        return socialLoginStrategyContext.executeLoginStrategy(data, LoginTypeEnum.GITEE);
+    public String giteeLogin(CodeForm codeForm) {
+        return socialLoginStrategyContext.executeLoginStrategy(codeForm, LoginTypeEnum.GITEE);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String githubLogin(CodeDTO data) {
-        return socialLoginStrategyContext.executeLoginStrategy(data, LoginTypeEnum.GITHUB);
+    public String githubLogin(CodeForm codeForm) {
+        return socialLoginStrategyContext.executeLoginStrategy(codeForm, LoginTypeEnum.GITHUB);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String qqLogin(CodeDTO data) {
-        return socialLoginStrategyContext.executeLoginStrategy(data, LoginTypeEnum.QQ);
+    public String qqLogin(CodeForm codeForm) {
+        return socialLoginStrategyContext.executeLoginStrategy(codeForm, LoginTypeEnum.QQ);
     }
 
     /**

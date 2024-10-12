@@ -1,12 +1,11 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.Tag;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.TagDTO;
-import com.ican.model.vo.*;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.TagForm;
+import com.ican.entity.po.Tag;
+import com.ican.entity.vo.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -20,17 +19,17 @@ public interface TagService extends IService<Tag> {
     /**
      * 查看后台标签列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 后台标签列表
      */
-    PageResult<TagBackVO> listTagBackVO(ConditionDTO condition);
+    PageResult<TagBackVO> listTagBackVO(ConditionQuery conditionQuery);
 
     /**
      * 添加标签
      *
-     * @param tag 标签
+     * @param tagForm 标签
      */
-    void addTag(TagDTO tag);
+    void addTag(TagForm tagForm);
 
     /**
      * 删除标签
@@ -42,9 +41,9 @@ public interface TagService extends IService<Tag> {
     /**
      * 修改标签
      *
-     * @param tag 标签
+     * @param tagForm 标签
      */
-    void updateTag(TagDTO tag);
+    void updateTag(TagForm tagForm);
 
     /**
      * 搜索文章标签
@@ -62,8 +61,8 @@ public interface TagService extends IService<Tag> {
 
     /**
      * 查看标签下的文章
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 文章列表
      */
-    ArticleConditionList listArticleTag(ConditionDTO condition);
+    ArticleConditionList listArticleTag(ConditionQuery conditionQuery);
 }

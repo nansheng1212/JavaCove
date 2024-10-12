@@ -1,13 +1,12 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.Menu;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.MenuDTO;
-import com.ican.model.vo.MenuOption;
-import com.ican.model.vo.MenuTree;
-import com.ican.model.vo.MenuVO;
-import com.ican.model.vo.UserMenuVO;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.po.Menu;
+import com.ican.entity.vo.MenuOption;
+import com.ican.entity.vo.MenuTree;
+import com.ican.entity.vo.MenuVO;
+import com.ican.entity.vo.UserMenuVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -33,10 +32,10 @@ public interface MenuMapper extends BaseMapper<Menu> {
     /**
      * 查询菜单列表
      *
-     * @param condition 查询条件
+     * @param conditionQuery 查询条件
      * @return 菜单列表
      */
-    List<MenuVO> selectMenuVOList(@Param("condition") ConditionDTO condition);
+    List<MenuVO> selectMenuVOList(@Param("conditionQuery") ConditionQuery conditionQuery);
 
     /**
      * 根据用户id查询用户菜单列表
@@ -66,5 +65,5 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @param menuId 菜单id
      * @return 菜单
      */
-    MenuDTO selectMenuById(@Param("menuId") Integer menuId);
+    MenuVO selectMenuById(@Param("menuId") Integer menuId);
 }

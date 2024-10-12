@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ican.mapper.UserMapper">
 
-    <resultMap id="UserBackMap" type="com.ican.model.vo.UserBackVO">
+    <resultMap id="UserBackMap" type="com.ican.entity.vo.UserBackVO">
         <id column="id" property="id"/>
         <result column="nickname" property="nickname"/>
         <result column="avatar" property="avatar"/>
@@ -12,7 +12,7 @@
         <result column="is_disable" property="isDisable"/>
         <result column="login_time" property="loginTime"/>
         <result column="create_time" property="createTime"/>
-        <collection property="roleList" ofType="com.ican.model.vo.UserRoleVO">
+        <collection property="roleList" ofType="com.ican.entity.vo.UserRoleVO">
             <id column="role_id" property="id"/>
             <id column="role_name" property="roleName"/>
         </collection>
@@ -24,11 +24,11 @@
         FROM
         t_user
         <where>
-            <if test="condition.keyword != null">
-                nickname like concat('%',#{condition.keyword},'%')
+            <if test="conditionQuery.keyword != null">
+                nickname like concat('%',#{conditionQuery.keyword},'%')
             </if>
-            <if test="condition.loginType != null">
-                and login_type = #{condition.loginType}
+            <if test="conditionQuery.loginType != null">
+                and login_type = #{conditionQuery.loginType}
             </if>
         </where>
     </select>
@@ -49,11 +49,11 @@
         FROM
         ( SELECT id FROM t_user
         <where>
-            <if test="condition.keyword != null">
-                nickname like concat('%',#{condition.keyword},'%')
+            <if test="conditionQuery.keyword != null">
+                nickname like concat('%',#{conditionQuery.keyword},'%')
             </if>
-            <if test="condition.loginType != null">
-                and login_type = #{condition.loginType}
+            <if test="conditionQuery.loginType != null">
+                and login_type = #{conditionQuery.loginType}
             </if>
         </where>
         LIMIT #{limit},#{size}

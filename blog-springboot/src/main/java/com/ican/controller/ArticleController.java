@@ -5,20 +5,23 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ican.annotation.AccessLimit;
 import com.ican.annotation.OptLogger;
 import com.ican.annotation.VisitLogger;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.ArticleForm;
+import com.ican.entity.form.DeleteForm;
+import com.ican.entity.form.RecommendForm;
+import com.ican.entity.form.TopForm;
+import com.ican.entity.vo.*;
 import com.ican.enums.LikeTypeEnum;
-import com.ican.model.dto.*;
-import com.ican.model.vo.*;
 import com.ican.service.ArticleService;
 import com.ican.strategy.context.LikeStrategyContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.ican.constant.OptTypeConstant.*;
@@ -32,37 +35,37 @@ import static com.ican.constant.OptTypeConstant.*;
 @RestController
 public class ArticleController {
 
-    @Autowired
+    @Resource
     private ArticleService articleService;
 
-    @Autowired
+    @Resource
     private LikeStrategyContext likeStrategyContext;
 
     /**
      * 查看后台文章列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return {@link Result<ArticleBackVO>} 后台文章列表
      */
     @ApiOperation(value = "查看后台文章列表")
     @SaCheckPermission("blog:article:list")
     @GetMapping("/admin/article/list")
-    public Result<PageResult<ArticleBackVO>> listArticleBackVO(ConditionDTO condition) {
-        return Result.success(articleService.listArticleBackVO(condition));
+    public Result<PageResult<ArticleBackVO>> listArticleBackVO(ConditionQuery conditionQuery) {
+        return Result.success(articleService.listArticleBackVO(conditionQuery));
     }
 
     /**
      * 添加文章
      *
-     * @param article 文章信息
+     * @param articleForm 文章信息
      * @return {@link Result<>}
      */
     @OptLogger(value = ADD)
     @ApiOperation(value = "添加文章")
     @SaCheckPermission("blog:article:add")
     @PostMapping("/admin/article/add")
-    public Result<?> addArticle(@Validated @RequestBody ArticleDTO article) {
-        articleService.addArticle(article);
+    public Result<?> addArticle(@Validated @RequestBody ArticleForm articleForm) {
+        articleService.addArticle(articleForm);
         return Result.success();
     }
 
@@ -84,30 +87,30 @@ public class ArticleController {
     /**
      * 回收或恢复文章
      *
-     * @param delete 逻辑删除
+     * @param deleteForm 逻辑删除
      * @return {@link Result<>}
      */
     @OptLogger(value = UPDATE)
     @ApiOperation(value = "回收或恢复文章")
     @SaCheckPermission("blog:article:recycle")
     @PutMapping("/admin/article/recycle")
-    public Result<?> updateArticleDelete(@Validated @RequestBody DeleteDTO delete) {
-        articleService.updateArticleDelete(delete);
+    public Result<?> updateArticleDelete(@Validated @RequestBody DeleteForm deleteForm) {
+        articleService.updateArticleDelete(deleteForm);
         return Result.success();
     }
 
     /**
      * 修改文章
      *
-     * @param article 文章信息
+     * @param articleForm 文章信息
      * @return {@link Result<>}
      */
     @OptLogger(value = UPDATE)
     @ApiOperation(value = "修改文章")
     @SaCheckPermission("blog:article:update")
     @PutMapping("/admin/article/update")
-    public Result<?> updateArticle(@Validated @RequestBody ArticleDTO article) {
-        articleService.updateArticle(article);
+    public Result<?> updateArticle(@Validated @RequestBody ArticleForm articleForm) {
+        articleService.updateArticle(articleForm);
         return Result.success();
     }
 
@@ -142,30 +145,30 @@ public class ArticleController {
     /**
      * 置顶文章
      *
-     * @param top 置顶信息
+     * @param topForm 置顶信息
      * @return {@link Result<>}
      */
     @OptLogger(value = UPDATE)
     @ApiOperation(value = "置顶文章")
     @SaCheckPermission("blog:article:top")
     @PutMapping("/admin/article/top")
-    public Result<?> updateArticleTop(@Validated @RequestBody TopDTO top) {
-        articleService.updateArticleTop(top);
+    public Result<?> updateArticleTop(@Validated @RequestBody TopForm topForm) {
+        articleService.updateArticleTop(topForm);
         return Result.success();
     }
 
     /**
      * 推荐文章
      *
-     * @param recommend 推荐信息
+     * @param recommendForm 推荐信息
      * @return {@link Result<>}
      */
     @OptLogger(value = UPDATE)
     @ApiOperation(value = "推荐文章")
     @SaCheckPermission("blog:article:recommend")
     @PutMapping("/admin/article/recommend")
-    public Result<?> updateArticleRecommend(@Validated @RequestBody RecommendDTO recommend) {
-        articleService.updateArticleRecommend(recommend);
+    public Result<?> updateArticleRecommend(@Validated @RequestBody RecommendForm recommendForm) {
+        articleService.updateArticleRecommend(recommendForm);
         return Result.success();
     }
 

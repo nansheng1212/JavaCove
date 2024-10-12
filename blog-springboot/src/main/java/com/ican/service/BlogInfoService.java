@@ -1,7 +1,7 @@
 package com.ican.service;
 
-import com.ican.model.vo.BlogBackInfoVO;
-import com.ican.model.vo.BlogInfoVO;
+import com.ican.entity.vo.BlogBackInfoVO;
+import com.ican.entity.vo.BlogInfoVO;
 
 /**
  * 博客业务接口

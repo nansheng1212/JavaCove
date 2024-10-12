@@ -2,8 +2,8 @@ package com.ican.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ican.annotation.OptLogger;
-import com.ican.entity.SiteConfig;
-import com.ican.model.vo.Result;
+import com.ican.entity.po.SiteConfig;
+import com.ican.entity.vo.Result;
 import com.ican.service.SiteConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

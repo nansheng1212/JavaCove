@@ -1,10 +1,10 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.Category;
-import com.ican.model.dto.CategoryDTO;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.vo.*;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.CategoryForm;
+import com.ican.entity.po.Category;
+import com.ican.entity.vo.*;
 
 import java.util.List;
 
@@ -19,17 +19,17 @@ public interface CategoryService extends IService<Category> {
     /**
      * 查看后台分类列表
      *
-     * @param condition 查询条件
+     * @param conditionQuery 查询条件
      * @return 后台分类列表
      */
-    PageResult<CategoryBackVO> listCategoryBackVO(ConditionDTO condition);
+    PageResult<CategoryBackVO> listCategoryBackVO(ConditionQuery conditionQuery);
 
     /**
      * 添加分类
      *
-     * @param category 分类
+     * @param categoryForm 分类
      */
-    void addCategory(CategoryDTO category);
+    void addCategory(CategoryForm categoryForm);
 
     /**
      * 删除分类
@@ -41,9 +41,9 @@ public interface CategoryService extends IService<Category> {
     /**
      * 修改分类
      *
-     * @param category 分类
+     * @param categoryForm 分类
      */
-    void updateCategory(CategoryDTO category);
+    void updateCategory(CategoryForm categoryForm);
 
     /**
      * 查看分类选项
@@ -62,8 +62,8 @@ public interface CategoryService extends IService<Category> {
     /**
      * 查看分类下的文章
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 文章列表
      */
-    ArticleConditionList listArticleCategory(ConditionDTO condition);
+    ArticleConditionList listArticleCategory(ConditionQuery conditionQuery);
 }

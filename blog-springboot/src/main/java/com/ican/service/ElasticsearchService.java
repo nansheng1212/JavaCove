@@ -1,6 +1,6 @@
 package com.ican.service;
 
-import com.ican.model.vo.ArticleSearchVO;
+import com.ican.entity.vo.ArticleSearchVO;
 
 /**
  * es文章业务接口

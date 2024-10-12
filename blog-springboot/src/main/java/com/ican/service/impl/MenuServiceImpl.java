@@ -3,15 +3,15 @@ package com.ican.service.impl;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ican.entity.Menu;
-import com.ican.entity.RoleMenu;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.MenuForm;
+import com.ican.entity.po.Menu;
+import com.ican.entity.po.RoleMenu;
+import com.ican.entity.vo.MenuOption;
+import com.ican.entity.vo.MenuTree;
+import com.ican.entity.vo.MenuVO;
 import com.ican.mapper.MenuMapper;
 import com.ican.mapper.RoleMenuMapper;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.MenuDTO;
-import com.ican.model.vo.MenuOption;
-import com.ican.model.vo.MenuTree;
-import com.ican.model.vo.MenuVO;
 import com.ican.service.MenuService;
 import com.ican.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +41,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     private RoleMenuMapper roleMenuMapper;
 
     @Override
-    public List<MenuVO> listMenuVO(ConditionDTO condition) {
+    public List<MenuVO> listMenuVO(ConditionQuery conditionQuery) {
         // 查询当前菜单列表
-        List<MenuVO> menuVOList = menuMapper.selectMenuVOList(condition);
+        List<MenuVO> menuVOList = menuMapper.selectMenuVOList(conditionQuery);
         // 当前菜单id列表
         Set<Integer> menuIdList = menuVOList.stream()
                 .map(MenuVO::getId)
@@ -60,13 +60,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
-    public void addMenu(MenuDTO menu) {
+    public void addMenu(MenuForm menuForm) {
         // 名称是否存在
         Menu existMenu = menuMapper.selectOne(new LambdaQueryWrapper<Menu>()
                 .select(Menu::getId)
-                .eq(Menu::getMenuName, menu.getMenuName()));
-        Assert.isNull(existMenu, menu.getMenuName() + "菜单已存在");
-        Menu newMenu = BeanCopyUtils.copyBean(menu, Menu.class);
+                .eq(Menu::getMenuName, menuForm.getMenuName()));
+        Assert.isNull(existMenu, menuForm.getMenuName() + "菜单已存在");
+        Menu newMenu = BeanCopyUtils.copyBean(menuForm, Menu.class);
         baseMapper.insert(newMenu);
     }
 
@@ -85,14 +85,14 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
-    public void updateMenu(MenuDTO menu) {
+    public void updateMenu(MenuForm menuForm) {
         // 名称是否存在
         Menu existMenu = menuMapper.selectOne(new LambdaQueryWrapper<Menu>()
                 .select(Menu::getId)
-                .eq(Menu::getMenuName, menu.getMenuName()));
-        Assert.isFalse(Objects.nonNull(existMenu) && !existMenu.getId().equals(menu.getId()),
-                menu.getMenuName() + "菜单已存在");
-        Menu newMenu = BeanCopyUtils.copyBean(menu, Menu.class);
+                .eq(Menu::getMenuName, menuForm.getMenuName()));
+        Assert.isFalse(Objects.nonNull(existMenu) && !existMenu.getId().equals(menuForm.getId()),
+                menuForm.getMenuName() + "菜单已存在");
+        Menu newMenu = BeanCopyUtils.copyBean(menuForm, Menu.class);
         baseMapper.updateById(newMenu);
     }
 
@@ -109,7 +109,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
-    public MenuDTO editMenu(Integer menuId) {
+    public MenuVO editMenu(Integer menuId) {
         return menuMapper.selectMenuById(menuId);
     }
 

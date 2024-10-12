@@ -1,9 +1,9 @@
 package com.ican.manager.factory;
 
 
-import com.ican.entity.ExceptionLog;
-import com.ican.entity.OperationLog;
-import com.ican.entity.VisitLog;
+import com.ican.entity.po.ExceptionLog;
+import com.ican.entity.po.OperationLog;
+import com.ican.entity.po.VisitLog;
 import com.ican.service.ExceptionLogService;
 import com.ican.service.OperationLogService;
 import com.ican.service.VisitLogService;

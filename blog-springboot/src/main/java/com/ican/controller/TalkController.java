@@ -5,20 +5,20 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ican.annotation.AccessLimit;
 import com.ican.annotation.OptLogger;
 import com.ican.annotation.VisitLogger;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.TalkForm;
+import com.ican.entity.vo.*;
 import com.ican.enums.LikeTypeEnum;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.TalkDTO;
-import com.ican.model.vo.*;
 import com.ican.service.TalkService;
 import com.ican.strategy.context.LikeStrategyContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.ican.constant.OptTypeConstant.*;
@@ -32,23 +32,23 @@ import static com.ican.constant.OptTypeConstant.*;
 @RestController
 public class TalkController {
 
-    @Autowired
+    @Resource
     private TalkService talkService;
 
-    @Autowired
+    @Resource
     private LikeStrategyContext likeStrategyContext;
 
     /**
      * 查看后台说说列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return {@link TalkBackVO} 后台说说
      */
     @ApiOperation(value = "查看后台说说列表")
     @SaCheckPermission("web:talk:list")
     @GetMapping("/admin/talk/list")
-    public Result<PageResult<TalkBackVO>> listTalkBackVO(ConditionDTO condition) {
-        return Result.success(talkService.listTalkBackVO(condition));
+    public Result<PageResult<TalkBackVO>> listTalkBackVO(ConditionQuery conditionQuery) {
+        return Result.success(talkService.listTalkBackVO(conditionQuery));
     }
 
     /**
@@ -69,15 +69,15 @@ public class TalkController {
     /**
      * 添加说说
      *
-     * @param talk 说说信息
+     * @param talkForm 说说信息
      * @return {@link Result<>}
      */
     @OptLogger(value = ADD)
     @ApiOperation(value = "添加说说")
     @SaCheckPermission("web:talk:add")
     @PostMapping("/admin/talk/add")
-    public Result<?> addTalk(@Validated @RequestBody TalkDTO talk) {
-        talkService.addTalk(talk);
+    public Result<?> addTalk(@Validated @RequestBody TalkForm talkForm) {
+        talkService.addTalk(talkForm);
         return Result.success();
     }
 
@@ -99,15 +99,15 @@ public class TalkController {
     /**
      * 修改说说
      *
-     * @param talk 说说信息
+     * @param talkForm 说说信息
      * @return {@link Result<>}
      */
     @OptLogger(value = UPDATE)
     @ApiOperation(value = "修改说说")
     @SaCheckPermission("web:talk:update")
     @PutMapping("/admin/talk/update")
-    public Result<?> updateTalk(@Validated @RequestBody TalkDTO talk) {
-        talkService.updateTalk(talk);
+    public Result<?> updateTalk(@Validated @RequestBody TalkForm talkForm) {
+        talkService.updateTalk(talkForm);
         return Result.success();
     }
 

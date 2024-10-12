@@ -1,7 +1,7 @@
 package com.ican.strategy.impl;
 
+import com.ican.entity.vo.ArticleSearchVO;
 import com.ican.mapper.ArticleMapper;
-import com.ican.model.vo.ArticleSearchVO;
 import com.ican.strategy.SearchStrategy;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

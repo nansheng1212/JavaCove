@@ -1,6 +1,6 @@
 package com.ican.quartz.utils;
 
-import com.ican.entity.Task;
+import com.ican.entity.po.Task;
 import com.ican.utils.SpringUtils;
 import org.apache.commons.lang3.StringUtils;
 

@@ -52,9 +52,9 @@ public class QiniuUploadStrategyImpl extends AbstractUploadStrategyImpl {
                 throw new RuntimeException("上传七牛出错：" + res.toString());
             }
         } catch (QiniuException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 

@@ -4,16 +4,16 @@ import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ican.constant.ScheduleConstant;
-import com.ican.entity.Task;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.StatusForm;
+import com.ican.entity.form.TaskForm;
+import com.ican.entity.form.TaskRunForm;
+import com.ican.entity.po.Task;
+import com.ican.entity.vo.PageResult;
+import com.ican.entity.vo.TaskBackVO;
 import com.ican.enums.TaskStatusEnum;
 import com.ican.exception.ServiceException;
 import com.ican.mapper.TaskMapper;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.StatusDTO;
-import com.ican.model.dto.TaskDTO;
-import com.ican.model.dto.TaskRunDTO;
-import com.ican.model.vo.PageResult;
-import com.ican.model.vo.TaskBackVO;
 import com.ican.quartz.utils.CronUtils;
 import com.ican.quartz.utils.ScheduleUtils;
 import com.ican.service.TaskService;
@@ -24,10 +24,10 @@ import org.quartz.JobDataMap;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -39,10 +39,10 @@ import java.util.List;
 @Service
 public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements TaskService {
 
-    @Autowired
+    @Resource
     private Scheduler scheduler;
 
-    @Autowired
+    @Resource
     private TaskMapper taskMapper;
 
     /**
@@ -60,14 +60,14 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     }
 
     @Override
-    public PageResult<TaskBackVO> listTaskBackVO(ConditionDTO condition) {
+    public PageResult<TaskBackVO> listTaskBackVO(ConditionQuery conditionQuery) {
         // 查询定时任务数量
-        Long count = taskMapper.countTaskBackVO(condition);
+        Long count = taskMapper.countTaskBackVO(conditionQuery);
         if (count == 0) {
             return new PageResult<>();
         }
         // 分页查询定时任务列表
-        List<TaskBackVO> taskBackVOList = taskMapper.selectTaskBackVO(PageUtils.getLimit(), PageUtils.getSize(), condition);
+        List<TaskBackVO> taskBackVOList = taskMapper.selectTaskBackVO(PageUtils.getLimit(), PageUtils.getSize(), conditionQuery);
         taskBackVOList.forEach(item -> {
             if (StringUtils.isNotEmpty(item.getCronExpression())) {
                 Date nextExecution = CronUtils.getNextExecution(item.getCronExpression());
@@ -80,9 +80,9 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     }
 
     @Override
-    public void addTask(TaskDTO task) {
-        Assert.isTrue(CronUtils.isValid(task.getCronExpression()), "Cron表达式无效");
-        Task newTask = BeanCopyUtils.copyBean(task, Task.class);
+    public void addTask(TaskForm taskForm) {
+        Assert.isTrue(CronUtils.isValid(taskForm.getCronExpression()), "Cron表达式无效");
+        Task newTask = BeanCopyUtils.copyBean(taskForm, Task.class);
         // 新增定时任务
         int row = taskMapper.insert(newTask);
         // 创建定时任务
@@ -92,10 +92,10 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     }
 
     @Override
-    public void updateTask(TaskDTO task) {
-        Assert.isTrue(CronUtils.isValid(task.getCronExpression()), "Cron表达式无效");
-        Task existTask = taskMapper.selectById(task.getId());
-        Task newTask = BeanCopyUtils.copyBean(task, Task.class);
+    public void updateTask(TaskForm taskForm) {
+        Assert.isTrue(CronUtils.isValid(taskForm.getCronExpression()), "Cron表达式无效");
+        Task existTask = taskMapper.selectById(taskForm.getId());
+        Task newTask = BeanCopyUtils.copyBean(taskForm, Task.class);
         // 更新定时任务
         int row = taskMapper.updateById(newTask);
         if (row > 0) {
@@ -126,20 +126,20 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     }
 
     @Override
-    public void updateTaskStatus(StatusDTO taskStatus) {
-        Task task = taskMapper.selectById(taskStatus.getId());
+    public void updateTaskStatus(StatusForm statusForm) {
+        Task task = taskMapper.selectById(statusForm.getId());
         // 相同不用更新
-        if (task.getStatus().equals(taskStatus.getStatus())) {
+        if (task.getStatus().equals(statusForm.getStatus())) {
             return;
         }
         // 更新数据库中的定时任务状态
         Task newTask = Task.builder()
-                .id(taskStatus.getId())
-                .status(taskStatus.getStatus())
+                .id(statusForm.getId())
+                .status(statusForm.getStatus())
                 .build();
         int row = taskMapper.updateById(newTask);
         // 获取定时任务状态、id、任务组
-        Integer status = taskStatus.getStatus();
+        Integer status = statusForm.getStatus();
         Integer taskId = task.getId();
         String taskGroup = task.getTaskGroup();
         if (row > 0) {
@@ -158,11 +158,11 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     }
 
     @Override
-    public void runTask(TaskRunDTO taskRun) {
-        Integer taskId = taskRun.getId();
-        String taskGroup = taskRun.getTaskGroup();
+    public void runTask(TaskRunForm taskRunForm) {
+        Integer taskId = taskRunForm.getId();
+        String taskGroup = taskRunForm.getTaskGroup();
         // 查询定时任务
-        Task task = taskMapper.selectById(taskRun.getId());
+        Task task = taskMapper.selectById(taskRunForm.getId());
         // 设置参数
         JobDataMap dataMap = new JobDataMap();
         dataMap.put(ScheduleConstant.TASK_PROPERTIES, task);

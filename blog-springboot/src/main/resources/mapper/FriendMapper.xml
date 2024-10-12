@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ican.mapper.FriendMapper">
 
-    <select id="selectFriendVOList" resultType="com.ican.model.vo.FriendVO">
+    <select id="selectFriendVOList" resultType="com.ican.entity.vo.FriendVO">
         SELECT id, `name`, color, url, avatar, introduction
         FROM t_friend
     </select>
 
-    <select id="selectFriendBackVOList" resultType="com.ican.model.vo.FriendBackVO">
+    <select id="selectFriendBackVOList" resultType="com.ican.entity.vo.FriendBackVO">
         SELECT id, `name`, color, avatar, url, introduction, create_time
         FROM t_friend
         <where>

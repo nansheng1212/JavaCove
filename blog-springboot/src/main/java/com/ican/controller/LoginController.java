@@ -4,11 +4,11 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ican.annotation.AccessLimit;
-import com.ican.entity.User;
-import com.ican.model.dto.CodeDTO;
-import com.ican.model.dto.LoginDTO;
-import com.ican.model.dto.RegisterDTO;
-import com.ican.model.vo.Result;
+import com.ican.entity.form.CodeForm;
+import com.ican.entity.form.LoginForm;
+import com.ican.entity.form.RegisterForm;
+import com.ican.entity.po.User;
+import com.ican.entity.vo.Result;
 import com.ican.service.LoginService;
 import com.ican.service.RedisService;
 import com.ican.service.UserService;
@@ -48,13 +48,13 @@ public class LoginController {
     /**
      * 用户登录
      *
-     * @param login 登录参数
+     * @param loginForm 登录参数
      * @return {@link String} Token
      */
     @ApiOperation(value = "用户登录")
     @PostMapping("/login")
-    public Result<String> login(@Validated @RequestBody LoginDTO login) {
-        return Result.success(loginService.login(login));
+    public Result<String> login(@Validated @RequestBody LoginForm loginForm) {
+        return Result.success(loginService.login(loginForm));
     }
 
     /**
@@ -94,50 +94,50 @@ public class LoginController {
     /**
      * 用户邮箱注册
      *
-     * @param register 注册信息
+     * @param registerForm 注册信息
      * @return {@link Result<>}
      */
     @ApiOperation(value = "用户手机号注册")
     @PostMapping("/register")
-    public Result<?> register(@Validated @RequestBody RegisterDTO register) {
-        loginService.register(register);
+    public Result<?> register(@Validated @RequestBody RegisterForm registerForm) {
+        loginService.register(registerForm);
         return Result.success();
     }
 
     /**
      * Gitee登录
      *
-     * @param data 第三方code
+     * @param codeForm 第三方code
      * @return {@link Result<String>} Token
      */
     @ApiOperation(value = "Gitee登录")
     @PostMapping("/oauth/gitee")
-    public Result<String> giteeLogin(@RequestBody CodeDTO data) {
-        return Result.success(loginService.giteeLogin(data));
+    public Result<String> giteeLogin(@RequestBody CodeForm codeForm) {
+        return Result.success(loginService.giteeLogin(codeForm));
     }
 
     /**
      * Github登录
      *
-     * @param data 第三方code
+     * @param codeForm 第三方code
      * @return {@link Result<String>} Token
      */
     @ApiOperation(value = "Github登录")
     @PostMapping("/oauth/github")
-    public Result<String> githubLogin(@RequestBody CodeDTO data) {
-        return Result.success(loginService.githubLogin(data));
+    public Result<String> githubLogin(@RequestBody CodeForm codeForm) {
+        return Result.success(loginService.githubLogin(codeForm));
     }
 
     /**
      * QQ登录
      *
-     * @param data 第三方code
+     * @param codeForm 第三方code
      * @return {@link Result<String>} Token
      */
     @ApiOperation(value = "QQ登录")
     @PostMapping("/oauth/qq")
-    public Result<String> qqLogin(@Validated @RequestBody CodeDTO data) {
-        return Result.success(loginService.qqLogin(data));
+    public Result<String> qqLogin(@Validated @RequestBody CodeForm codeForm) {
+        return Result.success(loginService.qqLogin(codeForm));
     }
 }
 

@@ -1,25 +1,25 @@
 package com.ican.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.ican.entity.ExceptionLog;
-import com.ican.entity.VisitLog;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.vo.OperationLogVO;
-import com.ican.model.vo.PageResult;
-import com.ican.model.vo.Result;
-import com.ican.model.vo.TaskLogVO;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.po.ExceptionLog;
+import com.ican.entity.po.VisitLog;
+import com.ican.entity.vo.OperationLogVO;
+import com.ican.entity.vo.PageResult;
+import com.ican.entity.vo.Result;
+import com.ican.entity.vo.TaskLogVO;
 import com.ican.service.ExceptionLogService;
 import com.ican.service.OperationLogService;
 import com.ican.service.TaskLogService;
 import com.ican.service.VisitLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -31,29 +31,29 @@ import java.util.List;
 @RestController
 public class LogController {
 
-    @Autowired
+    @Resource
     private OperationLogService operationLogService;
 
-    @Autowired
+    @Resource
     private ExceptionLogService exceptionLogService;
 
-    @Autowired
+    @Resource
     private VisitLogService visitLogService;
 
-    @Autowired
+    @Resource
     private TaskLogService taskLogService;
 
     /**
      * 查看操作日志
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return {@link OperationLogVO} 操作日志
      */
     @ApiOperation(value = "查看操作日志")
     @SaCheckPermission("log:operation:list")
     @GetMapping("/admin/operation/list")
-    public Result<PageResult<OperationLogVO>> listOperationLogVO(ConditionDTO condition) {
-        return Result.success(operationLogService.listOperationLogVO(condition));
+    public Result<PageResult<OperationLogVO>> listOperationLogVO(ConditionQuery conditionQuery) {
+        return Result.success(operationLogService.listOperationLogVO(conditionQuery));
     }
 
     /**
@@ -73,14 +73,14 @@ public class LogController {
     /**
      * 查看异常日志
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return {@link Result<OperationLogVO>} 异常日志列表
      */
     @ApiOperation(value = "查看异常日志")
     @SaCheckPermission("log:exception:list")
     @GetMapping("/admin/exception/list")
-    public Result<PageResult<ExceptionLog>> listExceptionLog(ConditionDTO condition) {
-        return Result.success(exceptionLogService.listExceptionLog(condition));
+    public Result<PageResult<ExceptionLog>> listExceptionLog(ConditionQuery conditionQuery) {
+        return Result.success(exceptionLogService.listExceptionLog(conditionQuery));
     }
 
     /**
@@ -100,14 +100,14 @@ public class LogController {
     /**
      * 查看访问日志
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return {@link Result<OperationLogVO>} 访问日志列表
      */
     @ApiOperation(value = "查看访问日志")
     @SaCheckPermission("log:visit:list")
     @GetMapping("/admin/visit/list")
-    public Result<PageResult<VisitLog>> listVisitLog(ConditionDTO condition) {
-        return Result.success(visitLogService.listVisitLog(condition));
+    public Result<PageResult<VisitLog>> listVisitLog(ConditionQuery conditionQuery) {
+        return Result.success(visitLogService.listVisitLog(conditionQuery));
     }
 
     /**
@@ -127,14 +127,14 @@ public class LogController {
     /**
      * 查看定时任务日志
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return {@link PageResult<TaskLogVO>} 后台定时任务日志
      */
     @ApiOperation("查看定时任务日志")
     @SaCheckPermission("log:task:list")
     @GetMapping("/admin/taskLog/list")
-    public Result<PageResult<TaskLogVO>> listTaskLog(ConditionDTO condition) {
-        return Result.success(taskLogService.listTaskLog(condition));
+    public Result<PageResult<TaskLogVO>> listTaskLog(ConditionQuery conditionQuery) {
+        return Result.success(taskLogService.listTaskLog(conditionQuery));
     }
 
     /**

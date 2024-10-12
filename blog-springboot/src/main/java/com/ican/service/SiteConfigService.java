@@ -1,7 +1,7 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.SiteConfig;
+import com.ican.entity.po.SiteConfig;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

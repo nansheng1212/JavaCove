@@ -1,21 +1,22 @@
 package com.ican.service.impl;
 
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ican.entity.Friend;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.FriendForm;
+import com.ican.entity.po.Friend;
+import com.ican.entity.vo.FriendBackVO;
+import com.ican.entity.vo.FriendVO;
+import com.ican.entity.vo.PageResult;
 import com.ican.mapper.FriendMapper;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.FriendDTO;
-import com.ican.model.vo.FriendBackVO;
-import com.ican.model.vo.FriendVO;
-import com.ican.model.vo.PageResult;
 import com.ican.service.FriendService;
 import com.ican.utils.BeanCopyUtils;
 import com.ican.utils.PageUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ import java.util.List;
 @Service
 public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> implements FriendService {
 
-    @Autowired
+    @Resource
     private FriendMapper friendMapper;
 
     @Override
@@ -36,31 +37,31 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
     }
 
     @Override
-    public PageResult<FriendBackVO> listFriendBackVO(ConditionDTO condition) {
+    public PageResult<FriendBackVO> listFriendBackVO(ConditionQuery conditionQuery) {
         // 查询友链数量
         Long count = friendMapper.selectCount(new LambdaQueryWrapper<Friend>()
-                .like(StringUtils.hasText(condition.getKeyword()), Friend::getName, condition.getKeyword())
+                .like(StringUtils.hasText(conditionQuery.getKeyword()), Friend::getName, conditionQuery.getKeyword())
         );
         if (count == 0) {
             return new PageResult<>();
         }
         // 查询后台友链列表
-        List<FriendBackVO> friendBackVOList = friendMapper.selectFriendBackVOList(PageUtils.getLimit(), PageUtils.getSize(), condition.getKeyword());
+        List<FriendBackVO> friendBackVOList = friendMapper.selectFriendBackVOList(PageUtils.getLimit(), PageUtils.getSize(), conditionQuery.getKeyword());
         return new PageResult<>(friendBackVOList, count);
     }
 
     @Override
-    public void addFriend(FriendDTO friend) {
+    public void addFriend(FriendForm friendForm) {
         // 新友链
-        Friend newFriend = BeanCopyUtils.copyBean(friend, Friend.class);
+        Friend newFriend = BeanCopyUtils.copyBean(friendForm, Friend.class);
         // 添加友链
         baseMapper.insert(newFriend);
     }
 
     @Override
-    public void updateFriend(FriendDTO friend) {
+    public void updateFriend(FriendForm friendForm) {
         // 新友链
-        Friend newFriend = BeanCopyUtils.copyBean(friend, Friend.class);
+        Friend newFriend = BeanCopyUtils.copyBean(friendForm, Friend.class);
         // 更新友链
         baseMapper.updateById(newFriend);
     }

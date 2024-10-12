@@ -1,7 +1,7 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.WebsiteVisits;
+import com.ican.entity.po.WebsiteVisits;
 
 
 /**

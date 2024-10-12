@@ -1,9 +1,9 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.Friend;
-import com.ican.model.vo.FriendBackVO;
-import com.ican.model.vo.FriendVO;
+import com.ican.entity.po.Friend;
+import com.ican.entity.vo.FriendBackVO;
+import com.ican.entity.vo.FriendVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

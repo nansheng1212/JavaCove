@@ -1,13 +1,13 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.Task;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.StatusDTO;
-import com.ican.model.dto.TaskDTO;
-import com.ican.model.dto.TaskRunDTO;
-import com.ican.model.vo.PageResult;
-import com.ican.model.vo.TaskBackVO;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.StatusForm;
+import com.ican.entity.form.TaskForm;
+import com.ican.entity.form.TaskRunForm;
+import com.ican.entity.po.Task;
+import com.ican.entity.vo.PageResult;
+import com.ican.entity.vo.TaskBackVO;
 
 import java.util.List;
 
@@ -21,24 +21,24 @@ public interface TaskService extends IService<Task> {
     /**
      * 查看定时任务列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 定时任务列表
      */
-    PageResult<TaskBackVO> listTaskBackVO(ConditionDTO condition);
+    PageResult<TaskBackVO> listTaskBackVO(ConditionQuery conditionQuery);
 
     /**
      * 添加定时任务
      *
-     * @param task 定时任务
+     * @param taskForm 定时任务
      */
-    void addTask(TaskDTO task);
+    void addTask(TaskForm taskForm);
 
     /**
      * 修改定时任务
      *
-     * @param task 定时任务信息
+     * @param taskForm 定时任务信息
      */
-    void updateTask(TaskDTO task);
+    void updateTask(TaskForm taskForm);
 
     /**
      * 删除定时任务
@@ -50,14 +50,14 @@ public interface TaskService extends IService<Task> {
     /**
      * 修改定时任务状态
      *
-     * @param taskStatus 定时任务状态
+     * @param statusForm 定时任务状态
      */
-    void updateTaskStatus(StatusDTO taskStatus);
+    void updateTaskStatus(StatusForm statusForm);
 
     /**
      * 定时任务立即执行一次
      *
-     * @param taskRun 定时任务
+     * @param taskRunForm 定时任务
      */
-    void runTask(TaskRunDTO taskRun);
+    void runTask(TaskRunForm taskRunForm);
 }

@@ -1,9 +1,9 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.Article;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.vo.*;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.po.Article;
+import com.ican.entity.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -21,20 +21,20 @@ public interface ArticleMapper extends BaseMapper<Article> {
     /**
      * 查询后台文章数量
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 文章数量
      */
-    Long countArticleBackVO(@Param("condition") ConditionDTO condition);
+    Long countArticleBackVO(@Param("conditionQuery") ConditionQuery conditionQuery);
 
     /**
      * 查询后台文章列表
      *
      * @param limit     页码
      * @param size      大小
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 后台文章列表
      */
-    List<ArticleBackVO> selectArticleBackVO(@Param("limit") Long limit, @Param("size") Long size, @Param("condition") ConditionDTO condition);
+    List<ArticleBackVO> selectArticleBackVO(@Param("limit") Long limit, @Param("size") Long size, @Param("conditionQuery") ConditionQuery conditionQuery);
 
     /**
      * 根据id查询文章信息
@@ -113,14 +113,14 @@ public interface ArticleMapper extends BaseMapper<Article> {
      *
      * @param limit     页码
      * @param size      大小
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 文章列表
      */
-    List<ArticleConditionVO> listArticleByCondition(@Param("limit") Long limit, @Param("size") Long size, @Param("condition") ConditionDTO condition);
+    List<ArticleConditionVO> listArticleByCondition(@Param("limit") Long limit, @Param("size") Long size, @Param("conditionQuery") ConditionQuery conditionQuery);
 
     List<ArticleHomeVO> selectArticleHomeListByAdmin(Long limit, Long size);
 
     ArticleVO selectArticleHomeByIdByAdmin(Integer articleId);
 
-    List<ArticleConditionVO> listArticleByConditionByAdmin(@Param("limit") Long limit, @Param("size") Long size, @Param("condition") ConditionDTO condition);
+    List<ArticleConditionVO> listArticleByConditionByAdmin(@Param("limit") Long limit, @Param("size") Long size, @Param("conditionQuery") ConditionQuery conditionQuery);
 }

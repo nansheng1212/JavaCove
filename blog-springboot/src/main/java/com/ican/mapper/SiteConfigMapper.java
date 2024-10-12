@@ -1,7 +1,7 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.SiteConfig;
+import com.ican.entity.po.SiteConfig;
 import org.springframework.stereotype.Repository;
 
 /**

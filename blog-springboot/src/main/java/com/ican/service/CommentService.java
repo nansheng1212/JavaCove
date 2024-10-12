@@ -1,11 +1,11 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.Comment;
-import com.ican.model.dto.CheckDTO;
-import com.ican.model.dto.CommentDTO;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.vo.*;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.CheckForm;
+import com.ican.entity.form.CommentForm;
+import com.ican.entity.po.Comment;
+import com.ican.entity.vo.*;
 
 import java.util.List;
 
@@ -19,24 +19,24 @@ public interface CommentService extends IService<Comment> {
     /**
      * 查看后台评论列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 后台评论列表
      */
-    PageResult<CommentBackVO> listCommentBackVO(ConditionDTO condition);
+    PageResult<CommentBackVO> listCommentBackVO(ConditionQuery conditionQuery);
 
     /**
      * 添加评论
      *
-     * @param comment 评论信息
+     * @param commentForm 评论信息
      */
-    void addComment(CommentDTO comment);
+    void addComment(CommentForm commentForm);
 
     /**
      * 审核评论
      *
-     * @param check 审核信息
+     * @param checkForm 审核信息
      */
-    void updateCommentCheck(CheckDTO check);
+    void updateCommentCheck(CheckForm checkForm);
 
     /**
      * 查看最新评论
@@ -48,10 +48,10 @@ public interface CommentService extends IService<Comment> {
     /**
      * 查看评论
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 评论列表
      */
-    PageResult<CommentVO> listCommentVO(ConditionDTO condition);
+    PageResult<CommentVO> listCommentVO(ConditionQuery conditionQuery);
 
     /**
      * 查看回复评论

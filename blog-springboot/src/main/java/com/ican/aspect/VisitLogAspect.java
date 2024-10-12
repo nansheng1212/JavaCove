@@ -2,7 +2,7 @@ package com.ican.aspect;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.ican.annotation.VisitLogger;
-import com.ican.entity.VisitLog;
+import com.ican.entity.po.VisitLog;
 import com.ican.manager.AsyncManager;
 import com.ican.manager.factory.AsyncFactory;
 import com.ican.utils.IpUtils;

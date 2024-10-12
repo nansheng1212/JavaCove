@@ -3,24 +3,25 @@ package com.ican.service.impl;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ican.entity.BlogFile;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.FolderForm;
+import com.ican.entity.po.BlogFile;
+import com.ican.entity.vo.FileVO;
+import com.ican.entity.vo.PageResult;
 import com.ican.exception.ServiceException;
 import com.ican.mapper.BlogFileMapper;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.FolderDTO;
-import com.ican.model.vo.FileVO;
-import com.ican.model.vo.PageResult;
 import com.ican.service.BlogFileService;
 import com.ican.strategy.context.UploadStrategyContext;
 import com.ican.utils.FileUtils;
 import com.ican.utils.PageUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -42,6 +43,7 @@ import static com.ican.constant.CommonConstant.TRUE;
  *
  * @author gj
  */
+@Slf4j
 @Service
 public class BlogFileServiceImpl extends ServiceImpl<BlogFileMapper, BlogFile> implements BlogFileService {
 
@@ -51,26 +53,26 @@ public class BlogFileServiceImpl extends ServiceImpl<BlogFileMapper, BlogFile> i
     @Value("${upload.local.path}")
     private String localPath;
 
-    @Autowired
+    @Resource
     private BlogFileMapper blogFileMapper;
 
-    @Autowired
+    @Resource
     private HttpServletResponse response;
 
-    @Autowired
+    @Resource
     private UploadStrategyContext uploadStrategyContext;
 
     @Override
-    public PageResult<FileVO> listFileVOList(ConditionDTO condition) {
+    public PageResult<FileVO> listFileVOList(ConditionQuery ConditionQuery) {
         // 查询文件数量
         Long count = blogFileMapper.selectCount(new LambdaQueryWrapper<BlogFile>()
-                .eq(BlogFile::getFilePath, condition.getFilePath()));
+                .eq(BlogFile::getFilePath, ConditionQuery.getFilePath()));
         if (count == 0) {
             return new PageResult<>();
         }
         // 查询文件列表
         List<FileVO> fileVOList = blogFileMapper.selectFileVOList(PageUtils.getLimit(), PageUtils.getSize(),
-                condition.getFilePath());
+                ConditionQuery.getFilePath());
         return new PageResult<>(fileVOList, count);
     }
 
@@ -101,19 +103,19 @@ public class BlogFileServiceImpl extends ServiceImpl<BlogFileMapper, BlogFile> i
                     .build();
             blogFileMapper.insert(newFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void createFolder(FolderDTO folder) {
-        String fileName = folder.getFileName();
-        String filePath = folder.getFilePath();
+    public void createFolder(FolderForm folderForm) {
+        String fileName = folderForm.getFileName();
+        String filePath = folderForm.getFilePath();
         // 判断目录是否存在
         BlogFile blogFile = blogFileMapper.selectOne(new LambdaQueryWrapper<BlogFile>()
                 .select(BlogFile::getId)
-                .eq(BlogFile::getFilePath, folder.getFilePath())
+                .eq(BlogFile::getFilePath, folderForm.getFilePath())
                 .eq(BlogFile::getFileName, fileName));
         Assert.isNull(blogFile, "目录已存在");
         // 创建目录
@@ -186,7 +188,7 @@ public class BlogFileServiceImpl extends ServiceImpl<BlogFileMapper, BlogFile> i
                 // 下载压缩包
                 downloadFile(filePath, blogFile.getFileName() + ".zip");
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             } finally {
                 if (dest.exists()) {
                     dest.delete();

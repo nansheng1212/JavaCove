@@ -6,30 +6,30 @@
         select count(id)
         from t_task
         <where>
-            <if test="condition.keyword!=null">
-                and task_name like concat('%',#{condition.keyword},'%')
+            <if test="conditionQuery.keyword!=null">
+                and task_name like concat('%',#{conditionQuery.keyword},'%')
             </if>
-            <if test="condition.status!=null">
-                and status = #{condition.status}
+            <if test="conditionQuery.status!=null">
+                and status = #{conditionQuery.status}
             </if>
-            <if test="condition.taskGroup!=null">
-                and task_group like concat('%',#{condition.taskGroup},'%')
+            <if test="conditionQuery.taskGroup!=null">
+                and task_group like concat('%',#{conditionQuery.taskGroup},'%')
             </if>
         </where>
     </select>
 
-    <select id="selectTaskBackVO" resultType="com.ican.model.vo.TaskBackVO">
+    <select id="selectTaskBackVO" resultType="com.ican.entity.vo.TaskBackVO">
         select id,task_name,task_group,invoke_target,cron_expression,misfire_policy,concurrent,status,remark,create_time
         from t_task
         <where>
-            <if test="condition.keyword!=null">
-                and task_name like concat('%',#{condition.keyword},'%')
+            <if test="conditionQuery.keyword!=null">
+                and task_name like concat('%',#{conditionQuery.keyword},'%')
             </if>
-            <if test="condition.status!=null">
-                and status = #{condition.status}
+            <if test="conditionQuery.status!=null">
+                and status = #{conditionQuery.status}
             </if>
-            <if test="condition.taskGroup!=null">
-                and task_group like concat('%',#{condition.taskGroup},'%')
+            <if test="conditionQuery.taskGroup!=null">
+                and task_group like concat('%',#{conditionQuery.taskGroup},'%')
             </if>
         </where>
         ORDER BY id DESC

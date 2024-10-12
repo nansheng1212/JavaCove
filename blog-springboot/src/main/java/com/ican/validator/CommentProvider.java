@@ -1,6 +1,6 @@
 package com.ican.validator;
 
-import com.ican.model.dto.CommentDTO;
+import com.ican.entity.form.CommentForm;
 import com.ican.validator.groups.ArticleTalk;
 import com.ican.validator.groups.Link;
 import com.ican.validator.groups.ParentIdNotNull;
@@ -18,22 +18,22 @@ import static com.ican.enums.CommentTypeEnum.*;
  *
  * @author gj
  **/
-public class CommentProvider implements DefaultGroupSequenceProvider<CommentDTO> {
+public class CommentProvider implements DefaultGroupSequenceProvider<CommentForm> {
     @Override
-    public List<Class<?>> getValidationGroups(CommentDTO commentDTO) {
+    public List<Class<?>> getValidationGroups(CommentForm commentForm) {
         List<Class<?>> defaultGroupSequence = new ArrayList<>();
-        defaultGroupSequence.add(CommentDTO.class);
-        if (commentDTO != null) {
-            if (commentDTO.getCommentType().equals(ARTICLE.getType()) || commentDTO.getCommentType().equals(TALK.getType())) {
+        defaultGroupSequence.add(CommentForm.class);
+        if (commentForm != null) {
+            if (commentForm.getCommentType().equals(ARTICLE.getType()) || commentForm.getCommentType().equals(TALK.getType())) {
                 defaultGroupSequence.add(ArticleTalk.class);
             }
-            if (commentDTO.getCommentType().equals(LINK.getType())) {
+            if (commentForm.getCommentType().equals(LINK.getType())) {
                 defaultGroupSequence.add(Link.class);
             }
-            if (Objects.isNull(commentDTO.getParentId())) {
+            if (Objects.isNull(commentForm.getParentId())) {
                 defaultGroupSequence.add(ParentIdNull.class);
             }
-            if (Objects.nonNull(commentDTO.getParentId())) {
+            if (Objects.nonNull(commentForm.getParentId())) {
                 defaultGroupSequence.add(ParentIdNotNull.class);
             }
         }

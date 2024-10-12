@@ -1,15 +1,14 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.Album;
-import com.ican.model.dto.AlbumDTO;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.vo.AlbumBackVO;
-import com.ican.model.vo.AlbumVO;
-import com.ican.model.vo.PageResult;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.AlbumForm;
+import com.ican.entity.po.Album;
+import com.ican.entity.vo.AlbumBackVO;
+import com.ican.entity.vo.AlbumVO;
+import com.ican.entity.vo.PageResult;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -22,17 +21,17 @@ public interface AlbumService extends IService<Album> {
     /**
      * 查看后台相册列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 后台相册列表
      */
-    PageResult<AlbumBackVO> listAlbumBackVO(ConditionDTO condition);
+    PageResult<AlbumBackVO> listAlbumBackVO(ConditionQuery conditionQuery);
 
     /**
      * 添加相册
      *
-     * @param album 相册
+     * @param albumForm 相册
      */
-    void addAlbum(AlbumDTO album);
+    void addAlbum(AlbumForm albumForm);
 
     /**
      * 删除相册
@@ -44,9 +43,9 @@ public interface AlbumService extends IService<Album> {
     /**
      * 修改相册
      *
-     * @param album 相册
+     * @param albumForm 相册
      */
-    void updateAlbum(AlbumDTO album);
+    void updateAlbum(AlbumForm albumForm);
 
     /**
      * 编辑相册
@@ -54,7 +53,7 @@ public interface AlbumService extends IService<Album> {
      * @param albumId 相册id
      * @return 相册信息
      */
-    AlbumDTO editAlbum(Integer albumId);
+    AlbumVO editAlbum(Integer albumId);
 
     /**
      * 查看相册列表

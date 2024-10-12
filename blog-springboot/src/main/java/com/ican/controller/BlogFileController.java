@@ -2,20 +2,20 @@ package com.ican.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ican.annotation.OptLogger;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.FolderDTO;
-import com.ican.model.vo.FileVO;
-import com.ican.model.vo.PageResult;
-import com.ican.model.vo.Result;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.FolderForm;
+import com.ican.entity.vo.FileVO;
+import com.ican.entity.vo.PageResult;
+import com.ican.entity.vo.Result;
 import com.ican.service.BlogFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.ican.constant.OptTypeConstant.*;
@@ -30,20 +30,20 @@ import static com.ican.constant.OptTypeConstant.*;
 @RestController
 public class BlogFileController {
 
-    @Autowired
+    @Resource
     private BlogFileService fileService;
 
     /**
      * 查看文件列表
      *
-     * @param condition 查询条件
+     * @param ConditionQuery 查询条件
      * @return {@link Result<FileVO>} 文件列表
      */
     @ApiOperation(value = "查看文件列表")
     @SaCheckPermission("system:file:list")
     @GetMapping("/admin/file/list")
-    public Result<PageResult<FileVO>> listFileVOList(ConditionDTO condition) {
-        return Result.success(fileService.listFileVOList(condition));
+    public Result<PageResult<FileVO>> listFileVOList(ConditionQuery ConditionQuery) {
+        return Result.success(fileService.listFileVOList(ConditionQuery));
     }
 
     /**
@@ -65,15 +65,15 @@ public class BlogFileController {
     /**
      * 创建目录
      *
-     * @param folder 目录信息
+     * @param folderForm 目录信息
      * @return {@link Result<>}
      */
     @OptLogger(value = ADD)
     @ApiOperation(value = "创建目录")
     @SaCheckPermission("system:file:createFolder")
     @PostMapping("/admin/file/createFolder")
-    public Result<?> createFolder(@Validated @RequestBody FolderDTO folder) {
-        fileService.createFolder(folder);
+    public Result<?> createFolder(@Validated @RequestBody FolderForm folderForm) {
+        fileService.createFolder(folderForm);
         return Result.success();
     }
 

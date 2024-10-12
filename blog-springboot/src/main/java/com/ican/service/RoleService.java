@@ -1,12 +1,12 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.Role;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.RoleDTO;
-import com.ican.model.dto.RoleStatusDTO;
-import com.ican.model.vo.PageResult;
-import com.ican.model.vo.RoleVO;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.RoleForm;
+import com.ican.entity.form.RoleStatusForm;
+import com.ican.entity.po.Role;
+import com.ican.entity.vo.PageResult;
+import com.ican.entity.vo.RoleVO;
 
 import java.util.List;
 
@@ -21,17 +21,17 @@ public interface RoleService extends IService<Role> {
     /**
      * 查看角色列表
      *
-     * @param condition 查询条件
+     * @param conditionQuery 查询条件
      * @return 角色列表
      */
-    PageResult<RoleVO> listRoleVO(ConditionDTO condition);
+    PageResult<RoleVO> listRoleVO(ConditionQuery conditionQuery);
 
     /**
      * 添加角色
      *
-     * @param role 角色信息
+     * @param roleForm 角色信息
      */
-    void addRole(RoleDTO role);
+    void addRole(RoleForm roleForm);
 
     /**
      * 删除角色
@@ -43,16 +43,16 @@ public interface RoleService extends IService<Role> {
     /**
      * 修改角色
      *
-     * @param role 角色信息
+     * @param roleForm 角色信息
      */
-    void updateRole(RoleDTO role);
+    void updateRole(RoleForm roleForm);
 
     /**
      * 修改角色状态
      *
-     * @param roleStatus 角色状态
+     * @param roleStatusForm 角色状态
      */
-    void updateRoleStatus(RoleStatusDTO roleStatus);
+    void updateRoleStatus(RoleStatusForm roleStatusForm);
 
     /**
      * 查看角色的菜单权限

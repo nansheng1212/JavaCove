@@ -3,7 +3,7 @@ package com.ican.strategy.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ican.entity.Article;
+import com.ican.entity.po.Article;
 import com.ican.mapper.ArticleMapper;
 import com.ican.service.RedisService;
 import com.ican.strategy.LikeStrategy;

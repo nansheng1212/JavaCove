@@ -1,9 +1,10 @@
 package com.ican.service.impl;
 
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ican.entity.BlogFile;
-import com.ican.entity.SiteConfig;
+import com.ican.entity.po.BlogFile;
+import com.ican.entity.po.SiteConfig;
 import com.ican.mapper.BlogFileMapper;
 import com.ican.mapper.SiteConfigMapper;
 import com.ican.service.RedisService;
@@ -84,7 +85,7 @@ public class SiteConfigServiceImpl extends ServiceImpl<SiteConfigMapper, SiteCon
                 blogFileMapper.insert(newFile);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return url;
     }

@@ -1,13 +1,13 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.Talk;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.TalkDTO;
-import com.ican.model.vo.PageResult;
-import com.ican.model.vo.TalkBackInfoVO;
-import com.ican.model.vo.TalkBackVO;
-import com.ican.model.vo.TalkVO;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.TalkForm;
+import com.ican.entity.po.Talk;
+import com.ican.entity.vo.PageResult;
+import com.ican.entity.vo.TalkBackInfoVO;
+import com.ican.entity.vo.TalkBackVO;
+import com.ican.entity.vo.TalkVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -22,17 +22,17 @@ public interface TalkService extends IService<Talk> {
     /**
      * 查看后台说说列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return {@link PageResult<TalkBackVO>} 说说列表
      */
-    PageResult<TalkBackVO> listTalkBackVO(ConditionDTO condition);
+    PageResult<TalkBackVO> listTalkBackVO(ConditionQuery conditionQuery);
 
     /**
      * 添加说说
      *
-     * @param talk 说说
+     * @param talkForm 说说
      */
-    void addTalk(TalkDTO talk);
+    void addTalk(TalkForm talkForm);
 
     /**
      * 删除说说
@@ -44,9 +44,9 @@ public interface TalkService extends IService<Talk> {
     /**
      * 修改说说
      *
-     * @param talk 说说
+     * @param talkForm 说说
      */
-    void updateTalk(TalkDTO talk);
+    void updateTalk(TalkForm talkForm);
 
     /**
      * 编辑说说

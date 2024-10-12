@@ -5,26 +5,26 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ican.entity.Album;
-import com.ican.entity.BlogFile;
-import com.ican.entity.Photo;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.AlbumForm;
+import com.ican.entity.po.Album;
+import com.ican.entity.po.BlogFile;
+import com.ican.entity.po.Photo;
+import com.ican.entity.vo.AlbumBackVO;
+import com.ican.entity.vo.AlbumVO;
+import com.ican.entity.vo.OnlineVO;
+import com.ican.entity.vo.PageResult;
 import com.ican.mapper.AlbumMapper;
 import com.ican.mapper.BlogFileMapper;
 import com.ican.mapper.PhotoMapper;
 import com.ican.mapper.UserRoleMapper;
-import com.ican.model.dto.AlbumDTO;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.vo.AlbumBackVO;
-import com.ican.model.vo.AlbumVO;
-import com.ican.model.vo.OnlineVO;
-import com.ican.model.vo.PageResult;
 import com.ican.service.AlbumService;
 import com.ican.strategy.context.UploadStrategyContext;
 import com.ican.utils.BeanCopyUtils;
 import com.ican.utils.CookieUtils;
 import com.ican.utils.FileUtils;
 import com.ican.utils.PageUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,49 +43,50 @@ import static com.ican.enums.FilePathEnum.PHOTO;
  *
  * @author gj
  */
+@Slf4j
 @Service
 public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements AlbumService {
 
-    @Autowired
+    @Resource
     private AlbumMapper albumMapper;
 
-    @Autowired
+    @Resource
     private PhotoMapper photoMapper;
 
-    @Autowired
+    @Resource
     private UploadStrategyContext uploadStrategyContext;
 
-    @Autowired
+    @Resource
     private BlogFileMapper blogFileMapper;
 
     @Resource
     private UserRoleMapper userRoleMapper;
 
-    @Autowired
+    @Resource
     private HttpServletRequest request;
 
     @Override
-    public PageResult<AlbumBackVO> listAlbumBackVO(ConditionDTO condition) {
+    public PageResult<AlbumBackVO> listAlbumBackVO(ConditionQuery conditionQuery) {
         // 查询相册数量
         Long count = albumMapper.selectCount(new LambdaQueryWrapper<Album>()
-                .like(StringUtils.hasText(condition.getKeyword()), Album::getAlbumName, condition.getKeyword()));
+                .like(StringUtils.hasText(conditionQuery.getKeyword()), Album::getAlbumName, conditionQuery.getKeyword()));
         if (count == 0) {
             return new PageResult<>();
         }
         // 查询相册信息
-        List<AlbumBackVO> albumList = albumMapper.selectAlbumBackVO(PageUtils.getLimit(), PageUtils.getSize(), condition.getKeyword());
+        List<AlbumBackVO> albumList = albumMapper.selectAlbumBackVO(PageUtils.getLimit(), PageUtils.getSize(), conditionQuery.getKeyword());
         return new PageResult<>(albumList, count);
     }
 
     @Override
-    public void addAlbum(AlbumDTO album) {
+    public void addAlbum(AlbumForm albumForm) {
         // 相册是否存在
         Album existAlbum = albumMapper.selectOne(new LambdaQueryWrapper<Album>()
                 .select(Album::getId)
-                .eq(Album::getAlbumName, album.getAlbumName()));
-        Assert.isNull(existAlbum, album.getAlbumName() + "相册已存在");
+                .eq(Album::getAlbumName, albumForm.getAlbumName()));
+        Assert.isNull(existAlbum, albumForm.getAlbumName() + "相册已存在");
         // 添加新相册
-        Album newAlbum = BeanCopyUtils.copyBean(album, Album.class);
+        Album newAlbum = BeanCopyUtils.copyBean(albumForm, Album.class);
         baseMapper.insert(newAlbum);
     }
 
@@ -100,20 +101,20 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
     }
 
     @Override
-    public void updateAlbum(AlbumDTO album) {
+    public void updateAlbum(AlbumForm albumForm) {
         // 相册是否存在
         Album existAlbum = albumMapper.selectOne(new LambdaQueryWrapper<Album>()
                 .select(Album::getId)
-                .eq(Album::getAlbumName, album.getAlbumName()));
-        Assert.isFalse(Objects.nonNull(existAlbum) && !existAlbum.getId().equals(album.getId()),
-                album.getAlbumName() + "相册已存在");
+                .eq(Album::getAlbumName, albumForm.getAlbumName()));
+        Assert.isFalse(Objects.nonNull(existAlbum) && !existAlbum.getId().equals(albumForm.getId()),
+                albumForm.getAlbumName() + "相册已存在");
         // 修改相册
-        Album newAlbum = BeanCopyUtils.copyBean(album, Album.class);
+        Album newAlbum = BeanCopyUtils.copyBean(albumForm, Album.class);
         baseMapper.updateById(newAlbum);
     }
 
     @Override
-    public AlbumDTO editAlbum(Integer albumId) {
+    public AlbumVO editAlbum(Integer albumId) {
         return albumMapper.selectAlbumById(albumId);
     }
 
@@ -160,7 +161,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
                 blogFileMapper.insert(newFile);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return url;
     }

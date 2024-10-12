@@ -4,20 +4,20 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ican.annotation.AccessLimit;
 import com.ican.annotation.OptLogger;
 import com.ican.annotation.VisitLogger;
-import com.ican.model.dto.CheckDTO;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.MessageDTO;
-import com.ican.model.vo.MessageBackVO;
-import com.ican.model.vo.MessageVO;
-import com.ican.model.vo.PageResult;
-import com.ican.model.vo.Result;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.CheckForm;
+import com.ican.entity.form.MessageForm;
+import com.ican.entity.vo.MessageBackVO;
+import com.ican.entity.vo.MessageVO;
+import com.ican.entity.vo.PageResult;
+import com.ican.entity.vo.Result;
 import com.ican.service.MessageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.ican.constant.OptTypeConstant.DELETE;
@@ -32,7 +32,7 @@ import static com.ican.constant.OptTypeConstant.UPDATE;
 @RestController
 public class MessageController {
 
-    @Autowired
+    @Resource
     private MessageService messageService;
 
     /**
@@ -50,27 +50,27 @@ public class MessageController {
     /**
      * 查看后台留言列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return {@link Result<MessageBackVO>} 留言列表
      */
     @ApiOperation(value = "查看后台留言列表")
     @SaCheckPermission("news:message:list")
     @GetMapping("/admin/message/list")
-    public Result<PageResult<MessageBackVO>> listMessageBackVO(ConditionDTO condition) {
-        return Result.success(messageService.listMessageBackVO(condition));
+    public Result<PageResult<MessageBackVO>> listMessageBackVO(ConditionQuery conditionQuery) {
+        return Result.success(messageService.listMessageBackVO(conditionQuery));
     }
 
     /**
      * 添加留言
      *
-     * @param message 留言信息
+     * @param messageForm 留言信息
      * @return {@link Result<>}
      */
     @AccessLimit(seconds = 60, maxCount = 3)
     @ApiOperation(value = "添加留言")
     @PostMapping("/message/add")
-    public Result<?> addMessage(@Validated @RequestBody MessageDTO message) {
-        messageService.addMessage(message);
+    public Result<?> addMessage(@Validated @RequestBody MessageForm messageForm) {
+        messageService.addMessage(messageForm);
         return Result.success();
     }
 
@@ -92,15 +92,15 @@ public class MessageController {
     /**
      * 审核留言
      *
-     * @param check 审核信息
+     * @param checkForm 审核信息
      * @return {@link Result<>}
      */
     @OptLogger(value = UPDATE)
     @ApiOperation(value = "审核留言")
     @SaCheckPermission("news:message:pass")
     @PutMapping("/admin/message/pass")
-    public Result<?> updateMessageCheck(@Validated @RequestBody CheckDTO check) {
-        messageService.updateMessageCheck(check);
+    public Result<?> updateMessageCheck(@Validated @RequestBody CheckForm checkForm) {
+        messageService.updateMessageCheck(checkForm);
         return Result.success();
     }
 

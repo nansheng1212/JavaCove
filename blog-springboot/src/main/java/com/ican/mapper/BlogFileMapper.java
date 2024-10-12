@@ -1,8 +1,8 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.BlogFile;
-import com.ican.model.vo.FileVO;
+import com.ican.entity.po.BlogFile;
+import com.ican.entity.vo.FileVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

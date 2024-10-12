@@ -4,15 +4,15 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ican.entity.BlogFile;
-import com.ican.entity.Talk;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.TalkForm;
+import com.ican.entity.po.BlogFile;
+import com.ican.entity.po.Talk;
+import com.ican.entity.vo.*;
 import com.ican.enums.FilePathEnum;
 import com.ican.mapper.BlogFileMapper;
 import com.ican.mapper.CommentMapper;
 import com.ican.mapper.TalkMapper;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.TalkDTO;
-import com.ican.model.vo.*;
 import com.ican.service.RedisService;
 import com.ican.service.TalkService;
 import com.ican.strategy.context.UploadStrategyContext;
@@ -57,15 +57,15 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
     private BlogFileMapper blogFileMapper;
 
     @Override
-    public PageResult<TalkBackVO> listTalkBackVO(ConditionDTO condition) {
+    public PageResult<TalkBackVO> listTalkBackVO(ConditionQuery conditionQuery) {
         // 查询说说数量
         Long count = talkMapper.selectCount(new LambdaQueryWrapper<Talk>()
-                .eq(Objects.nonNull(condition.getStatus()), Talk::getStatus, condition.getStatus()));
+                .eq(Objects.nonNull(conditionQuery.getStatus()), Talk::getStatus, conditionQuery.getStatus()));
         if (count == 0) {
             return new PageResult<>();
         }
         // 分页查询说说列表
-        List<TalkBackVO> talkBackVOList = talkMapper.selectTalkBackVO(PageUtils.getLimit(), PageUtils.getSize(), condition.getStatus());
+        List<TalkBackVO> talkBackVOList = talkMapper.selectTalkBackVO(PageUtils.getLimit(), PageUtils.getSize(), conditionQuery.getStatus());
         talkBackVOList.forEach(item -> {
             // 转换图片格式
             if (Objects.nonNull(item.getImages())) {
@@ -76,8 +76,8 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
     }
 
     @Override
-    public void addTalk(TalkDTO talk) {
-        Talk newTalk = BeanCopyUtils.copyBean(talk, Talk.class);
+    public void addTalk(TalkForm talkForm) {
+        Talk newTalk = BeanCopyUtils.copyBean(talkForm, Talk.class);
         newTalk.setUserId(StpUtil.getLoginIdAsInt());
         baseMapper.insert(newTalk);
     }
@@ -88,8 +88,8 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
     }
 
     @Override
-    public void updateTalk(TalkDTO talk) {
-        Talk newTalk = BeanCopyUtils.copyBean(talk, Talk.class);
+    public void updateTalk(TalkForm talkForm) {
+        Talk newTalk = BeanCopyUtils.copyBean(talkForm, Talk.class);
         newTalk.setUserId(StpUtil.getLoginIdAsInt());
         baseMapper.updateById(newTalk);
     }
@@ -194,7 +194,7 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
                 blogFileMapper.insert(newFile);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return url;
     }

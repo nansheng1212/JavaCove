@@ -5,15 +5,15 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ican.entity.ArticleTag;
-import com.ican.entity.Tag;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.TagForm;
+import com.ican.entity.po.ArticleTag;
+import com.ican.entity.po.Tag;
+import com.ican.entity.vo.*;
 import com.ican.mapper.ArticleMapper;
 import com.ican.mapper.ArticleTagMapper;
 import com.ican.mapper.TagMapper;
 import com.ican.mapper.UserRoleMapper;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.TagDTO;
-import com.ican.model.vo.*;
 import com.ican.service.TagService;
 import com.ican.utils.CookieUtils;
 import com.ican.utils.PageUtils;
@@ -54,30 +54,30 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     private HttpServletRequest request;
 
     @Override
-    public PageResult<TagBackVO> listTagBackVO(ConditionDTO condition) {
+    public PageResult<TagBackVO> listTagBackVO(ConditionQuery conditionQuery) {
         // 查询标签数量
         Long count = tagMapper.selectCount(new LambdaQueryWrapper<Tag>()
-                .like(StringUtils.hasText(condition.getKeyword()), Tag::getTagName,
-                        condition.getKeyword()));
+                .like(StringUtils.hasText(conditionQuery.getKeyword()), Tag::getTagName,
+                        conditionQuery.getKeyword()));
         if (count == 0) {
             return new PageResult<>();
         }
         // 分页查询标签列表
         List<TagBackVO> tagList = tagMapper.selectTagBackVO(PageUtils.getLimit(), PageUtils.getSize(),
-                condition.getKeyword());
+                conditionQuery.getKeyword());
         return new PageResult<>(tagList, count);
     }
 
     @Override
-    public void addTag(TagDTO tag) {
+    public void addTag(TagForm tagForm) {
         // 标签是否存在
         Tag existTag = tagMapper.selectOne(new LambdaQueryWrapper<Tag>()
                 .select(Tag::getId)
-                .eq(Tag::getTagName, tag.getTagName()));
-        Assert.isNull(existTag, tag.getTagName() + "标签已存在");
+                .eq(Tag::getTagName, tagForm.getTagName()));
+        Assert.isNull(existTag, tagForm.getTagName() + "标签已存在");
         // 添加新标签
         Tag newTag = Tag.builder()
-                .tagName(tag.getTagName())
+                .tagName(tagForm.getTagName())
                 .build();
         baseMapper.insert(newTag);
     }
@@ -93,17 +93,17 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     }
 
     @Override
-    public void updateTag(TagDTO tag) {
+    public void updateTag(TagForm tagForm) {
         // 标签是否存在
         Tag existTag = tagMapper.selectOne(new LambdaQueryWrapper<Tag>()
                 .select(Tag::getId)
-                .eq(Tag::getTagName, tag.getTagName()));
-        Assert.isFalse(Objects.nonNull(existTag) && !existTag.getId().equals(tag.getId()),
-                tag.getTagName() + "标签已存在");
+                .eq(Tag::getTagName, tagForm.getTagName()));
+        Assert.isFalse(Objects.nonNull(existTag) && !existTag.getId().equals(tagForm.getId()),
+                tagForm.getTagName() + "标签已存在");
         // 修改标签
         Tag newTag = Tag.builder()
-                .id(tag.getId())
-                .tagName(tag.getTagName())
+                .id(tagForm.getId())
+                .tagName(tagForm.getTagName())
                 .build();
         baseMapper.updateById(newTag);
     }
@@ -119,7 +119,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     }
 
     @Override
-    public ArticleConditionList listArticleTag(ConditionDTO condition) {
+    public ArticleConditionList listArticleTag(ConditionQuery conditionQuery) {
         String token = CookieUtils.getCookieValue(request, "Token");
         boolean isAdmin = false;
         if (StringUtils.hasText(token)) {
@@ -129,15 +129,15 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
                 isAdmin = isAdmin(onlineVO);
             }
         }
-        List<ArticleConditionVO> articleConditionList = isAdmin ?
-                articleMapper.listArticleByConditionByAdmin(PageUtils.getLimit(), PageUtils.getSize(), condition) :
-                articleMapper.listArticleByCondition(PageUtils.getLimit(), PageUtils.getSize(), condition);
+        List<ArticleConditionVO> articleconditionQueryList = isAdmin ?
+                articleMapper.listArticleByConditionByAdmin(PageUtils.getLimit(), PageUtils.getSize(), conditionQuery) :
+                articleMapper.listArticleByCondition(PageUtils.getLimit(), PageUtils.getSize(), conditionQuery);
         String name = tagMapper.selectOne(new LambdaQueryWrapper<Tag>()
                         .select(Tag::getTagName)
-                        .eq(Tag::getId, condition.getTagId()))
+                        .eq(Tag::getId, conditionQuery.getTagId()))
                 .getTagName();
         return ArticleConditionList.builder()
-                .articleConditionVOList(articleConditionList)
+                .articleconditionQueryVOList(articleconditionQueryList)
                 .name(name)
                 .build();
     }

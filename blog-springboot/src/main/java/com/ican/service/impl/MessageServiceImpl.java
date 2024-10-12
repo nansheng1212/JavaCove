@@ -3,15 +3,15 @@ package com.ican.service.impl;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ican.entity.Message;
-import com.ican.entity.SiteConfig;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.CheckForm;
+import com.ican.entity.form.MessageForm;
+import com.ican.entity.po.Message;
+import com.ican.entity.po.SiteConfig;
+import com.ican.entity.vo.MessageBackVO;
+import com.ican.entity.vo.MessageVO;
+import com.ican.entity.vo.PageResult;
 import com.ican.mapper.MessageMapper;
-import com.ican.model.dto.CheckDTO;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.MessageDTO;
-import com.ican.model.vo.MessageBackVO;
-import com.ican.model.vo.MessageVO;
-import com.ican.model.vo.PageResult;
 import com.ican.service.MessageService;
 import com.ican.service.SiteConfigService;
 import com.ican.utils.BeanCopyUtils;
@@ -53,27 +53,27 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     @Override
-    public PageResult<MessageBackVO> listMessageBackVO(ConditionDTO condition) {
+    public PageResult<MessageBackVO> listMessageBackVO(ConditionQuery conditionQuery) {
         // 查询留言数量
         Long count = messageMapper.selectCount(new LambdaQueryWrapper<Message>()
-                .like(StringUtils.hasText(condition.getKeyword()), Message::getNickname, condition.getKeyword())
-                .eq(Objects.nonNull(condition.getIsCheck()), Message::getIsCheck, condition.getIsCheck()));
+                .like(StringUtils.hasText(conditionQuery.getKeyword()), Message::getNickname, conditionQuery.getKeyword())
+                .eq(Objects.nonNull(conditionQuery.getIsCheck()), Message::getIsCheck, conditionQuery.getIsCheck()));
         if (count == 0) {
             return new PageResult<>();
         }
         // 查询后台友链列表
-        List<MessageBackVO> messageBackVOList = messageMapper.selectMessageBackVOList(PageUtils.getLimit(), PageUtils.getSize(), condition);
+        List<MessageBackVO> messageBackVOList = messageMapper.selectMessageBackVOList(PageUtils.getLimit(), PageUtils.getSize(), conditionQuery);
         return new PageResult<>(messageBackVOList, count);
     }
 
     @Override
-    public void addMessage(MessageDTO message) {
+    public void addMessage(MessageForm messageForm) {
         SiteConfig siteConfig = siteConfigService.getSiteConfig();
         Integer messageCheck = siteConfig.getMessageCheck();
         String ipAddress = ServletUtil.getClientIP(request);
         String ipSource = IpUtils.getIpSource(ipAddress);
-        Message newMessage = BeanCopyUtils.copyBean(message, Message.class);
-        newMessage.setMessageContent(message.getMessageContent());
+        Message newMessage = BeanCopyUtils.copyBean(messageForm, Message.class);
+        newMessage.setMessageContent(messageForm.getMessageContent());
         newMessage.setIpAddress(ipAddress);
         newMessage.setIsCheck(messageCheck.equals(FALSE) ? TRUE : FALSE);
         newMessage.setIpSource(ipSource);
@@ -81,13 +81,13 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     @Override
-    public void updateMessageCheck(CheckDTO check) {
+    public void updateMessageCheck(CheckForm checkForm) {
         // 修改留言审核状态
-        List<Message> messageList = check.getIdList()
+        List<Message> messageList = checkForm.getIdList()
                 .stream()
                 .map(id -> Message.builder()
                         .id(id)
-                        .isCheck(check.getIsCheck())
+                        .isCheck(checkForm.getIsCheck())
                         .build())
                 .collect(Collectors.toList());
         this.updateBatchById(messageList);

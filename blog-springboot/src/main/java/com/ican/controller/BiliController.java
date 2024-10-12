@@ -1,14 +1,15 @@
 package com.ican.controller;
 
-import com.ican.model.vo.Result;
+import com.ican.entity.vo.Result;
 import com.ican.service.BiliService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
 
 /**
  * B站服务控制器
@@ -20,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class BiliController {
 
-    @Autowired
+    @Resource
     private BiliService biliService;
 
     /**

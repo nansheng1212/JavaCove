@@ -2,19 +2,19 @@ package com.ican.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ican.annotation.OptLogger;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.MenuDTO;
-import com.ican.model.vo.MenuOption;
-import com.ican.model.vo.MenuTree;
-import com.ican.model.vo.MenuVO;
-import com.ican.model.vo.Result;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.MenuForm;
+import com.ican.entity.vo.MenuOption;
+import com.ican.entity.vo.MenuTree;
+import com.ican.entity.vo.MenuVO;
+import com.ican.entity.vo.Result;
 import com.ican.service.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.ican.constant.OptTypeConstant.*;
@@ -29,7 +29,7 @@ import static com.ican.constant.OptTypeConstant.*;
 @RestController
 public class MenuController {
 
-    @Autowired
+    @Resource
     private MenuService menuService;
 
     /**
@@ -40,8 +40,8 @@ public class MenuController {
     @ApiOperation(value = "查看菜单列表")
     @SaCheckPermission("system:menu:list")
     @GetMapping("/admin/menu/list")
-    public Result<List<MenuVO>> listMenuVO(ConditionDTO condition) {
-        return Result.success(menuService.listMenuVO(condition));
+    public Result<List<MenuVO>> listMenuVO(ConditionQuery conditionQuery) {
+        return Result.success(menuService.listMenuVO(conditionQuery));
     }
 
     /**
@@ -53,8 +53,8 @@ public class MenuController {
     @ApiOperation(value = "添加菜单")
     @SaCheckPermission("system:menu:add")
     @PostMapping("/admin/menu/add")
-    public Result<?> addMenu(@Validated @RequestBody MenuDTO menu) {
-        menuService.addMenu(menu);
+    public Result<?> addMenu(@Validated @RequestBody MenuForm menuForm) {
+        menuService.addMenu(menuForm);
         return Result.success();
     }
 
@@ -82,8 +82,8 @@ public class MenuController {
     @ApiOperation(value = "修改菜单")
     @SaCheckPermission("system:menu:update")
     @PutMapping("/admin/menu/update")
-    public Result<?> updateMenu(@Validated @RequestBody MenuDTO menu) {
-        menuService.updateMenu(menu);
+    public Result<?> updateMenu(@Validated @RequestBody MenuForm menuForm) {
+        menuService.updateMenu(menuForm);
         return Result.success();
     }
 
@@ -115,12 +115,12 @@ public class MenuController {
      * 编辑菜单
      *
      * @param menuId 菜单id
-     * @return {@link MenuDTO} 菜单
+     * @return {@link MenuVO} 菜单
      */
     @ApiOperation(value = "编辑菜单")
     @SaCheckPermission("system:menu:edit")
     @GetMapping("/admin/menu/edit/{menuId}")
-    public Result<MenuDTO> editMenu(@PathVariable("menuId") Integer menuId) {
+    public Result<MenuVO> editMenu(@PathVariable("menuId") Integer menuId) {
         return Result.success(menuService.editMenu(menuId));
     }
 

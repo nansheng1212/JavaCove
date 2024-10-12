@@ -6,10 +6,14 @@ import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ican.entity.*;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.ArticleForm;
+import com.ican.entity.form.DeleteForm;
+import com.ican.entity.form.RecommendForm;
+import com.ican.entity.form.TopForm;
+import com.ican.entity.po.*;
+import com.ican.entity.vo.*;
 import com.ican.mapper.*;
-import com.ican.model.dto.*;
-import com.ican.model.vo.*;
 import com.ican.service.ArticleService;
 import com.ican.service.RedisService;
 import com.ican.service.TagService;
@@ -19,10 +23,10 @@ import com.ican.utils.BeanCopyUtils;
 import com.ican.utils.CookieUtils;
 import com.ican.utils.FileUtils;
 import com.ican.utils.PageUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -46,51 +50,52 @@ import static com.ican.enums.FilePathEnum.ARTICLE;
  * @author gj
  * @date 2022/12/04 22:31
  **/
+@Slf4j
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
 
-    @Autowired
+    @Resource
     private CategoryMapper categoryMapper;
 
-    @Autowired
+    @Resource
     private ArticleTagMapper articleTagMapper;
 
-    @Autowired
+    @Resource
     private TagMapper tagMapper;
 
-    @Autowired
+    @Resource
     private TagService tagService;
 
-    @Autowired
+    @Resource
     private ArticleMapper articleMapper;
 
-    @Autowired
+    @Resource
     private RedisService redisService;
 
-    @Autowired
+    @Resource
     private SearchStrategyContext searchStrategyContext;
 
-    @Autowired
+    @Resource
     private UploadStrategyContext uploadStrategyContext;
 
-    @Autowired
+    @Resource
     private BlogFileMapper blogFileMapper;
 
     @Resource
     private UserRoleMapper userRoleMapper;
 
-    @Autowired
+    @Resource
     private HttpServletRequest request;
 
     @Override
-    public PageResult<ArticleBackVO> listArticleBackVO(ConditionDTO condition) {
+    public PageResult<ArticleBackVO> listArticleBackVO(ConditionQuery conditionQuery) {
         // 查询文章数量
-        Long count = articleMapper.countArticleBackVO(condition);
+        Long count = articleMapper.countArticleBackVO(conditionQuery);
         if (count == 0) {
             return new PageResult<>();
         }
         // 查询文章后台信息
-        List<ArticleBackVO> articleBackVOList = articleMapper.selectArticleBackVO(PageUtils.getLimit(), PageUtils.getSize(), condition);
+        List<ArticleBackVO> articleBackVOList = articleMapper.selectArticleBackVO(PageUtils.getLimit(), PageUtils.getSize(), conditionQuery);
         // 浏览量
         Map<Object, Double> viewCountMap = redisService.getZsetAllScore(ARTICLE_VIEW_COUNT);
         // 点赞量
@@ -107,11 +112,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void addArticle(ArticleDTO article) {
+    public void addArticle(ArticleForm articleForm) {
         // 保存文章分类
-        Integer categoryId = saveArticleCategory(article);
+        Integer categoryId = saveArticleCategory(articleForm);
         // 添加文章
-        Article newArticle = BeanCopyUtils.copyBean(article, Article.class);
+        Article newArticle = BeanCopyUtils.copyBean(articleForm, Article.class);
         if (StringUtils.hasText(newArticle.getArticleCover())) {
             SiteConfig siteConfig = redisService.getObject(SITE_SETTING);
             newArticle.setArticleCover(siteConfig.getArticleCover());
@@ -120,7 +125,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         newArticle.setUserId(StpUtil.getLoginIdAsInt());
         baseMapper.insert(newArticle);
         // 保存文章标签
-        saveArticleTag(article, newArticle.getId());
+        saveArticleTag(articleForm, newArticle.getId());
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -134,13 +139,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    public void updateArticleDelete(DeleteDTO delete) {
+    @Transactional
+    public void updateArticleDelete(DeleteForm deleteForm) {
         // 批量更新文章删除状态
-        List<Article> articleList = delete.getIdList()
+        List<Article> articleList = deleteForm.getIdList()
                 .stream()
                 .map(id -> Article.builder()
                         .id(id)
-                        .isDelete(delete.getIsDelete())
+                        .isDelete(deleteForm.getIsDelete())
                         .isTop(FALSE)
                         .isRecommend(FALSE)
                         .build())
@@ -150,16 +156,16 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateArticle(ArticleDTO article) {
+    public void updateArticle(ArticleForm articleForm) {
         // 保存文章分类
-        Integer categoryId = saveArticleCategory(article);
+        Integer categoryId = saveArticleCategory(articleForm);
         // 修改文章
-        Article newArticle = BeanCopyUtils.copyBean(article, Article.class);
+        Article newArticle = BeanCopyUtils.copyBean(articleForm, Article.class);
         newArticle.setCategoryId(categoryId);
         newArticle.setUserId(StpUtil.getLoginIdAsInt());
         baseMapper.updateById(newArticle);
         // 保存文章标签
-        saveArticleTag(article, newArticle.getId());
+        saveArticleTag(articleForm, newArticle.getId());
     }
 
     @Override
@@ -179,21 +185,21 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    public void updateArticleTop(TopDTO top) {
+    public void updateArticleTop(TopForm topForm) {
         // 修改文章置顶状态
         Article newArticle = Article.builder()
-                .id(top.getId())
-                .isTop(top.getIsTop())
+                .id(topForm.getId())
+                .isTop(topForm.getIsTop())
                 .build();
         articleMapper.updateById(newArticle);
     }
 
     @Override
-    public void updateArticleRecommend(RecommendDTO recommend) {
+    public void updateArticleRecommend(RecommendForm recommendForm) {
         // 修改文章推荐状态
         Article newArticle = Article.builder()
-                .id(recommend.getId())
-                .isRecommend(recommend.getIsRecommend())
+                .id(recommendForm.getId())
+                .isRecommend(recommendForm.getIsRecommend())
                 .build();
         articleMapper.updateById(newArticle);
     }
@@ -306,7 +312,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 blogFileMapper.insert(newFile);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return url;
     }
@@ -314,18 +320,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     /**
      * 保存文章分类
      *
-     * @param article 文章信息
+     * @param articleForm 文章信息
      * @return 文章分类
      */
-    private Integer saveArticleCategory(ArticleDTO article) {
+    private Integer saveArticleCategory(ArticleForm articleForm) {
         // 查询分类
         Category category = categoryMapper.selectOne(new LambdaQueryWrapper<Category>()
                 .select(Category::getId)
-                .eq(Category::getCategoryName, article.getCategoryName()));
+                .eq(Category::getCategoryName, articleForm.getCategoryName()));
         // 分类不存在
         if (Objects.isNull(category)) {
             category = Category.builder()
-                    .categoryName(article.getCategoryName())
+                    .categoryName(articleForm.getCategoryName())
                     .build();
             // 保存分类
             categoryMapper.insert(category);
@@ -336,15 +342,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     /**
      * 保存文章标签
      *
-     * @param article   文章信息
+     * @param articleForm   文章信息
      * @param articleId 文章id
      */
-    private void saveArticleTag(ArticleDTO article, Integer articleId) {
+    private void saveArticleTag(ArticleForm articleForm, Integer articleId) {
         // 删除文章标签
         articleTagMapper.delete(new LambdaQueryWrapper<ArticleTag>()
                 .eq(ArticleTag::getArticleId, articleId));
         // 标签名列表
-        List<String> tagNameList = article.getTagNameList();
+        List<String> tagNameList = articleForm.getTagNameList();
         if (CollectionUtils.isNotEmpty(tagNameList)) {
             // 查询出已存在的标签
             List<Tag> existTagList = tagMapper.selectTagList(tagNameList);

@@ -1,10 +1,10 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.OperationLog;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.vo.OperationLogVO;
-import com.ican.model.vo.PageResult;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.po.OperationLog;
+import com.ican.entity.vo.OperationLogVO;
+import com.ican.entity.vo.PageResult;
 
 /**
  * 操作日志业务接口
@@ -16,10 +16,10 @@ public interface OperationLogService extends IService<OperationLog> {
     /**
      * 查看操作日志列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 日志列表
      */
-    PageResult<OperationLogVO> listOperationLogVO(ConditionDTO condition);
+    PageResult<OperationLogVO> listOperationLogVO(ConditionQuery conditionQuery);
 
     /**
      * 保存操作日志

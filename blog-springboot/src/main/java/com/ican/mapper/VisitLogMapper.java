@@ -2,8 +2,8 @@ package com.ican.mapper;
 
 import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.VisitLog;
-import com.ican.model.vo.UserViewVO;
+import com.ican.entity.po.VisitLog;
+import com.ican.entity.vo.UserViewVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

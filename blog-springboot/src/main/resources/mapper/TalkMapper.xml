@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ican.mapper.TalkMapper">
 
-    <select id="selectTalkBackVO" resultType="com.ican.model.vo.TalkBackVO">
+    <select id="selectTalkBackVO" resultType="com.ican.entity.vo.TalkBackVO">
         SELECT
         t.id,
         nickname,
@@ -26,7 +26,7 @@
         LIMIT #{limit},#{size}
     </select>
 
-    <select id="selectTalkBackById" resultType="com.ican.model.vo.TalkBackInfoVO">
+    <select id="selectTalkBackById" resultType="com.ican.entity.vo.TalkBackInfoVO">
         SELECT id,
                talk_content,
                images,
@@ -36,7 +36,7 @@
         WHERE id = #{talkId}
     </select>
 
-    <select id="selectTalkById" resultType="com.ican.model.vo.TalkVO">
+    <select id="selectTalkById" resultType="com.ican.entity.vo.TalkVO">
         SELECT t.id,
                nickname,
                avatar,
@@ -50,7 +50,7 @@
           AND t.status = 1
     </select>
 
-    <select id="selectTalkList" resultType="com.ican.model.vo.TalkVO">
+    <select id="selectTalkList" resultType="com.ican.entity.vo.TalkVO">
         SELECT t.id,
                nickname,
                avatar,

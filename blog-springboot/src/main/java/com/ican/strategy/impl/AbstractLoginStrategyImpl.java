@@ -2,13 +2,13 @@ package com.ican.strategy.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ican.entity.User;
-import com.ican.entity.UserRole;
+import com.ican.entity.form.CodeForm;
+import com.ican.entity.po.User;
+import com.ican.entity.po.UserRole;
+import com.ican.entity.vo.SocialTokenVO;
+import com.ican.entity.vo.SocialUserInfoVO;
 import com.ican.mapper.UserMapper;
 import com.ican.mapper.UserRoleMapper;
-import com.ican.model.dto.CodeDTO;
-import com.ican.model.vo.SocialTokenVO;
-import com.ican.model.vo.SocialUserInfoVO;
 import com.ican.strategy.SocialLoginStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,10 +32,10 @@ public abstract class AbstractLoginStrategyImpl implements SocialLoginStrategy {
     private UserRoleMapper userRoleMapper;
 
     @Override
-    public String login(CodeDTO data) {
+    public String login(CodeForm codeForm) {
         User user;
         // 获取token
-        SocialTokenVO socialToken = getSocialToken(data);
+        SocialTokenVO socialToken = getSocialToken(codeForm);
         // 获取用户信息
         SocialUserInfoVO socialUserInfoVO = getSocialUserInfo(socialToken);
         // 判断是否已注册
@@ -59,10 +59,10 @@ public abstract class AbstractLoginStrategyImpl implements SocialLoginStrategy {
     /**
      * 获取第三方Token
      *
-     * @param data data
+     * @param codeForm data
      * @return {@link SocialTokenVO} 第三方token
      */
-    public abstract SocialTokenVO getSocialToken(CodeDTO data);
+    public abstract SocialTokenVO getSocialToken(CodeForm codeForm);
 
     /**
      * 获取第三方用户信息

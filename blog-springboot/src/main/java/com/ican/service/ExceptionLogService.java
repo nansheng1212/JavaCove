@@ -1,9 +1,9 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.ExceptionLog;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.vo.PageResult;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.po.ExceptionLog;
+import com.ican.entity.vo.PageResult;
 
 /**
  * 异常日志业务接口
@@ -15,10 +15,10 @@ public interface ExceptionLogService extends IService<ExceptionLog> {
     /**
      * 查看异常日志列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 日志列表
      */
-    PageResult<ExceptionLog> listExceptionLog(ConditionDTO condition);
+    PageResult<ExceptionLog> listExceptionLog(ConditionQuery conditionQuery);
 
     /**
      * 保存异常日志

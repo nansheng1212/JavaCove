@@ -1,12 +1,12 @@
 package com.ican.strategy.impl;
 
 import com.ican.config.properties.GiteeProperties;
+import com.ican.entity.form.CodeForm;
+import com.ican.entity.vo.GitUserInfoVO;
+import com.ican.entity.vo.SocialTokenVO;
+import com.ican.entity.vo.SocialUserInfoVO;
+import com.ican.entity.vo.TokenVO;
 import com.ican.exception.ServiceException;
-import com.ican.model.dto.CodeDTO;
-import com.ican.model.vo.GitUserInfoVO;
-import com.ican.model.vo.SocialTokenVO;
-import com.ican.model.vo.SocialUserInfoVO;
-import com.ican.model.vo.TokenVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -37,9 +37,9 @@ public class GiteeLoginStrategyImpl extends AbstractLoginStrategyImpl {
     private RestTemplate restTemplate;
 
     @Override
-    public SocialTokenVO getSocialToken(CodeDTO codeDTO) {
+    public SocialTokenVO getSocialToken(CodeForm codeForm) {
         // 获取Gitee的Token
-        TokenVO giteeToken = getGiteeToken(codeDTO.getCode());
+        TokenVO giteeToken = getGiteeToken(codeForm.getCode());
         // 返回Gitee的Token信息
         return SocialTokenVO.builder()
                 .accessToken(giteeToken.getAccess_token())

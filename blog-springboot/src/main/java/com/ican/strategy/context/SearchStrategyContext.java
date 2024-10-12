@@ -1,6 +1,6 @@
 package com.ican.strategy.context;
 
-import com.ican.model.vo.ArticleSearchVO;
+import com.ican.entity.vo.ArticleSearchVO;
 import com.ican.strategy.SearchStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

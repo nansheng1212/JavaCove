@@ -3,16 +3,18 @@ package com.ican.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ican.annotation.OptLogger;
 import com.ican.constant.OptTypeConstant;
-import com.ican.model.vo.*;
+import com.ican.entity.form.CarouselForm;
+import com.ican.entity.form.CarouselStatusForm;
+import com.ican.entity.vo.*;
 import com.ican.service.CarouselService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -25,7 +27,7 @@ import java.util.List;
 @RestController
 public class CarouselController {
 
-    @Autowired
+    @Resource
     private CarouselService carouselService;
 
     /**
@@ -35,7 +37,7 @@ public class CarouselController {
      */
     @ApiOperation(value = "查看轮播图列表")
     @GetMapping("/carousel/list")
-    public Result<List<CarouselResp>> getCarouselList() {
+    public Result<List<CarouselVo>> getCarouselList() {
         return Result.success(carouselService.getCarouselList());
     }
 
@@ -43,12 +45,12 @@ public class CarouselController {
      * 查看轮播图列表
      *
      * @param carouselQuery 查询条件
-     * @return {@link PageResult< CarouselBackResp >} 轮播图列表
+     * @return {@link PageResult<CarouselBackVo>} 轮播图列表
      */
     @ApiOperation(value = "查看轮播图列表")
     @SaCheckPermission("web:carousel:list")
     @GetMapping("/admin/carousel/list")
-    public Result<PageResult<CarouselBackResp>> getCarouselVOList(CarouselQuery carouselQuery) {
+    public Result<PageResult<CarouselBackVo>> getCarouselVOList(CarouselQuery carouselQuery) {
         return Result.success(carouselService.getCarouselVOList(carouselQuery));
     }
 
@@ -70,30 +72,30 @@ public class CarouselController {
     /**
      * 添加轮播图
      *
-     * @param carouselReqVo 轮播图信息
+     * @param carouselForm 轮播图信息
      * @return {@link Result<>}
      */
     @OptLogger(value = OptTypeConstant.ADD)
     @ApiOperation(value = "添加轮播图")
     @SaCheckPermission("web:carousel:add")
     @PostMapping("/admin/carousel/add")
-    public Result<?> addCarousel(@Validated @RequestBody CarouselReqVo carouselReqVo) {
-        carouselService.addCarousel(carouselReqVo);
+    public Result<?> addCarousel(@Validated @RequestBody CarouselForm carouselForm) {
+        carouselService.addCarousel(carouselForm);
         return Result.success();
     }
 
     /**
      * 修改轮播图
      *
-     * @param carouselReqVo 轮播图信息
+     * @param carouselForm 轮播图信息
      * @return {@link Result<>}
      */
     @OptLogger(value = OptTypeConstant.UPDATE)
     @ApiOperation(value = "修改轮播图")
     @SaCheckPermission("web:carousel:update")
     @PutMapping("/admin/carousel/update")
-    public Result<?> updateCarousel(@Validated @RequestBody CarouselReqVo carouselReqVo) {
-        carouselService.updateCarousel(carouselReqVo);
+    public Result<?> updateCarousel(@Validated @RequestBody CarouselForm carouselForm) {
+        carouselService.updateCarousel(carouselForm);
         return Result.success();
     }
 
@@ -115,15 +117,15 @@ public class CarouselController {
     /**
      * 修改轮播图状态
      *
-     * @param carouselStatusReq 轮播图状态
+     * @param carouselStatusForm 轮播图状态
      * @return {@link Result<>}
      */
     @OptLogger(value = OptTypeConstant.UPDATE)
     @ApiOperation(value = "修改轮播图状态")
     @SaCheckPermission("web:carousel:status")
     @PutMapping("/admin/carousel/status")
-    public Result<?> updateCarouselStatus(@Validated @RequestBody CarouselStatusReq carouselStatusReq) {
-        carouselService.updateCarouselStatus(carouselStatusReq);
+    public Result<?> updateCarouselStatus(@Validated @RequestBody CarouselStatusForm carouselStatusForm) {
+        carouselService.updateCarouselStatus(carouselStatusForm);
         return Result.success();
     }
 

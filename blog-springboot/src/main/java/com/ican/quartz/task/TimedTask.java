@@ -2,7 +2,7 @@ package com.ican.quartz.task;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import com.ican.entity.WebsiteVisits;
+import com.ican.entity.po.WebsiteVisits;
 import com.ican.mapper.VisitLogMapper;
 import com.ican.mapper.WebsiteVisitsMapper;
 import com.ican.service.RedisService;

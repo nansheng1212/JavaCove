@@ -1,16 +1,17 @@
 package com.ican.controller;
 
 import com.ican.annotation.VisitLogger;
-import com.ican.model.vo.BlogBackInfoVO;
-import com.ican.model.vo.BlogInfoVO;
-import com.ican.model.vo.Result;
+import com.ican.entity.vo.BlogBackInfoVO;
+import com.ican.entity.vo.BlogInfoVO;
+import com.ican.entity.vo.Result;
 import com.ican.service.BlogInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * 博客控制器
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BlogInfoController {
 
-    @Autowired
+    @Resource
     private BlogInfoService blogInfoService;
 
     /**

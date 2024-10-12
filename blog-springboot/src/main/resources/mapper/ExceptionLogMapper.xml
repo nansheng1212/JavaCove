@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ican.mapper.ExceptionLogMapper">
-    <select id="selectExceptionLogList" resultType="com.ican.entity.ExceptionLog">
+    <select id="selectExceptionLogList" resultType="com.ican.entity.po.ExceptionLog">
         SELECT
         tel.id,
         `module`,
@@ -19,11 +19,11 @@
         FROM
         ( SELECT id FROM t_exception_log
         <where>
-            <if test="condition.optModule!=null">
-                `module` like concat('%',#{condition.optModule},'%')
+            <if test="conditionQuery.optModule!=null">
+                `module` like concat('%',#{conditionQuery.optModule},'%')
             </if>
-            <if test="condition.keyword!=null">
-                OR description like concat('%',#{condition.keyword},'%')
+            <if test="conditionQuery.keyword!=null">
+                OR description like concat('%',#{conditionQuery.keyword},'%')
             </if>
         </where>
         ORDER BY id DESC LIMIT #{limit},#{size} ) temp

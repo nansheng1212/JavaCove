@@ -1,7 +1,7 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.RoleMenu;
+import com.ican.entity.po.RoleMenu;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

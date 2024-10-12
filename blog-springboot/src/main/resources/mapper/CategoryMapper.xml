@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ican.mapper.CategoryMapper">
 
-    <select id="selectCategoryBackVO" resultType="com.ican.model.vo.CategoryBackVO">
+    <select id="selectCategoryBackVO" resultType="com.ican.entity.vo.CategoryBackVO">
         SELECT c.id, c.category_name,COUNT( a.id ) AS article_count,c.create_time
         FROM t_category c
         LEFT JOIN t_article a
@@ -17,7 +17,7 @@
         LIMIT #{limit},#{size}
     </select>
 
-    <select id="selectCategoryVO" resultType="com.ican.model.vo.CategoryVO">
+    <select id="selectCategoryVO" resultType="com.ican.entity.vo.CategoryVO">
         SELECT c.id,
                c.category_name,
                COUNT(a.id) AS article_count

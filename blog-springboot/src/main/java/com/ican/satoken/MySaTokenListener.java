@@ -6,14 +6,14 @@ import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ican.entity.User;
+import com.ican.entity.po.User;
+import com.ican.entity.vo.OnlineVO;
 import com.ican.mapper.UserMapper;
-import com.ican.model.vo.OnlineVO;
 import com.ican.utils.IpUtils;
 import com.ican.utils.UserAgentUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -30,10 +30,10 @@ import static com.ican.enums.ZoneEnum.SHANGHAI;
 @Component
 public class MySaTokenListener implements SaTokenListener {
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
-    @Autowired
+    @Resource
     private HttpServletRequest request;
 
     /**

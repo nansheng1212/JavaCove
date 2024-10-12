@@ -1,7 +1,7 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.ArticleTag;
+import com.ican.entity.po.ArticleTag;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

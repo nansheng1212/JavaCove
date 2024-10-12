@@ -1,5 +1,7 @@
 package com.ican.utils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -7,7 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-
+@Slf4j
 public final class CookieUtils {
 
 	/**
@@ -46,7 +48,7 @@ public final class CookieUtils {
 				}
 			}
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return retValue;
 	}
@@ -72,7 +74,7 @@ public final class CookieUtils {
 				}
 			}
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return retValue;
 	}
@@ -151,7 +153,7 @@ public final class CookieUtils {
 			cookie.setPath("/");
 			response.addCookie(cookie);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 	}
 
@@ -183,7 +185,7 @@ public final class CookieUtils {
 			cookie.setPath("/");
 			response.addCookie(cookie);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 	}
 

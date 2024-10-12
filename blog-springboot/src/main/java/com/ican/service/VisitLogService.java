@@ -1,9 +1,9 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.VisitLog;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.vo.PageResult;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.po.VisitLog;
+import com.ican.entity.vo.PageResult;
 
 /**
  * 访问业务接口
@@ -22,8 +22,8 @@ public interface VisitLogService extends IService<VisitLog> {
     /**
      * 查看访问日志列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 日志列表
      */
-    PageResult<VisitLog> listVisitLog(ConditionDTO condition);
+    PageResult<VisitLog> listVisitLog(ConditionQuery conditionQuery);
 }

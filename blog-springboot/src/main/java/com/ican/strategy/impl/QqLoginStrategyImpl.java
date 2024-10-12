@@ -1,13 +1,11 @@
 package com.ican.strategy.impl;
 
-import com.alibaba.fastjson2.JSON;
 import com.ican.config.properties.QqProperties;
 import com.ican.constant.SocialLoginConstant;
+import com.ican.entity.form.CodeForm;
+import com.ican.entity.vo.*;
 import com.ican.enums.LoginTypeEnum;
 import com.ican.exception.ServiceException;
-import com.ican.model.dto.CodeDTO;
-import com.ican.model.dto.QqLoginDTO;
-import com.ican.model.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-
-import static com.ican.constant.SocialLoginConstant.*;
 
 /**
  * Qq登录策略
@@ -41,9 +35,9 @@ public class QqLoginStrategyImpl extends AbstractLoginStrategyImpl {
     private RestTemplate restTemplate;
 
     @Override
-    public SocialTokenVO getSocialToken(CodeDTO codeDTO) {
+    public SocialTokenVO getSocialToken(CodeForm codeForm) {
         // 获取Qq的Token
-        TokenVO qqToken = getQqToken(codeDTO.getCode());
+        TokenVO qqToken = getQqToken(codeForm.getCode());
         // 获取用户OpenId
         QqTokenVO userOpenId = getUserOpenId(qqToken.getAccess_token());
         // 返回token信息

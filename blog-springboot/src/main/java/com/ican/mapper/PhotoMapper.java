@@ -1,9 +1,9 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.Photo;
-import com.ican.model.vo.PhotoBackVO;
-import com.ican.model.vo.PhotoVO;
+import com.ican.entity.po.Photo;
+import com.ican.entity.vo.PhotoBackVO;
+import com.ican.entity.vo.PhotoVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

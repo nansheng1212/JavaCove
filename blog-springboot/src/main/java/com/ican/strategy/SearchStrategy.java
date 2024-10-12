@@ -1,6 +1,6 @@
 package com.ican.strategy;
 
-import com.ican.model.vo.ArticleSearchVO;
+import com.ican.entity.vo.ArticleSearchVO;
 
 import java.util.List;
 

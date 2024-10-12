@@ -1,10 +1,10 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.Role;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.vo.RoleVO;
-import com.ican.model.vo.UserRoleVO;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.po.Role;
+import com.ican.entity.vo.RoleVO;
+import com.ican.entity.vo.UserRoleVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -30,20 +30,20 @@ public interface RoleMapper extends BaseMapper<Role> {
     /**
      * 查询后台角色数量
      *
-     * @param condition 查询条件
+     * @param conditionQuery 查询条件
      * @return 后台角色数量
      */
-    Long selectCountRoleVO(@Param("condition") ConditionDTO condition);
+    Long selectCountRoleVO(@Param("conditionQuery") ConditionQuery conditionQuery);
 
     /**
      * 查询后台角色列表
      *
      * @param limit     页码
      * @param size      大小
-     * @param condition 查询条件
+     * @param conditionQuery 查询条件
      * @return 后台角色列表
      */
-    List<RoleVO> selectRoleVOList(@Param("limit") Long limit, @Param("size") Long size, @Param("condition") ConditionDTO condition);
+    List<RoleVO> selectRoleVOList(@Param("limit") Long limit, @Param("size") Long size, @Param("conditionQuery") ConditionQuery conditionQuery);
 
     /**
      * 查询用户角色选项

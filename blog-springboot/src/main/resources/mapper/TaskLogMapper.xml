@@ -4,29 +4,29 @@
     <select id="selectTaskLogCount" resultType="java.lang.Long">
         SELECT COUNT(*) from t_task_log
         <where>
-            <if test="condition.keyword != null">
-                AND task_name like concat('%', #{condition.keyword}, '%')
+            <if test="conditionQuery.keyword != null">
+                AND task_name like concat('%', #{conditionQuery.keyword}, '%')
             </if>
-            <if test="condition.taskGroup != null">
-                AND task_group like concat('%', #{condition.taskGroup}, '%')
+            <if test="conditionQuery.taskGroup != null">
+                AND task_group like concat('%', #{conditionQuery.taskGroup}, '%')
             </if>
-            <if test="condition.status != null">
-                AND status = #{condition.status}
+            <if test="conditionQuery.status != null">
+                AND status = #{conditionQuery.status}
             </if>
         </where>
     </select>
 
-    <select id="selectTaskLogVOList" resultType="com.ican.model.vo.TaskLogVO">
+    <select id="selectTaskLogVOList" resultType="com.ican.entity.vo.TaskLogVO">
         SELECT * from t_task_log
         <where>
-            <if test="condition.keyword != null">
-                AND task_name like concat('%', #{condition.keyword}, '%')
+            <if test="conditionQuery.keyword != null">
+                AND task_name like concat('%', #{conditionQuery.keyword}, '%')
             </if>
-            <if test="condition.taskGroup != null">
-                AND task_group like concat('%', #{condition.taskGroup}, '%')
+            <if test="conditionQuery.taskGroup != null">
+                AND task_group like concat('%', #{conditionQuery.taskGroup}, '%')
             </if>
-            <if test="condition.status != null">
-                AND status = #{condition.status}
+            <if test="conditionQuery.status != null">
+                AND status = #{conditionQuery.status}
             </if>
         </where>
         ORDER BY create_time desc

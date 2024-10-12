@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ican.mapper.AlbumMapper">
 
-    <select id="selectAlbumBackVO" resultType="com.ican.model.vo.AlbumBackVO">
+    <select id="selectAlbumBackVO" resultType="com.ican.entity.vo.AlbumBackVO">
         SELECT a.id,
         a.album_name,
         a.album_cover,
@@ -21,25 +21,25 @@
         LIMIT #{limit}, #{size}
     </select>
 
-    <select id="selectAlbumById" resultType="com.ican.model.dto.AlbumDTO">
+    <select id="selectAlbumById" resultType="com.ican.entity.vo.AlbumVO">
         select id, album_name, album_desc, album_cover, status
         from t_album
         where id = #{albumId}
     </select>
 
-    <select id="selectAlbumInfoById" resultType="com.ican.model.vo.AlbumBackVO">
+    <select id="selectAlbumInfoById" resultType="com.ican.entity.vo.AlbumBackVO">
         select id, album_name, album_desc, album_cover, status
         from t_album
         where id = #{albumId}
     </select>
 
-    <select id="selectAlbumVOList" resultType="com.ican.model.vo.AlbumVO">
+    <select id="selectAlbumVOList" resultType="com.ican.entity.vo.AlbumVO">
         select id, album_name, album_desc, album_cover
         from t_album
         where status = 1
     </select>
 
-    <select id="selectAlbumVOListByAdmin" resultType="com.ican.model.vo.AlbumVO">
+    <select id="selectAlbumVOListByAdmin" resultType="com.ican.entity.vo.AlbumVO">
         select id, album_name, album_desc, album_cover
         from t_album
         where status = 1 or status = 2

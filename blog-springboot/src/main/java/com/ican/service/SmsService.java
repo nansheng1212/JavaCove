@@ -1,6 +1,6 @@
 package com.ican.service;
 
-import com.ican.model.dto.SmsDTO;
+import com.ican.entity.form.SmsForm;
 
 /**
  * 邮件服务接口
@@ -12,8 +12,7 @@ public interface SmsService {
     /**
      * 发送短信
      *
-     * @param smsDTO 短信信息
-     * @return
+     * @param smsForm 短信信息
      */
-    boolean sendSms(SmsDTO smsDTO);
+    boolean sendSms(SmsForm smsForm);
 }

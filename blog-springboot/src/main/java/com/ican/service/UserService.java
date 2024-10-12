@@ -1,9 +1,10 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.User;
-import com.ican.model.dto.*;
-import com.ican.model.vo.*;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.*;
+import com.ican.entity.po.User;
+import com.ican.entity.vo.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -40,10 +41,10 @@ public interface UserService extends IService<User> {
     /**
      * 查看后台用户列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 用户列表
      */
-    PageResult<UserBackVO> listUserBackVO(ConditionDTO condition);
+    PageResult<UserBackVO> listUserBackVO(ConditionQuery conditionQuery);
 
     /**
      * 查看用户角色选项
@@ -55,24 +56,24 @@ public interface UserService extends IService<User> {
     /**
      * 修改用户
      *
-     * @param user 用户信息
+     * @param userRoleForm 用户信息
      */
-    void updateUser(UserRoleDTO user);
+    void updateUser(UserRoleForm userRoleForm);
 
     /**
      * 修改用户状态
      *
-     * @param disable 禁用信息
+     * @param disableForm 禁用信息
      */
-    void updateUserStatus(DisableDTO disable);
+    void updateUserStatus(DisableForm disableForm);
 
     /**
      * 查看在线用户列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 在线用户列表
      */
-    PageResult<OnlineVO> listOnlineUser(ConditionDTO condition);
+    PageResult<OnlineVO> listOnlineUser(ConditionQuery conditionQuery);
 
     /**
      * 下线用户
@@ -84,16 +85,16 @@ public interface UserService extends IService<User> {
     /**
      * 修改管理员密码
      *
-     * @param password 密码
+     * @param passwordForm 密码
      */
-    void updateAdminPassword(PasswordDTO password);
+    void updateAdminPassword(PasswordForm passwordForm);
 
     /**
      * 修改用户手机号
      *
-     * @param phone 手机信息
+     * @param phoneForm 手机信息
      */
-    void updateUserPhone(PhoneDTO phone);
+    void updateUserPhone(PhoneForm phoneForm);
 
     /**
      * 修改用户头像
@@ -106,14 +107,14 @@ public interface UserService extends IService<User> {
     /**
      * 更新用户信息
      *
-     * @param userInfo 用户信息
+     * @param userInfoForm 用户信息
      */
-    void updateUserInfo(UserInfoDTO userInfo);
+    void updateUserInfo(UserInfoForm userInfoForm);
 
     /**
      * 修改用户密码
      *
-     * @param user 用户密码
+     * @param userForm 用户密码
      */
-    void updatePassword(UserDTO user);
+    void updatePassword(UserForm userForm);
 }

@@ -2,7 +2,7 @@ package com.ican.aspect;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.alibaba.fastjson2.JSON;
-import com.ican.entity.ExceptionLog;
+import com.ican.entity.po.ExceptionLog;
 import com.ican.manager.AsyncManager;
 import com.ican.manager.factory.AsyncFactory;
 import com.ican.utils.IpUtils;

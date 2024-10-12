@@ -1,10 +1,10 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.Talk;
-import com.ican.model.vo.TalkBackInfoVO;
-import com.ican.model.vo.TalkBackVO;
-import com.ican.model.vo.TalkVO;
+import com.ican.entity.po.Talk;
+import com.ican.entity.vo.TalkBackInfoVO;
+import com.ican.entity.vo.TalkBackVO;
+import com.ican.entity.vo.TalkVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

@@ -8,7 +8,7 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
-import com.ican.model.dto.SmsDTO;
+import com.ican.entity.form.SmsForm;
 import com.ican.service.SmsService;
 import com.ican.utils.ConstantPropertiesUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -27,13 +27,15 @@ import java.util.Map;
 public class SmsServiceImpl implements SmsService {
 
     @Override
-    public boolean sendSms(SmsDTO smsDTO) {
+    public boolean sendSms(SmsForm smsForm) {
         //整合阿里云短信服务
         //设置相关参数
         DefaultProfile profile = DefaultProfile.
-                getProfile(ConstantPropertiesUtils.REGION_Id,
+                getProfile(
+                        ConstantPropertiesUtils.REGION_Id,
                         ConstantPropertiesUtils.ACCESS_KEY_ID,
-                        ConstantPropertiesUtils.SECRECT);
+                        ConstantPropertiesUtils.SECRET
+                );
         IAcsClient client = new DefaultAcsClient(profile);
         CommonRequest request = new CommonRequest();
         //request.setProtocol(ProtocolType.HTTPS);
@@ -43,14 +45,14 @@ public class SmsServiceImpl implements SmsService {
         request.setAction("SendSms");
 
         //手机号
-        request.putQueryParameter("PhoneNumbers", smsDTO.getToPhone());
+        request.putQueryParameter("PhoneNumbers", smsForm.getToPhone());
         //签名名称
-        request.putQueryParameter("SignName", "JavaCove");
+        request.putQueryParameter("SignName", ConstantPropertiesUtils.SIGN_NAME);
         //模板code
-        request.putQueryParameter("SignName", "SMS_464105500");
-        //验证码  使用json格式   {"code":"123456"}
-        Map<String, Object> param = new HashMap();
-        param.put("code", smsDTO.getContent());
+        request.putQueryParameter("TemplateCode", ConstantPropertiesUtils.TEMPLATE_CODE);
+        //验证码
+        Map<String, Object> param = new HashMap<>();
+        param.put("code", smsForm.getContent());
         request.putQueryParameter("TemplateParam", JSONObject.toJSONString(param));
 
         //调用方法进行短信发送
@@ -59,7 +61,7 @@ public class SmsServiceImpl implements SmsService {
             log.info("短信发送成功,验证码：" + response.getData());
             return response.getHttpResponse().isSuccess();
         } catch (ClientException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return false;
     }

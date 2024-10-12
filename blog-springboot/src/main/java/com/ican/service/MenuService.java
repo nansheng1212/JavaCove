@@ -1,12 +1,12 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.Menu;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.MenuDTO;
-import com.ican.model.vo.MenuOption;
-import com.ican.model.vo.MenuTree;
-import com.ican.model.vo.MenuVO;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.MenuForm;
+import com.ican.entity.po.Menu;
+import com.ican.entity.vo.MenuOption;
+import com.ican.entity.vo.MenuTree;
+import com.ican.entity.vo.MenuVO;
 
 import java.util.List;
 
@@ -21,17 +21,17 @@ public interface MenuService extends IService<Menu> {
     /**
      * 查看菜单列表
      *
-     * @param condition 查询条件
+     * @param conditionQuery 查询条件
      * @return 菜单列表
      */
-    List<MenuVO> listMenuVO(ConditionDTO condition);
+    List<MenuVO> listMenuVO(ConditionQuery conditionQuery);
 
     /**
      * 添加菜单
      *
-     * @param menu 菜单
+     * @param menuForm 菜单
      */
-    void addMenu(MenuDTO menu);
+    void addMenu(MenuForm menuForm);
 
     /**
      * 删除菜单
@@ -43,9 +43,9 @@ public interface MenuService extends IService<Menu> {
     /**
      * 修改菜单
      *
-     * @param menu 菜单
+     * @param menuForm 菜单
      */
-    void updateMenu(MenuDTO menu);
+    void updateMenu(MenuForm menuForm);
 
     /**
      * 获取菜单下拉树
@@ -67,5 +67,5 @@ public interface MenuService extends IService<Menu> {
      * @param menuId 菜单id
      * @return 菜单
      */
-    MenuDTO editMenu(Integer menuId);
+    MenuVO editMenu(Integer menuId);
 }

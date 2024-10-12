@@ -7,15 +7,16 @@ import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ican.entity.User;
-import com.ican.entity.UserRole;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.*;
+import com.ican.entity.po.User;
+import com.ican.entity.po.UserRole;
+import com.ican.entity.vo.*;
 import com.ican.enums.FilePathEnum;
 import com.ican.mapper.MenuMapper;
 import com.ican.mapper.RoleMapper;
 import com.ican.mapper.UserMapper;
 import com.ican.mapper.UserRoleMapper;
-import com.ican.model.dto.*;
-import com.ican.model.vo.*;
 import com.ican.service.RedisService;
 import com.ican.service.UserService;
 import com.ican.strategy.context.UploadStrategyContext;
@@ -117,14 +118,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public PageResult<UserBackVO> listUserBackVO(ConditionDTO condition) {
+    public PageResult<UserBackVO> listUserBackVO(ConditionQuery conditionQuery) {
         // 查询后台用户数量
-        Long count = userMapper.countUser(condition);
+        Long count = userMapper.countUser(conditionQuery);
         if (count == 0) {
             return new PageResult<>();
         }
         // 查询后台用户列表
-        List<UserBackVO> userBackVOList = userMapper.listUserBackVO(getLimit(), getSize(), condition);
+        List<UserBackVO> userBackVOList = userMapper.listUserBackVO(getLimit(), getSize(), conditionQuery);
         return new PageResult<>(userBackVOList, count);
     }
 
@@ -135,43 +136,43 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public void updateUser(UserRoleDTO user) {
+    public void updateUser(UserRoleForm userRoleForm) {
         // 更新用户信息
         User newUser = User.builder()
-                .id(user.getId())
-                .nickname(user.getNickname())
+                .id(userRoleForm.getId())
+                .nickname(userRoleForm.getNickname())
                 .build();
         baseMapper.updateById(newUser);
         // 删除用户角色
-        userRoleMapper.delete(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId, user.getId()));
+        userRoleMapper.delete(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId, userRoleForm.getId()));
         // 重新添加用户角色
-        userRoleMapper.insertUserRole(user.getId(), user.getRoleIdList());
+        userRoleMapper.insertUserRole(userRoleForm.getId(), userRoleForm.getRoleIdList());
         // 删除Redis缓存中的角色
-        SaSession sessionByLoginId = StpUtil.getSessionByLoginId(user.getId(), false);
+        SaSession sessionByLoginId = StpUtil.getSessionByLoginId(userRoleForm.getId(), false);
         Optional.ofNullable(sessionByLoginId).ifPresent(saSession -> saSession.delete("Role_List"));
     }
 
     @Override
-    public void updateUserStatus(DisableDTO disable) {
+    public void updateUserStatus(DisableForm disableForm) {
         // 更新用户状态
         User newUser = User.builder()
-                .id(disable.getId())
-                .isDisable(disable.getIsDisable())
+                .id(disableForm.getId())
+                .isDisable(disableForm.getIsDisable())
                 .build();
         userMapper.updateById(newUser);
-        if (disable.getIsDisable().equals(TRUE)) {
+        if (disableForm.getIsDisable().equals(TRUE)) {
             // 先踢下线
-            StpUtil.logout(disable.getId());
+            StpUtil.logout(disableForm.getId());
             // 再封禁账号
-            StpUtil.disable(disable.getId(), 86400);
+            StpUtil.disable(disableForm.getId(), 86400);
         } else {
             // 解除封禁
-            StpUtil.untieDisable(disable.getId());
+            StpUtil.untieDisable(disableForm.getId());
         }
     }
 
     @Override
-    public PageResult<OnlineVO> listOnlineUser(ConditionDTO condition) {
+    public PageResult<OnlineVO> listOnlineUser(ConditionQuery conditionQuery) {
         // 查询所有会话token
         List<String> tokenList = StpUtil.searchTokenSessionId("", 0, -1, false);
         List<OnlineVO> onlineVOList = tokenList.stream()
@@ -180,7 +181,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     SaSession sessionBySessionId = StpUtil.getSessionBySessionId(token);
                     return (OnlineVO) sessionBySessionId.get(ONLINE_USER);
                 })
-                .filter(onlineVO -> StringUtils.isEmpty(condition.getKeyword()) || onlineVO.getNickname().contains(condition.getKeyword()))
+                .filter(onlineVO -> StringUtils.isEmpty(conditionQuery.getKeyword()) || onlineVO.getNickname().contains(conditionQuery.getKeyword()))
                 .sorted(Comparator.comparing(OnlineVO::getLoginTime).reversed())
                 .collect(Collectors.toList());
         // 执行分页
@@ -197,26 +198,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public void updateAdminPassword(PasswordDTO password) {
+    public void updateAdminPassword(PasswordForm passwordForm) {
         Integer userId = StpUtil.getLoginIdAsInt();
         // 查询旧密码是否正确
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
                 .eq(User::getId, userId));
         Assert.notNull(user, "用户不存在");
-        Assert.isTrue(SecurityUtils.checkPw(user.getPassword(), password.getOldPassword()), "旧密码校验不通过!");
+        Assert.isTrue(SecurityUtils.checkPw(user.getPassword(), passwordForm.getOldPassword()), "旧密码校验不通过!");
         // 正确则修改密码
-        String newPassword = SecurityUtils.sha256Encrypt(password.getNewPassword());
+        String newPassword = SecurityUtils.sha256Encrypt(passwordForm.getNewPassword());
         user.setPassword(newPassword);
         userMapper.updateById(user);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateUserPhone(PhoneDTO phone) {
-        verifyCode(phone.getPhone(), phone.getCode());
+    public void updateUserPhone(PhoneForm phoneForm) {
+        verifyCode(phoneForm.getPhone(), phoneForm.getCode());
         User newUser = User.builder()
                 .id(StpUtil.getLoginIdAsInt())
-                .phone(phone.getPhone())
+                .phone(phoneForm.getPhone())
                 .build();
         userMapper.updateById(newUser);
     }
@@ -237,27 +238,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateUserInfo(UserInfoDTO userInfo) {
+    public void updateUserInfo(UserInfoForm userInfoForm) {
         User newUser = User.builder()
                 .id(StpUtil.getLoginIdAsInt())
-                .nickname(userInfo.getNickname())
-                .intro(userInfo.getIntro())
-                .webSite(userInfo.getWebSite())
+                .nickname(userInfoForm.getNickname())
+                .intro(userInfoForm.getIntro())
+                .webSite(userInfoForm.getWebSite())
                 .build();
         userMapper.updateById(newUser);
     }
 
     @Override
-    public void updatePassword(UserDTO user) {
-        verifyCode(user.getUsername(), user.getCode());
+    public void updatePassword(UserForm userForm) {
+        verifyCode(userForm.getUsername(), userForm.getCode());
         User existUser = userMapper.selectOne(new LambdaQueryWrapper<User>()
                 .select(User::getUsername)
-                .eq(User::getUsername, user.getUsername()));
-        Assert.notNull(existUser, "邮箱尚未注册！");
+                .eq(User::getUsername, userForm.getUsername()));
+        Assert.notNull(existUser, "手机尚未注册！");
         // 根据用户名修改密码
         userMapper.update(new User(), new LambdaUpdateWrapper<User>()
-                .set(User::getPassword, SecurityUtils.sha256Encrypt(user.getPassword()))
-                .eq(User::getUsername, user.getUsername()));
+                .set(User::getPassword, SecurityUtils.sha256Encrypt(userForm.getPassword()))
+                .eq(User::getUsername, userForm.getUsername()));
     }
 
     /**

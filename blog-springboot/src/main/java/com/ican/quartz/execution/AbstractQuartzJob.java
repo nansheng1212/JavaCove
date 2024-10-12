@@ -1,8 +1,8 @@
 package com.ican.quartz.execution;
 
 import com.ican.constant.ScheduleConstant;
-import com.ican.entity.Task;
-import com.ican.entity.TaskLog;
+import com.ican.entity.po.Task;
+import com.ican.entity.po.TaskLog;
 import com.ican.mapper.TaskLogMapper;
 import com.ican.utils.SpringUtils;
 import org.apache.commons.lang3.StringUtils;

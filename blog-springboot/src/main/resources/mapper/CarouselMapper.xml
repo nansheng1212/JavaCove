@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ican.mapper.CarouselMapper">
 
-    <select id="selectBackCarouselList" resultType="com.ican.model.vo.CarouselBackResp">
+    <select id="selectBackCarouselList" resultType="com.ican.entity.vo.CarouselBackVo">
         select id, img_url, `status`, remark, create_time, update_time
         from t_carousel
         <where>
@@ -15,7 +15,7 @@
         limit #{param.current}, #{param.size}
     </select>
 
-    <select id="selectCarouselList" resultType="com.ican.model.vo.CarouselResp">
+    <select id="selectCarouselList" resultType="com.ican.entity.vo.CarouselVo">
         select id, img_url
         from t_carousel
         where `status` = 1

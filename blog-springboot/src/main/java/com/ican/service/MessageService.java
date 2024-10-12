@@ -1,13 +1,13 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.Message;
-import com.ican.model.dto.CheckDTO;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.MessageDTO;
-import com.ican.model.vo.MessageBackVO;
-import com.ican.model.vo.MessageVO;
-import com.ican.model.vo.PageResult;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.CheckForm;
+import com.ican.entity.form.MessageForm;
+import com.ican.entity.po.Message;
+import com.ican.entity.vo.MessageBackVO;
+import com.ican.entity.vo.MessageVO;
+import com.ican.entity.vo.PageResult;
 
 import java.util.List;
 
@@ -28,22 +28,22 @@ public interface MessageService extends IService<Message> {
     /**
      * 查看后台留言列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 后台留言列表
      */
-    PageResult<MessageBackVO> listMessageBackVO(ConditionDTO condition);
+    PageResult<MessageBackVO> listMessageBackVO(ConditionQuery conditionQuery);
 
     /**
      * 添加留言
      *
-     * @param message 留言
+     * @param messageForm 留言
      */
-    void addMessage(MessageDTO message);
+    void addMessage(MessageForm messageForm);
 
     /**
      * 审核留言
      *
-     * @param check 审核信息
+     * @param checkForm 审核信息
      */
-    void updateMessageCheck(CheckDTO check);
+    void updateMessageCheck(CheckForm checkForm);
 }

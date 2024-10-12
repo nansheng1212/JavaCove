@@ -1,12 +1,15 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.Article;
-import com.ican.model.dto.*;
-import com.ican.model.vo.*;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.ArticleForm;
+import com.ican.entity.form.DeleteForm;
+import com.ican.entity.form.RecommendForm;
+import com.ican.entity.form.TopForm;
+import com.ican.entity.po.Article;
+import com.ican.entity.vo.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -20,17 +23,17 @@ public interface ArticleService extends IService<Article> {
     /**
      * 查看后台文章列表
      *
-     * @param condition 条件
+     * @param conditionQuery 条件
      * @return 后台文章列表
      */
-    PageResult<ArticleBackVO> listArticleBackVO(ConditionDTO condition);
+    PageResult<ArticleBackVO> listArticleBackVO(ConditionQuery conditionQuery);
 
     /**
      * 添加文章
      *
-     * @param article 文章
+     * @param articleForm 文章
      */
-    void addArticle(ArticleDTO article);
+    void addArticle(ArticleForm articleForm);
 
     /**
      * 删除文章
@@ -42,16 +45,16 @@ public interface ArticleService extends IService<Article> {
     /**
      * 回收或恢复文章
      *
-     * @param delete 逻辑删除
+     * @param deleteForm 逻辑删除
      */
-    void updateArticleDelete(DeleteDTO delete);
+    void updateArticleDelete(DeleteForm deleteForm);
 
     /**
      * 修改文章
      *
-     * @param article 文章
+     * @param articleForm 文章
      */
-    void updateArticle(ArticleDTO article);
+    void updateArticle(ArticleForm articleForm);
 
     /**
      * 编辑文章
@@ -64,16 +67,16 @@ public interface ArticleService extends IService<Article> {
     /**
      * 修改文章置顶状态
      *
-     * @param top 置顶
+     * @param topForm 置顶
      */
-    void updateArticleTop(TopDTO top);
+    void updateArticleTop(TopForm topForm);
 
     /**
      * 修改文章推荐状态
      *
-     * @param recommend 推荐
+     * @param recommendForm 推荐
      */
-    void updateArticleRecommend(RecommendDTO recommend);
+    void updateArticleRecommend(RecommendForm recommendForm);
 
     /**
      * 搜索文章

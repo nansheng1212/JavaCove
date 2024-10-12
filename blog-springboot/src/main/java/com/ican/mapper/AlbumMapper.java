@@ -1,10 +1,9 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.Album;
-import com.ican.model.dto.AlbumDTO;
-import com.ican.model.vo.AlbumBackVO;
-import com.ican.model.vo.AlbumVO;
+import com.ican.entity.po.Album;
+import com.ican.entity.vo.AlbumBackVO;
+import com.ican.entity.vo.AlbumVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -34,7 +33,7 @@ public interface AlbumMapper extends BaseMapper<Album> {
      * @param albumId 相册id
      * @return 相册
      */
-    AlbumDTO selectAlbumById(@Param("albumId") Integer albumId);
+    AlbumVO selectAlbumById(@Param("albumId") Integer albumId);
 
     /**
      * 根据id查询照片相册信息

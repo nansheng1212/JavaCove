@@ -1,6 +1,6 @@
 package com.ican.utils;
 
-import com.ican.model.dto.BiliIpInfoDTO;
+import com.ican.entity.dto.BiliIpInfoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestTemplate;
 

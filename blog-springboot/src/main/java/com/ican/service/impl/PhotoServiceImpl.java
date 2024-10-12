@@ -1,21 +1,22 @@
 package com.ican.service.impl;
 
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ican.entity.Album;
-import com.ican.entity.BlogFile;
-import com.ican.entity.Photo;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.PhotoForm;
+import com.ican.entity.form.PhotoInfoForm;
+import com.ican.entity.po.Album;
+import com.ican.entity.po.BlogFile;
+import com.ican.entity.po.Photo;
+import com.ican.entity.vo.AlbumBackVO;
+import com.ican.entity.vo.PageResult;
+import com.ican.entity.vo.PhotoBackVO;
+import com.ican.entity.vo.PhotoVO;
 import com.ican.mapper.AlbumMapper;
 import com.ican.mapper.BlogFileMapper;
 import com.ican.mapper.PhotoMapper;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.PhotoDTO;
-import com.ican.model.dto.PhotoInfoDTO;
-import com.ican.model.vo.AlbumBackVO;
-import com.ican.model.vo.PageResult;
-import com.ican.model.vo.PhotoBackVO;
-import com.ican.model.vo.PhotoVO;
 import com.ican.service.PhotoService;
 import com.ican.strategy.context.UploadStrategyContext;
 import com.ican.utils.BeanCopyUtils;
@@ -56,16 +57,16 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     private BlogFileMapper blogFileMapper;
 
     @Override
-    public PageResult<PhotoBackVO> listPhotoBackVO(ConditionDTO condition) {
+    public PageResult<PhotoBackVO> listPhotoBackVO(ConditionQuery conditionQuery) {
         // 查询照片数量
         Long count = photoMapper.selectCount(new LambdaQueryWrapper<Photo>()
-                .eq(Objects.nonNull(condition.getAlbumId()), Photo::getAlbumId, condition.getAlbumId()));
+                .eq(Objects.nonNull(conditionQuery.getAlbumId()), Photo::getAlbumId, conditionQuery.getAlbumId()));
         if (count == 0) {
             return new PageResult<>();
         }
         // 查询照片列表
         List<PhotoBackVO> photoList = photoMapper.selectPhotoBackVOList(PageUtils.getLimit(),
-                PageUtils.getSize(), condition.getAlbumId());
+                PageUtils.getSize(), conditionQuery.getAlbumId());
         return new PageResult<>(photoList, count);
     }
 
@@ -82,11 +83,11 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     }
 
     @Override
-    public void addPhoto(PhotoDTO photo) {
+    public void addPhoto(PhotoForm photoForm) {
         // 批量保存照片
-        List<Photo> pictureList = photo.getPhotoUrlList().stream()
+        List<Photo> pictureList = photoForm.getPhotoUrlList().stream()
                 .map(url -> Photo.builder()
-                        .albumId(photo.getAlbumId())
+                        .albumId(photoForm.getAlbumId())
                         .photoName(IdWorker.getIdStr())
                         .photoUrl(url)
                         .build())
@@ -95,8 +96,8 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     }
 
     @Override
-    public void updatePhoto(PhotoInfoDTO photoInfo) {
-        Photo photo = BeanCopyUtils.copyBean(photoInfo, Photo.class);
+    public void updatePhoto(PhotoInfoForm photoInfoForm) {
+        Photo photo = BeanCopyUtils.copyBean(photoInfoForm, Photo.class);
         baseMapper.updateById(photo);
     }
 
@@ -106,23 +107,23 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     }
 
     @Override
-    public void movePhoto(PhotoDTO photo) {
-        List<Photo> photoList = photo.getPhotoIdList().stream()
+    public void movePhoto(PhotoForm photoForm) {
+        List<Photo> photoList = photoForm.getPhotoIdList().stream()
                 .map(photoId -> Photo.builder()
                         .id(photoId)
-                        .albumId(photo.getAlbumId())
+                        .albumId(photoForm.getAlbumId())
                         .build())
                 .collect(Collectors.toList());
         this.updateBatchById(photoList);
     }
 
     @Override
-    public Map<String, Object> listPhotoVO(ConditionDTO condition) {
+    public Map<String, Object> listPhotoVO(ConditionQuery conditionQuery) {
         Map<String, Object> result = new HashMap<>(2);
         String albumName = albumMapper.selectOne(new LambdaQueryWrapper<Album>()
-                        .select(Album::getAlbumName).eq(Album::getId, condition.getAlbumId()))
+                        .select(Album::getAlbumName).eq(Album::getId, conditionQuery.getAlbumId()))
                 .getAlbumName();
-        List<PhotoVO> photoVOList = photoMapper.selectPhotoVOList(condition.getAlbumId());
+        List<PhotoVO> photoVOList = photoMapper.selectPhotoVOList(conditionQuery.getAlbumId());
         result.put("albumName", albumName);
         result.put("photoVOList", photoVOList);
         return result;
@@ -154,7 +155,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
                 blogFileMapper.insert(newFile);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return url;
     }

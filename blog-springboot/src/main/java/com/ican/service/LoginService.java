@@ -1,8 +1,8 @@
 package com.ican.service;
 
-import com.ican.model.dto.CodeDTO;
-import com.ican.model.dto.LoginDTO;
-import com.ican.model.dto.RegisterDTO;
+import com.ican.entity.form.CodeForm;
+import com.ican.entity.form.LoginForm;
+import com.ican.entity.form.RegisterForm;
 
 /**
  * 登录业务接口
@@ -15,10 +15,10 @@ public interface LoginService {
     /**
      * 用户登录
      *
-     * @param login 登录参数
+     * @param loginForm 登录参数
      * @return token
      */
-    String login(LoginDTO login);
+    String login(LoginForm loginForm);
 
     /**
      * 发送验证码
@@ -30,31 +30,31 @@ public interface LoginService {
     /**
      * 用户注册
      *
-     * @param register 注册信息
+     * @param registerForm 注册信息
      */
-    void register(RegisterDTO register);
+    void register(RegisterForm registerForm);
 
     /**
      * Gitee登录
      *
-     * @param data 第三方code
+     * @param codeForm 第三方code
      * @return Token
      */
-    String giteeLogin(CodeDTO data);
+    String giteeLogin(CodeForm codeForm);
 
     /**
      * Github登录
      *
-     * @param data 第三方code
+     * @param codeForm 第三方code
      * @return Token
      */
-    String githubLogin(CodeDTO data);
+    String githubLogin(CodeForm codeForm);
 
     /**
      * QQ登录
      *
-     * @param data 第三方code
+     * @param codeForm 第三方code
      * @return token
      */
-    String qqLogin(CodeDTO data);
+    String qqLogin(CodeForm codeForm);
 }

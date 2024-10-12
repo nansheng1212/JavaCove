@@ -8,7 +8,7 @@
         </foreach>
     </insert>
 
-    <select id="selectTagBackVO" resultType="com.ican.model.vo.TagBackVO">
+    <select id="selectTagBackVO" resultType="com.ican.entity.vo.TagBackVO">
         SELECT t.id, t.tag_name, COUNT(tat.article_id) as article_count, t.create_time
         FROM t_tag t
         LEFT JOIN t_article_tag tat
@@ -23,7 +23,7 @@
         LIMIT #{limit},#{size}
     </select>
 
-    <select id="selectTagList" resultType="com.ican.entity.Tag">
+    <select id="selectTagList" resultType="com.ican.entity.po.Tag">
         select id, tag_name from t_tag where tag_name in
         <foreach collection="tagNameList" item="tagName" open="(" separator="," close=")">
             #{tagName}
@@ -37,7 +37,7 @@
         WHERE article_id = #{articleId}
     </select>
 
-    <select id="selectTagVOList" resultType="com.ican.model.vo.TagVO">
+    <select id="selectTagVOList" resultType="com.ican.entity.vo.TagVO">
         SELECT t.id,
                t.tag_name,
                COUNT(tat.tag_id) AS article_count
@@ -46,7 +46,7 @@
         GROUP BY t.id
     </select>
 
-    <select id="selectTagOptionList" resultType="com.ican.model.vo.TagOptionVO">
+    <select id="selectTagOptionList" resultType="com.ican.entity.vo.TagOptionVO">
         select id, tag_name
         from t_tag
     </select>

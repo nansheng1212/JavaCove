@@ -1,7 +1,7 @@
 package com.ican.quartz.utils;
 
 import com.ican.constant.ScheduleConstant;
-import com.ican.entity.Task;
+import com.ican.entity.po.Task;
 import com.ican.enums.TaskStatusEnum;
 import com.ican.exception.ServiceException;
 import com.ican.quartz.execution.QuartzDisallowConcurrentExecution;

@@ -2,18 +2,19 @@ package com.ican.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.ican.model.dto.PhoneDTO;
-import com.ican.model.dto.UserDTO;
-import com.ican.model.dto.UserInfoDTO;
-import com.ican.model.vo.Result;
-import com.ican.model.vo.UserInfoVO;
+import com.ican.entity.form.PhoneForm;
+import com.ican.entity.form.UserForm;
+import com.ican.entity.form.UserInfoForm;
+import com.ican.entity.vo.Result;
+import com.ican.entity.vo.UserInfoVO;
 import com.ican.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
 
 /**
  * 用户信息控制器
@@ -24,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class UserInfoController {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
     /**
@@ -42,14 +43,14 @@ public class UserInfoController {
     /**
      * 修改用户手机号
      *
-     * @param phone 手机信息
+     * @param phoneForm 手机信息
      * @return {@link Result<>}
      */
     @ApiOperation(value = "修改用户手机号")
     @SaCheckPermission(value = "user:phone:update")
     @PutMapping("/user/phone")
-    public Result<?> updateUserPhone(@Validated @RequestBody PhoneDTO phone) {
-        userService.updateUserPhone(phone);
+    public Result<?> updateUserPhone(@Validated @RequestBody PhoneForm phoneForm) {
+        userService.updateUserPhone(phoneForm);
         return Result.success();
     }
 
@@ -69,27 +70,27 @@ public class UserInfoController {
     /**
      * 修改用户信息
      *
-     * @param userInfo 用户信息
+     * @param userInfoForm 用户信息
      * @return {@link Result<>}
      */
     @ApiOperation(value = "修改用户信息")
     @SaCheckPermission(value = "user:info:update")
     @PutMapping("/user/info")
-    public Result<?> updateUserInfo(@Validated @RequestBody UserInfoDTO userInfo) {
-        userService.updateUserInfo(userInfo);
+    public Result<?> updateUserInfo(@Validated @RequestBody UserInfoForm userInfoForm) {
+        userService.updateUserInfo(userInfoForm);
         return Result.success();
     }
 
     /**
      * 修改用户密码
      *
-     * @param user 用户信息
+     * @param userForm 用户信息
      * @return {@link Result<>}
      */
     @ApiOperation(value = "修改用户密码")
     @PutMapping("/user/password")
-    public Result<?> updatePassword(@Validated @RequestBody UserDTO user) {
-        userService.updatePassword(user);
+    public Result<?> updatePassword(@Validated @RequestBody UserForm userForm) {
+        userService.updatePassword(userForm);
         return Result.success();
     }
 

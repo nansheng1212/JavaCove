@@ -4,7 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.alibaba.fastjson2.JSON;
 import com.ican.annotation.OptLogger;
-import com.ican.entity.OperationLog;
+import com.ican.entity.po.OperationLog;
 import com.ican.manager.AsyncManager;
 import com.ican.manager.factory.AsyncFactory;
 import com.ican.utils.IpUtils;

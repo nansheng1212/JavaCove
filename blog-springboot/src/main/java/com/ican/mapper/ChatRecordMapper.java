@@ -1,7 +1,7 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.ChatRecord;
+import com.ican.entity.po.ChatRecord;
 import org.springframework.stereotype.Repository;
 
 /**

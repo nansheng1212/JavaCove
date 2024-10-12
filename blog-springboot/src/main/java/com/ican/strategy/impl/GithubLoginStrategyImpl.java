@@ -1,12 +1,12 @@
 package com.ican.strategy.impl;
 
 import com.ican.config.properties.GithubProperties;
+import com.ican.entity.form.CodeForm;
+import com.ican.entity.vo.GitUserInfoVO;
+import com.ican.entity.vo.SocialTokenVO;
+import com.ican.entity.vo.SocialUserInfoVO;
+import com.ican.entity.vo.TokenVO;
 import com.ican.exception.ServiceException;
-import com.ican.model.dto.CodeDTO;
-import com.ican.model.vo.GitUserInfoVO;
-import com.ican.model.vo.SocialTokenVO;
-import com.ican.model.vo.SocialUserInfoVO;
-import com.ican.model.vo.TokenVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -39,9 +39,9 @@ public class GithubLoginStrategyImpl extends AbstractLoginStrategyImpl {
     private RestTemplate restTemplate;
 
     @Override
-    public SocialTokenVO getSocialToken(CodeDTO codeDTO) {
+    public SocialTokenVO getSocialToken(CodeForm codeForm) {
         // 获取Github的Token
-        TokenVO githubToken = getGithubToken(codeDTO.getCode());
+        TokenVO githubToken = getGithubToken(codeForm.getCode());
         // 返回Github的Token信息
         return SocialTokenVO.builder()
                 .accessToken(githubToken.getAccess_token())

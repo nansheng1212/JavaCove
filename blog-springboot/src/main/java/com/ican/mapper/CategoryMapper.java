@@ -1,9 +1,9 @@
 package com.ican.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ican.entity.Category;
-import com.ican.model.vo.CategoryBackVO;
-import com.ican.model.vo.CategoryVO;
+import com.ican.entity.po.Category;
+import com.ican.entity.vo.CategoryBackVO;
+import com.ican.entity.vo.CategoryVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

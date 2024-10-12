@@ -3,9 +3,9 @@ package com.ican.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ican.annotation.OptLogger;
 import com.ican.annotation.VisitLogger;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.TagDTO;
-import com.ican.model.vo.*;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.TagForm;
+import com.ican.entity.vo.*;
 import com.ican.service.TagService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.ican.constant.OptTypeConstant.*;
@@ -34,28 +33,28 @@ public class TagController {
     /**
      * 查看后台标签列表
      *
-     * @param condition 查询条件
+     * @param conditionQuery 查询条件
      * @return {@link TagBackVO} 后台标签
      */
     @ApiOperation(value = "查看后台标签列表")
     @SaCheckPermission("blog:tag:list")
     @GetMapping("/admin/tag/list")
-    public Result<PageResult<TagBackVO>> listTagBackVO(ConditionDTO condition) {
-        return Result.success(tagService.listTagBackVO(condition));
+    public Result<PageResult<TagBackVO>> listTagBackVO(ConditionQuery conditionQuery) {
+        return Result.success(tagService.listTagBackVO(conditionQuery));
     }
 
     /**
      * 添加标签
      *
-     * @param tag 标签信息
+     * @param tagForm 标签信息
      * @return {@link Result<>}
      */
     @OptLogger(value = ADD)
     @ApiOperation(value = "添加标签")
     @SaCheckPermission("blog:tag:add")
     @PostMapping("/admin/tag/add")
-    public Result<?> addTag(@Validated @RequestBody TagDTO tag) {
-        tagService.addTag(tag);
+    public Result<?> addTag(@Validated @RequestBody TagForm tagForm) {
+        tagService.addTag(tagForm);
         return Result.success();
     }
 
@@ -77,15 +76,15 @@ public class TagController {
     /**
      * 修改标签
      *
-     * @param tag 标签信息
+     * @param tagForm 标签信息
      * @return {@link Result<>}
      */
     @OptLogger(value = UPDATE)
     @ApiOperation(value = "修改标签")
     @SaCheckPermission("blog:tag:update")
     @PutMapping("/admin/tag/update")
-    public Result<?> updateTag(@Validated @RequestBody TagDTO tag) {
-        tagService.updateTag(tag);
+    public Result<?> updateTag(@Validated @RequestBody TagForm tagForm) {
+        tagService.updateTag(tagForm);
         return Result.success();
     }
 
@@ -115,13 +114,13 @@ public class TagController {
     /**
      * 查看标签下的文章
      *
-     * @param condition 查询条件
+     * @param conditionQuery 查询条件
      * @return 文章列表
      */
     @VisitLogger(value = "标签文章")
     @ApiOperation(value = "查看标签下的文章")
     @GetMapping("/tag/article")
-    public Result<ArticleConditionList> listArticleTag(ConditionDTO condition) {
-        return Result.success(tagService.listArticleTag(condition));
+    public Result<ArticleConditionList> listArticleTag(ConditionQuery conditionQuery) {
+        return Result.success(tagService.listArticleTag(conditionQuery));
     }
 }

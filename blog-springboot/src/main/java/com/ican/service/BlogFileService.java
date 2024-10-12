@@ -1,11 +1,11 @@
 package com.ican.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ican.entity.BlogFile;
-import com.ican.model.dto.ConditionDTO;
-import com.ican.model.dto.FolderDTO;
-import com.ican.model.vo.FileVO;
-import com.ican.model.vo.PageResult;
+import com.ican.entity.dto.ConditionQuery;
+import com.ican.entity.form.FolderForm;
+import com.ican.entity.po.BlogFile;
+import com.ican.entity.vo.FileVO;
+import com.ican.entity.vo.PageResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -23,10 +23,10 @@ public interface BlogFileService extends IService<BlogFile> {
     /**
      * 查看文件列表
      *
-     * @param condition 查询条件
+     * @param ConditionQuery 查询条件
      * @return 文件列表
      */
-    PageResult<FileVO> listFileVOList(ConditionDTO condition);
+    PageResult<FileVO> listFileVOList(ConditionQuery ConditionQuery);
 
     /**
      * 上传文件
@@ -39,9 +39,9 @@ public interface BlogFileService extends IService<BlogFile> {
     /**
      * 创建文件夹
      *
-     * @param folder 文件夹信息
+     * @param folderForm 文件夹信息
      */
-    void createFolder(FolderDTO folder);
+    void createFolder(FolderForm folderForm);
 
     /**
      * 删除文件
