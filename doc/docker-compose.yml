@@ -8,7 +8,6 @@ services:
     depends_on:
       - mysql
       - redis
-      - rabbitmq
     volumes:
       - "/usr/local/upload:/usr/local/upload"
     ports:
@@ -42,6 +41,3 @@ services:
     ports:
       - "443:443"
       - "80:80"
-networks:
-  es-net:
-    driver: bridge

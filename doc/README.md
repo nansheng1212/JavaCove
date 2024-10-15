@@ -77,7 +77,7 @@ curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compo
 chmod +x /usr/local/bin/docker-compose
 ```
 
-## 6. nginx 配置 https
+## 4. nginx 配置 https
 
 1. 先去腾讯云或者阿里云申请免费 SSL 证书，然后选择 Nginx 服务器类型下载
 
@@ -94,131 +94,104 @@ chmod +x /usr/local/bin/docker-compose
 
 4. 创建目录`/usr/local/upload`作为本地文件存储路径
 
-5. 将以下的`nginx.conf`改好后上传到`/usr/local/nginx`下
+5. 将以下的`nginx.conf`改好后上传到`/usr/local/nginx`下，我的直接贴进来了，仅供参考
 
    ```shell
    events {
-       worker_connections  1024;
+   worker_connections  1024;
    }
-
+   
    http {
-
+   
        include       mime.types;
        default_type  application/octet-stream;
        sendfile        on;
        keepalive_timeout  65;
-
+   
        client_max_body_size     50m;
        client_body_buffer_size  10m;
        client_header_timeout    1m;
        client_body_timeout      1m;
-
+   
        gzip on;
        gzip_min_length  1k;
        gzip_buffers     4 16k;
        gzip_comp_level  4;
        gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;
        gzip_vary on;
-
+   
    server {
-           listen  443 ssl;
-           server_name  前台域名;
-
-           ssl_certificate    /etc/ssl/certs/xxxxxxxxxxxx.pem;
-           ssl_certificate_key  /etc/ssl/certs/xxxxxxxxxxxx.key;
+   listen  443 ssl;
+   server_name  www.junlty.top;
+   
+           ssl_certificate    /etc/ssl/certs/www.junlty.top.pem;
+           ssl_certificate_key  /etc/ssl/certs/www.junlty.top.key;
            ssl_session_timeout 5m;
            ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
            ssl_prefer_server_ciphers on;
-
+   
           location / {
                root   /usr/local/vue/blog;
                index  index.html index.htm;
                try_files $uri $uri/ /index.html;
            }
-
+   
            location ^~ /api/ {
-               proxy_pass http://你的ip:8080/;
+               proxy_pass http://121.40.246.82:8080/;
                proxy_set_header   Host             $host;
                proxy_set_header   X-Real-IP        $remote_addr;
                proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
            }
-
+   
        }
-
+   
    server {
-           listen  443 ssl;
-           server_name  后台域名;
-
-           ssl_certificate    /etc/ssl/certs/xxxxxxxxxxxx.pem;
-           ssl_certificate_key  /etc/ssl/certs/xxxxxxxxxxxx.key;
+   listen  443 ssl;
+   server_name  admin.junlty.top;
+   
+           ssl_certificate    /etc/ssl/certs/admin.junlty.top.pem;
+           ssl_certificate_key  /etc/ssl/certs/admin.junlty.top.key;
            ssl_session_timeout 5m;
            ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
            ssl_prefer_server_ciphers on;
-
+   
           location / {
                root   /usr/local/vue/admin;
                index  index.html index.htm;
                try_files $uri $uri/ /index.html;
            }
-
+   
            location ^~ /api/ {
-               proxy_pass http://你的ip:8080/;
+               proxy_pass http://121.40.246.82:8080/;
                proxy_set_header   Host             $host;
                proxy_set_header   X-Real-IP        $remote_addr;
                proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
            }
-
+   
        }
-
+   
    server {
-           listen  443 ssl;
-
-           add_header 'Access-Control-Allow-Origin' 'https://www.ttkwsd.top';
-           add_header 'Access-Control-Allow-Methods' *;
-           server_name  文件上传域名;
-           ssl_certificate    /etc/ssl/certs/xxxxxxxxxxxx.pem;
-           ssl_certificate_key  /etc/ssl/certs/xxxxxxxxxxxx.key;
-           ssl_session_timeout 5m;
-           ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
-           ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-           ssl_prefer_server_ciphers on;
-
-           location / {
-             root /usr/local/upload/;
-           }
-
-       }
-
-   server {
-           listen       80;
-           server_name  前台域名;
-
+   listen       80;
+   server_name  www.junlty.top;
+   
            rewrite ^(.*)$	https://$host$1	permanent;
-
+   
        }
-
+   
    server {
-           listen       80;
-           server_name  后台域名;
-
+   listen       80;
+   server_name  admin.junlty.top;
+   
            rewrite ^(.*)$	https://$host$1	permanent;
-
+   
        }
-
-   server {
-           listen       80;
-           server_name  文件上传域名;
-
-           rewrite ^(.*)$	https://$host$1	permanent;
-
-       }
-
+   
    }
    ```
 
-## 7. 打包前端
+## 5. 打包前端
 
 1. `npm install`
 
@@ -228,7 +201,7 @@ chmod +x /usr/local/bin/docker-compose
 
 4. 申请了 Gitee 和 Github 的第三方登录，记得修改前端的应用 id 和回调地址
 
-![](https://static.ttkwsd.top/article/3564e1ce1a8621bc04b8a38beb6a1278.png)
+![](https://junlex.com/article/cdbbd193e45985ad97cbef36a359e386.png)
 
 5. `npm run build`
 
@@ -236,7 +209,7 @@ chmod +x /usr/local/bin/docker-compose
 
 ![](https://static.ttkwsd.top/article/f175e72749ed8b8c22975dee0e432254.png)
 
-## 8. 打包后端
+## 6. 打包后端
 
 1. 修改`application.yml`信息后，执行 maven 的 package 命令选择 jar 方式打包
 
@@ -245,10 +218,9 @@ chmod +x /usr/local/bin/docker-compose
 2. 在服务器创建`/usr/local/docker`目录，并将`target`中的 jar 包上传到该目录
 3. 修改`deploy`文件夹中的`.env`配置文件中的信息，一定确认`docker-compose.yml`中挂载的目录和文件是否存在
 4. 将`deploy`文件夹中的文件上传到`/usr/local/docker`目录中
+![](https://junlex.com/article/3d47bdfc9fdc0602745bdaecda826320.png)
 
-![](https://static.ttkwsd.top/article/9eb54ea259769f45c374309a27b95cec.png)
-
-## 9. 执行 sh 脚本
+## 7. 执行 sh 脚本
 
 **服务器的防火墙端口一定要放开**
 
@@ -256,10 +228,8 @@ chmod +x /usr/local/bin/docker-compose
 cd /usr/local/docker
 sh blog-start.sh
 ```
-
 项目就部署完成了，用`docker ps`查看正在运行的容器。
 
-
-## 11. 最后
+## 8. 最后
 
 有什么问题的话，可以在下方评论区评论。不方便评论的话，可以加我联系方式私聊。写的不对的地方欢迎大家在评论区指出
