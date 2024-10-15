@@ -207,7 +207,7 @@ chmod +x /usr/local/bin/docker-compose
 
 6. 打包之后将博客前台和后台的`dist`分别重命名为`blog`和`admin`，然后上传到服务器的`/usr/local/vue`目录下（没有就创建）
 
-![](https://static.ttkwsd.top/article/f175e72749ed8b8c22975dee0e432254.png)
+![](https://junlex.com/article/46b1a2c406b604dd64ccab5866049533.png)
 
 ## 6. 打包后端
 

@@ -33,6 +33,8 @@
 
 **Gitee 地址：** [https://gitee.com/guo-_jun/JavaCove](https://gitee.com/guo-_jun/JavaCove)
 
+**部署文档：** [文档地址](https://blog.csdn.net/qq_52183856/article/details/142961728?fromshare=blogdetail&sharetype=blogdetail&sharerId=142961728&sharerefer=PC&sharesource=qq_52183856&sharefrom=from_link)
+
 **接口文档：** https://www.junlex.com/api/doc.html
 
  **欢迎大家提交pr，一起改进项目** 
