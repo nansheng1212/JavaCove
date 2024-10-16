@@ -1,6 +1,7 @@
-## 1. 服务器配置
-
-1. 2 核 2G
+## 1. 基础配置
+### 1.1 服务器： 2 核 2G
+### 1.2 一个域名
+### 1.3 项目地址：https://gitee.com/guo-_jun/JavaCove
 
 ## 2. CentOS 安装 Docker
 
@@ -216,8 +217,8 @@ chmod +x /usr/local/bin/docker-compose
 ![](https://junlex.com/article/f7cf5a01b1288dbc6df779176de5eecb.png)
 
 2. 在服务器创建`/usr/local/docker`目录，并将`target`中的 jar 包上传到该目录
-3. 修改`deploy`文件夹中的`.env`配置文件中的信息，一定确认`docker-compose.yml`中挂载的目录和文件是否存在
-4. 将`deploy`文件夹中的文件上传到`/usr/local/docker`目录中
+3. 修改`doc`文件夹中的`.env`配置文件中的信息，一定确认`docker-compose.yml`中挂载的目录和文件是否存在
+4. 将`doc`文件夹中的文件上传到`/usr/local/docker`目录中
 ![](https://junlex.com/article/3d47bdfc9fdc0602745bdaecda826320.png)
 
 ## 7. 执行 sh 脚本
