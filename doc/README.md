@@ -1,7 +1,9 @@
 ## 1. 基础配置
 ### 1.1 服务器： 2 核 2G
 ### 1.2 一个域名
-### 1.3 项目地址：https://gitee.com/guo-_jun/JavaCove
+### 1.3 项目地址：
+gitee:https://gitee.com/guo-_jun/JavaCove
+github:https://github.com/nansheng1212/JavaCove
 
 ## 2. CentOS 安装 Docker
 
