@@ -84,7 +84,7 @@ chmod +x /usr/local/bin/docker-compose
 
 1. 先去腾讯云或者阿里云申请免费 SSL 证书，然后选择 Nginx 服务器类型下载
 
-   ![](https://junlex.com/article/d85a39567f35aa13ab87e439467f23bf.png)
+   ![](https://junlty.top/article/d85a39567f35aa13ab87e439467f23bf.png)
 
 2. 证书下载之后上传到`/etc/ssl/certs`目录下
 
@@ -204,24 +204,24 @@ chmod +x /usr/local/bin/docker-compose
 
 4. 申请了 Gitee 和 Github 的第三方登录，记得修改前端的应用 id 和回调地址
 
-![](https://junlex.com/article/cdbbd193e45985ad97cbef36a359e386.png)
+![](https://junlty.top/article/cdbbd193e45985ad97cbef36a359e386.png)
 
 5. `npm run build`
 
 6. 打包之后将博客前台和后台的`dist`分别重命名为`blog`和`admin`，然后上传到服务器的`/usr/local/vue`目录下（没有就创建）
 
-![](https://junlex.com/article/46b1a2c406b604dd64ccab5866049533.png)
+![](https://junlty.top/article/46b1a2c406b604dd64ccab5866049533.png)
 
 ## 6. 打包后端
 
 1. 修改`application.yml`信息后，执行 maven 的 package 命令选择 jar 方式打包
 
-![](https://junlex.com/article/f7cf5a01b1288dbc6df779176de5eecb.png)
+![](https://junlty.top/article/f7cf5a01b1288dbc6df779176de5eecb.png)
 
 2. 在服务器创建`/usr/local/docker`目录，并将`target`中的 jar 包上传到该目录
 3. 修改`doc`文件夹中的`.env`配置文件中的信息，一定确认`docker-compose.yml`中挂载的目录和文件是否存在
 4. 将`doc`文件夹中的文件上传到`/usr/local/docker`目录中
-![](https://junlex.com/article/3d47bdfc9fdc0602745bdaecda826320.png)
+![](https://junlty.top/article/3d47bdfc9fdc0602745bdaecda826320.png)
 
 ## 7. 执行 sh 脚本
 

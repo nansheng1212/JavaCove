@@ -23,9 +23,9 @@
 
 ## 在线地址
 
-**项目链接：** [www.junlex.com](https://www.junlex.com)
+**项目链接：** [www.junlty.top](https://www.junlex.com)
 
-**后台链接：** [admin.junlex.com](https://admin.junlex.com)
+**后台链接：** [admin.junlty.top](https://admin.junlex.com)
 
 **测试账号：** test，**密码**：123456
 
@@ -33,9 +33,9 @@
 
 **Gitee 地址：** [https://gitee.com/guo-_jun/JavaCove](https://gitee.com/guo-_jun/JavaCove)
 
-**部署文档：** [文档地址](https://blog.csdn.net/qq_52183856/article/details/142961728?fromshare=blogdetail&sharetype=blogdetail&sharerId=142961728&sharerefer=PC&sharesource=qq_52183856&sharefrom=from_link)||[备用地址](https://www.junlex.com/article/96)
+**部署文档：** [文档地址](https://blog.csdn.net/qq_52183856/article/details/142961728?fromshare=blogdetail&sharetype=blogdetail&sharerId=142961728&sharerefer=PC&sharesource=qq_52183856&sharefrom=from_link)||[备用地址](https://www.junlty.top/article/96)
 
-**接口文档：** https://www.junlex.com/api/doc.html
+**接口文档：** https://www.junlty.top/api/doc.html
 
  **欢迎大家提交pr，一起改进项目** 
 
@@ -97,5 +97,5 @@
 
 ## 项目截图
 
-![](https://junlex.com/article/954a1dae45c1e25e8bb8a99e8f7b7604.png)
-![](https://junlex.com/article/f5629ffc22306f46c6c815f82115a503.png)
+![](https://junlty.top/article/954a1dae45c1e25e8bb8a99e8f7b7604.png)
+![](https://junlty.top/article/f5629ffc22306f46c6c815f82115a503.png)
