@@ -38,7 +38,7 @@
     </div>
     <div class="chat-btn" @click="handleOpen">
       <span class="unread" v-if="unreadCount > 0">{{ unreadCount }}</span>
-      <img src="https://junlex.com/config/talk1.1.png" alt="">
+      <img src="https://junlty.top/config/talk1.1.png" alt="">
     </div>
   </div>
 </template>
