@@ -23,9 +23,9 @@
 
 ## 在线地址
 
-**项目链接：** [www.junlty.top](https://www.junlex.com)
+**项目链接：** [www.junlty.top](https:/www.junlty.top)
 
-**后台链接：** [admin.junlty.top](https://admin.junlex.com)
+**后台链接：** [admin.junlty.top](https://admin.junlty.top)
 
 **测试账号：** test，**密码**：123456
 
