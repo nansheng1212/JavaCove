@@ -70,8 +70,10 @@ spring:
 aliyun:
   sms:
     regionId: default
-    accessKeyId: #
-    secret: #
+    accessKeyId: 123456
+    secret: 123456
+    signName: 123456
+    templateCode: 123456
 
 # 博客链接 域名后面要加/
 blog:
@@ -101,17 +103,17 @@ upload:
   oss:
     url: https://junlex.com/
     endpoint: oss-cn-beijing.aliyuncs.com
-    accessKeyId: #
-    accessKeySecret: #
-    bucketName: #
+    accessKeyId: 123456
+    accessKeySecret: 123456
+    bucketName: 123456
 
   #  # qiniu存储(七牛云)
   qiniu:
     url: s0v53ltut.hn-bkt.clouddn.com/  # 访问域名(给存储桶绑定的二级域名)
     bucketName: blog-011 # 空间名称bucketName
     region: huanan # 存储区域 华南(huanan) 华北(huabei)...
-    accessKey: #  #accessKey
-    secretKey: #  #secretKey
+    accessKey: 123456  #accessKey
+    secretKey: 123456  #secretKey
 
 # mybatisPlus配置
 mybatis-plus:
