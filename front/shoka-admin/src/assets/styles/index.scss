@@ -1,8 +1,8 @@
-@import './variables.module.scss';
-@import './mixin.scss';
-@import './transition.scss';
-@import './sidebar.scss';
-@import './dark.scss';
+@use './variables.module.scss' as *;
+@use './mixin.scss' as *;
+@use './transition.scss' as *;
+@use './sidebar.scss' as *;
+@use './dark.scss' as *;
 
 body {
   height: 100%;

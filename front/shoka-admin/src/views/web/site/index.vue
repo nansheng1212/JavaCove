@@ -88,8 +88,8 @@
             <el-input v-model="siteConfig.siteAuthor" style="width: 400px;"></el-input>
           </el-form-item>
           <el-form-item label="关于我">
-            <v-md-editor v-model="siteConfig.aboutMe" :disabled-menus="[]" :left-toolbar="toolList"
-                       @upload-image="handleUploadImage" height="400px"></v-md-editor>
+            <md-editor v-model="siteConfig.aboutMe" :disabled-menus="[]" :left-toolbar="toolList"
+                       @upload-image="handleUploadImage" height="400px"></md-editor>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleUpdate">保 存</el-button>

@@ -47,7 +47,6 @@ import { updateUserInfo } from "@/api/user";
 import { UserInfo } from "@/api/user/types";
 import useStore from "@/store";
 import { FormInst } from 'naive-ui';
-import {Talk} from "@/api/talk/types";
 const formInstRef = ref<FormInst | null>(null)
 const { user, app } = useStore();
 const router = useRouter();
@@ -89,7 +88,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/mixin.scss";
+@use "@/assets/styles/mixin.scss" as *;
 
 .title {
   font-size: 1.25rem;

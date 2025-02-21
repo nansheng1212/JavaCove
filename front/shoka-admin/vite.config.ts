@@ -9,6 +9,14 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+        silenceDeprecations: ['legacy-js-api']
+      },
+    },
+  },
   define: {
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false
   },

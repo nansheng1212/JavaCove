@@ -1,7 +1,7 @@
-@import "./theme-shoka.scss";
-@import "./transition.scss";
-@import "./markdown.scss";
-@import "./common.scss";
+@use "./theme-shoka.scss" as *;
+@use "./transition.scss" as *;
+@use "./markdown.scss" as *;
+@use "./common.scss" as *;
 
 *,
 :after,
