@@ -25,7 +25,7 @@
 
 ## 在线地址
 
-**项目链接：** [www.junlty.top](https:/www.junlty.top)
+**项目链接：** [www.junlty.top](https://www.junlty.top)
 
 **后台链接：** [admin.junlty.top](https://admin.junlty.top)
 

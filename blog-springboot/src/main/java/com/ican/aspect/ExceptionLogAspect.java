@@ -77,10 +77,16 @@ public class ExceptionLogAspect {
         // 异常信息
         exceptionLog.setMessage(stackTraceToString(e.getClass().getName(), e.getMessage(), e.getStackTrace()));
         // 请求参数
-        if (joinPoint.getArgs()[0] instanceof MultipartFile) {
-            exceptionLog.setParams(((MultipartFile) joinPoint.getArgs()[0]).getOriginalFilename());
+        Object[] args = joinPoint.getArgs();
+        if (args != null && args.length > 0) { // 增加数组长度检查
+            if (args[0] instanceof MultipartFile) {
+                exceptionLog.setParams(((MultipartFile) args[0]).getOriginalFilename());
+            } else {
+                exceptionLog.setParams(JSON.toJSONString(args));
+            }
         } else {
-            exceptionLog.setParams(JSON.toJSONString(joinPoint.getArgs()));
+            // 处理没有参数的情况
+            exceptionLog.setParams("No parameters");
         }
         // 请求方式
         exceptionLog.setRequestMethod(Objects.requireNonNull(request).getMethod());

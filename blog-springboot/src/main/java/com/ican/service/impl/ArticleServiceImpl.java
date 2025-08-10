@@ -112,7 +112,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void addArticle(ArticleForm articleForm) {
+    public Integer addArticle(ArticleForm articleForm) {
         // 保存文章分类
         Integer categoryId = saveArticleCategory(articleForm);
         // 添加文章
@@ -126,6 +126,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         baseMapper.insert(newArticle);
         // 保存文章标签
         saveArticleTag(articleForm, newArticle.getId());
+        return newArticle.getId();
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -315,6 +316,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             log.error(e.getMessage());
         }
         return url;
+    }
+
+    /**
+     * 查询所有正常状态文章
+     * @return 文章列表
+     */
+    @Override
+    public List<ArticleSearchVO> listArticles() {
+        return articleMapper.listArticles();
     }
 
     /**

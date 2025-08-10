@@ -123,4 +123,6 @@ public interface ArticleMapper extends BaseMapper<Article> {
     ArticleVO selectArticleHomeByIdByAdmin(Integer articleId);
 
     List<ArticleConditionVO> listArticleByConditionByAdmin(@Param("limit") Long limit, @Param("size") Long size, @Param("conditionQuery") ConditionQuery conditionQuery);
+
+    List<ArticleSearchVO> listArticles();
 }

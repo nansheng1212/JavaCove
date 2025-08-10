@@ -32,6 +32,12 @@ public class ArticleSearchVO {
     private String articleTitle;
 
     /**
+     * 文章摘要
+     */
+    @ApiModelProperty(value = "文章摘要")
+    private String articleDesc;
+
+    /**
      * 文章内容
      */
     @ApiModelProperty(value = "文章内容")
