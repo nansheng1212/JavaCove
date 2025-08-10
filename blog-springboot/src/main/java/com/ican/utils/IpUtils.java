@@ -36,7 +36,7 @@ public class IpUtils {
             }
         } catch (Exception e) {
             log.info("getIpSource fail, e", e);
-            return null;
+            return "未知IP";
         }
         return null;
     }
