@@ -101,7 +101,7 @@ chmod +x /usr/local/bin/docker-compose
 
    ```shell
    events {
-   worker_connections  1024;
+    worker_connections  1024;
    }
    
    http {
@@ -141,7 +141,7 @@ chmod +x /usr/local/bin/docker-compose
            }
    
            location ^~ /api/ {
-               proxy_pass http://121.40.246.82:8080/;
+               proxy_pass http://123.57.37.4:8080/;
                proxy_set_header   Host             $host;
                proxy_set_header   X-Real-IP        $remote_addr;
                proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
@@ -167,14 +167,29 @@ chmod +x /usr/local/bin/docker-compose
            }
    
            location ^~ /api/ {
-               proxy_pass http://121.40.246.82:8080/;
+               proxy_pass http://123.57.37.4:8080/;
                proxy_set_header   Host             $host;
                proxy_set_header   X-Real-IP        $remote_addr;
                proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
            }
    
        }
+   # 聊天室配置
+   server {
+   listen  443 ssl;
+   server_name  ws.junlty.top;
    
+       ssl_certificate    /etc/ssl/certs/ws.junlty.top.pem;
+       ssl_certificate_key  /etc/ssl/certs/ws.junlty.top.key;
+   
+        location /websocket {
+           proxy_pass http://123.57.37.4:8080;
+           proxy_http_version 1.1;
+           proxy_set_header   Upgrade     $http_upgrade;
+           proxy_set_header   Connection  "Upgrade";
+           proxy_set_header   X-Real-IP   $remote_addr;
+           }
+       }
    server {
    listen       80;
    server_name  www.junlty.top;

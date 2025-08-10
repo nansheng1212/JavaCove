@@ -1,0 +1,42 @@
+version: "3"
+services:
+  blog-service:
+    build: .
+    image: blog-springboot:latest
+    container_name: blog-springboot
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - "/app/blog/upload:/app/blog/upload"
+    ports:
+      - "8080:8080"
+  mysql:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+  redis:
+    image: redis:${REDIS_VERSION}
+    container_name: redis
+    restart: always
+    command: --requirepass "${REDIS_PASSWORD}"
+    ports:
+      - "6379:6379"
+  nginx:
+    image: nginx:${NGINX_VERSION}
+    container_name: nginx
+    restart: always
+    volumes:
+      - "/app/blog/nginx/nginx.conf:/etc/nginx/nginx.conf"
+      - "/app/blog/vue:/app/blog/vue"
+      - "/app/blog/upload:/app/blog/upload"
+    privileged: true
+    ports:
+      - "80:80"
+      - "90:90"

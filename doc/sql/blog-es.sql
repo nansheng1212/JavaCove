@@ -1572,6 +1572,7 @@ INSERT INTO `t_menu` VALUES (129, 127, 'B', '修改轮播图', NULL, NULL, NULL,
 INSERT INTO `t_menu` VALUES (130, 127, 'B', '上传轮播图', NULL, NULL, NULL, 'web:carousel:upload', 0, 0, 3, '2024-06-16 21:40:17', NULL);
 INSERT INTO `t_menu` VALUES (131, 127, 'B', '删除轮播图', NULL, NULL, NULL, 'web:carousel:delete', 0, 0, 4, '2024-06-16 21:40:45', NULL);
 INSERT INTO `t_menu` VALUES (132, 127, 'B', '修改轮播图状态', NULL, NULL, NULL, 'web:carousel:status', 0, 0, 5, '2024-06-16 21:41:24', NULL);
+INSERT INTO `t_menu` VALUES (133, 1, 'C', '索引管理', 'index', 'documentation', '/blog/index/list', 'blog:index:list', 0, 0, 6, '2022-12-04 09:23:01', '2025-07-22 22:07:28');
 
 -- ----------------------------
 -- Table structure for t_message

@@ -9,7 +9,7 @@ services:
       - mysql
       - redis
     volumes:
-      - "/usr/local/upload:/usr/local/upload"
+      - "/app/blog/upload:/app/blog/upload"
     ports:
       - "8080:8080"
   mysql:
@@ -33,11 +33,10 @@ services:
     container_name: nginx
     restart: always
     volumes:
-      - "/usr/local/nginx/nginx.conf:/etc/nginx/nginx.conf"
-      - "/etc/ssl/certs:/etc/ssl/certs"
-      - "/usr/local/vue:/usr/local/vue"
-      - "/usr/local/upload:/usr/local/upload"
+      - "/app/blog/nginx/nginx.conf:/etc/nginx/nginx.conf"
+      - "/app/blog/vue:/app/blog/vue"
+      - "/app/blog/upload:/app/blog/upload"
     privileged: true
     ports:
-      - "443:443"
       - "80:80"
+      - "90:90"
