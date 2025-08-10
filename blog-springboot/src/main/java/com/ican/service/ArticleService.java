@@ -33,7 +33,7 @@ public interface ArticleService extends IService<Article> {
      *
      * @param articleForm 文章
      */
-    void addArticle(ArticleForm articleForm);
+    Integer addArticle(ArticleForm articleForm);
 
     /**
      * 删除文章
@@ -122,4 +122,11 @@ public interface ArticleService extends IService<Article> {
      * @return 文章图片地址
      */
     String saveArticleImages(MultipartFile file);
+
+    /**
+     * 查询所有文章
+     *
+     * @return 文章列表
+     */
+    List<ArticleSearchVO> listArticles();
 }

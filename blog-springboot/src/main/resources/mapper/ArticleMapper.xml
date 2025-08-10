@@ -461,4 +461,15 @@
         ORDER BY a.id DESC
         LIMIT #{limit}, #{size}
     </select>
+
+    <select id="listArticles" resultType="ArticleSearchVO">
+        SELECT a.id,
+               a.article_title,
+               a.article_desc,
+               a.article_content,
+               a.is_delete,
+               a.status
+        FROM t_article a
+        where is_delete = 0 and `status` = 1
+    </select>
 </mapper>

@@ -3,8 +3,10 @@ package com.ican.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ican.annotation.AccessLimit;
+import com.ican.annotation.IndexOperation;
 import com.ican.annotation.OptLogger;
 import com.ican.annotation.VisitLogger;
+import com.ican.constant.ElasticConstant;
 import com.ican.entity.dto.ConditionQuery;
 import com.ican.entity.form.ArticleForm;
 import com.ican.entity.form.DeleteForm;
@@ -62,11 +64,12 @@ public class ArticleController {
      */
     @OptLogger(value = ADD)
     @ApiOperation(value = "添加文章")
+    @IndexOperation(type = ElasticConstant.INSERT)
     @SaCheckPermission("blog:article:add")
     @PostMapping("/admin/article/add")
     public Result<?> addArticle(@Validated @RequestBody ArticleForm articleForm) {
-        articleService.addArticle(articleForm);
-        return Result.success();
+        Integer id = articleService.addArticle(articleForm);
+        return Result.success(id);
     }
 
     /**
@@ -77,6 +80,7 @@ public class ArticleController {
      */
     @OptLogger(value = DELETE)
     @ApiOperation(value = "删除文章")
+    @IndexOperation(type = ElasticConstant.DELETE)
     @SaCheckPermission("blog:article:delete")
     @DeleteMapping("/admin/article/delete")
     public Result<?> deleteArticle(@RequestBody List<Integer> articleIdList) {
@@ -92,6 +96,7 @@ public class ArticleController {
      */
     @OptLogger(value = UPDATE)
     @ApiOperation(value = "回收或恢复文章")
+    @IndexOperation(type = ElasticConstant.RECYCLE)
     @SaCheckPermission("blog:article:recycle")
     @PutMapping("/admin/article/recycle")
     public Result<?> updateArticleDelete(@Validated @RequestBody DeleteForm deleteForm) {
@@ -107,6 +112,7 @@ public class ArticleController {
      */
     @OptLogger(value = UPDATE)
     @ApiOperation(value = "修改文章")
+    @IndexOperation(type = ElasticConstant.UPDATE)
     @SaCheckPermission("blog:article:update")
     @PutMapping("/admin/article/update")
     public Result<?> updateArticle(@Validated @RequestBody ArticleForm articleForm) {

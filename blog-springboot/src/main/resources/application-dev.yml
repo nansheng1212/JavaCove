@@ -66,6 +66,19 @@ spring:
         max-idle: 100
         # 连接池中的最小空闲连接
         min-idle: 50
+  rabbitmq:
+    host: 192.168.229.130
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        retry:
+          enabled: true
+          # 重试间隔时间
+          initial-interval: 3000
+          # 最大重试次数
+          max-attempts: 3
 # 短信配置
 aliyun:
   sms:
@@ -88,7 +101,7 @@ thread:
     keep-alive-seconds: 60
 
 search:
-  mode: mysql
+  mode: elasticsearch
 # 文件上传策略 local、oss、cos
 
 upload:
@@ -101,7 +114,7 @@ upload:
 
   # oss存储
   oss:
-    url: https://junlex.com/
+    url: https://junlty.top/
     endpoint: oss-cn-beijing.aliyuncs.com
     accessKeyId: 123456
     accessKeySecret: 123456
@@ -123,13 +136,24 @@ mybatis-plus:
   type-aliases-package: com.ican.entity
   configuration:
     #    # sql打印
-    #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     # 开启驼峰命名
     map-underscore-to-camel-case: true
   global-config:
     db-config:
       # 数据库表前缀
       table-prefix: t_
+
+# elasticsearch配置
+elasticsearch:
+  enabled: true
+  username: elastic
+  password: password!@#
+  hostname: 192.168.229.130
+  port: 9200
+  connectTimeout: 3000
+  socketTimeout: 30000
+  connectionRequestTimeout: 1000
 
 # Sa-Token 配置 (文档: https://sa-token.cc)
 sa-token:
