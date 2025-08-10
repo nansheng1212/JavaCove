@@ -70,7 +70,7 @@
             <div class="el-upload__text" v-if="albumForm.albumCover === ''">
               将文件拖到此处，或<em>点击上传</em>
             </div>
-            <img v-else :src="albumForm.albumCover" width="360"/>
+            <img v-else :src="albumForm.albumCover" width="360" alt=""/>
           </el-upload>
         </el-form-item>
         <el-form-item label="发布形式">
@@ -100,6 +100,7 @@ import {AxiosResponse} from 'axios';
 import {FormInstance, FormRules, UploadRawFile} from 'element-plus';
 import * as imageConversion from 'image-conversion';
 import {computed, onMounted, reactive, ref, toRefs} from 'vue';
+import {Hide, MoreFilled, UploadFilled} from "@element-plus/icons-vue";
 
 const albumFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({

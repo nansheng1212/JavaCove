@@ -11,9 +11,9 @@
             <template #defToolbars>
               <emoji-extension :on-insert="insert" />
               <el-upload action="" multiple :show-file-list="false" :http-request="handleFileUpload" accept=".md">
-                <el-button icon="Download"></el-button>
+                <el-button>上传文章</el-button>
               </el-upload>
-              <el-button icon="Upload" @click="exportToMarkdown"></el-button>
+              <el-button @click="exportToMarkdown">导出文章</el-button>
             </template>
         </md-editor>
         <!-- 发布或修改对话框 -->
@@ -147,6 +147,7 @@ import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import { computed, onMounted, reactive, ref, toRefs } from "vue";
 import { useRoute } from "vue-router";
+import {UploadFilled} from "@element-plus/icons-vue";
 
 const route = useRoute();
 const articleId = route.params.articleId;

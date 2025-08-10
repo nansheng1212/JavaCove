@@ -1,9 +1,9 @@
 <template>
   <div class="imgs">
     <ul>
-      <li class="item" v-for="carousel of carouselList" :key="carousel.id" :style="{
-        'background-image': 'url(' + carousel.imgUrl + ')'
-      }">
+      <li class="item" v-for="carousel of carouselList" :key="carousel.id" 
+          :style="{ 'background-image': 'url(' + carousel.imgUrl + ')' }"
+          v-lazy:background-image="carousel.imgUrl">
       </li>
     </ul>
   </div>

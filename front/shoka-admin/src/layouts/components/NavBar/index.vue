@@ -26,7 +26,7 @@
       <el-dropdown @command="handleCommand" class="avatar-container right-menu-item hover-effect" trigger="click">
         <!-- 头像 -->
         <div class="avatar-wrapper">
-          <img :src="user.avatar" class="user-avatar" />
+          <img :src="user.avatar" class="user-avatar"  alt=""/>
           <el-icon class="el-icon-caret-bottom">
             <caret-bottom />
           </el-icon>
@@ -53,6 +53,7 @@ import SizeSelect from '@/components/SizeSelect/index.vue';
 import useStore from "@/store";
 import { messageConfirm } from "@/utils/modal";
 import { computed } from "vue";
+import {CaretBottom} from "@element-plus/icons-vue";
 const { app, user } = useStore();
 const device = computed(() => app.device);
 const openHome = () => {

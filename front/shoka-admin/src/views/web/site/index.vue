@@ -18,7 +18,7 @@
                 <el-upload class="avatar-uploader" :headers="authorization" action="/api/admin/site/upload"
                            :show-file-list="false" accept="image/*" :before-upload="beforeUpload"
                            :on-success="handleUserAvatarSuccess">
-                  <img v-if="siteConfig.userAvatar" :src="siteConfig.userAvatar" class="avatar"/>
+                  <img v-if="siteConfig.userAvatar" :src="siteConfig.userAvatar" class="avatar" alt=""/>
                   <el-icon v-else class="avatar-uploader-icon">
                     <Plus/>
                   </el-icon>
@@ -30,7 +30,7 @@
                 <el-upload class="avatar-uploader" :headers="authorization" action="/api/admin/site/upload"
                            :show-file-list="false" accept="image/*" :before-upload="beforeUpload"
                            :on-success="handleTouristAvatarSuccess">
-                  <img v-if="siteConfig.touristAvatar" :src="siteConfig.touristAvatar" class="avatar"/>
+                  <img v-if="siteConfig.touristAvatar" :src="siteConfig.touristAvatar" class="avatar" alt=""/>
                   <el-icon v-else class="avatar-uploader-icon">
                     <Plus/>
                   </el-icon>
@@ -78,7 +78,7 @@
             <el-upload class="avatar-uploader" :headers="authorization" action="/api/admin/site/upload"
                        :show-file-list="false" accept="image/*" :before-upload="beforeUpload"
                        :on-success="handleAuthorAvatarSuccess">
-              <img v-if="siteConfig.authorAvatar" :src="siteConfig.authorAvatar" class="avatar"/>
+              <img v-if="siteConfig.authorAvatar" :src="siteConfig.authorAvatar" class="avatar" alt=""/>
               <el-icon v-else class="avatar-uploader-icon">
                 <Plus/>
               </el-icon>
@@ -110,19 +110,19 @@
           <el-checkbox-group v-model="socialList">
             <el-form-item label="Github">
               <el-input v-model="siteConfig.github" style="width: 400px; margin-right: 1rem"></el-input>
-              <el-checkbox label="github">是否展示</el-checkbox>
+              <el-checkbox value="github">是否展示</el-checkbox>
             </el-form-item>
             <el-form-item label="Gitee">
               <el-input v-model="siteConfig.gitee" style="width: 400px; margin-right: 1rem"></el-input>
-              <el-checkbox label="gitee">是否展示</el-checkbox>
+              <el-checkbox value="gitee">是否展示</el-checkbox>
             </el-form-item>
             <el-form-item label="BiliBili">
               <el-input v-model="siteConfig.bilibili" style="width: 400px; margin-right: 1rem"></el-input>
-              <el-checkbox label="bilibili">是否展示</el-checkbox>
+              <el-checkbox value="bilibili">是否展示</el-checkbox>
             </el-form-item>
             <el-form-item label="QQ">
               <el-input v-model="siteConfig.qq" style="width: 400px; margin-right: 1rem"></el-input>
-              <el-checkbox label="qq">是否展示</el-checkbox>
+              <el-checkbox value="qq">是否展示</el-checkbox>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleUpdate">保 存</el-button>
@@ -143,20 +143,20 @@
         <el-form label-width="100px" :model="siteConfig" label-position="left">
           <el-form-item label="评论审核">
             <el-radio-group v-model="siteConfig.commentCheck">
-              <el-radio :label="0">关闭</el-radio>
-              <el-radio :label="1">开启</el-radio>
+              <el-radio :value="0">关闭</el-radio>
+              <el-radio :value="1">开启</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="留言审核">
             <el-radio-group v-model="siteConfig.messageCheck">
-              <el-radio :label="0">关闭</el-radio>
-              <el-radio :label="1">开启</el-radio>
+              <el-radio :value="0">关闭</el-radio>
+              <el-radio :value="1">开启</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="打赏状态">
             <el-radio-group v-model="siteConfig.isReward">
-              <el-radio :label="0">关闭</el-radio>
-              <el-radio :label="1">开启</el-radio>
+              <el-radio :value="0">关闭</el-radio>
+              <el-radio :value="1">开启</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-row style="width: 600px" v-if="siteConfig.isReward == 1">
@@ -165,7 +165,7 @@
                 <el-upload class="avatar-uploader" :headers="authorization" action="/api/admin/site/upload"
                            :show-file-list="false" accept="image/*" :before-upload="beforeUpload"
                            :on-success="handleWeiXinSuccess">
-                  <img v-if="siteConfig.weiXinCode" :src="siteConfig.weiXinCode" class="avatar"/>
+                  <img v-if="siteConfig.weiXinCode" :src="siteConfig.weiXinCode" class="avatar" alt=""/>
                   <el-icon v-else class="avatar-uploader-icon">
                     <Plus/>
                   </el-icon>
@@ -177,7 +177,7 @@
                 <el-upload class="avatar-uploader" :headers="authorization" action="/api/admin/site/upload"
                            :show-file-list="false" accept="image/*" :before-upload="beforeUpload"
                            :on-success="handleAliSuccess">
-                  <img v-if="siteConfig.aliCode" :src="siteConfig.aliCode" class="avatar"/>
+                  <img v-if="siteConfig.aliCode" :src="siteConfig.aliCode" class="avatar" alt=""/>
                   <el-icon v-else class="avatar-uploader-icon">
                     <Plus/>
                   </el-icon>
@@ -217,7 +217,7 @@
                          action="/api/admin/site/upload"
                          :show-file-list="false" accept="image/*" :before-upload="beforeUpload"
                          :on-success="handleBackImageSuccess">
-                <img v-if="backgroundImage" :src="backgroundImage" class="article-cover"/>
+                <img v-if="backgroundImage" :src="backgroundImage" class="article-cover" alt=""/>
                 <el-icon v-else class="avatar-uploader-icon">
                   <Plus/>
                 </el-icon>
@@ -244,7 +244,7 @@
             <el-upload class="avatar-uploader" :headers="authorization" action="/api/admin/site/upload"
                        :show-file-list="false" accept="image/*" :before-upload="beforeUpload"
                        :on-success="handleArticleSuccess">
-              <img v-if="siteConfig.articleCover" :src="siteConfig.articleCover" class="article-cover"/>
+              <img v-if="siteConfig.articleCover" :src="siteConfig.articleCover" class="article-cover" alt=""/>
               <el-icon v-else class="avatar-uploader-icon">
                 <Plus/>
               </el-icon>
@@ -252,15 +252,15 @@
           </el-form-item>
           <el-form-item label="第三方登录">
             <el-checkbox-group v-model="loginList">
-              <el-checkbox label="qq">QQ</el-checkbox>
-              <el-checkbox label="gitee">Gitee</el-checkbox>
-              <el-checkbox label="github">Github</el-checkbox>
+              <el-checkbox value="qq">QQ</el-checkbox>
+              <el-checkbox value="gitee">Gitee</el-checkbox>
+              <el-checkbox value="github">Github</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="音乐播放器">
             <el-radio-group v-model="siteConfig.isMusic">
-              <el-radio :label="0">关闭</el-radio>
-              <el-radio :label="1">开启</el-radio>
+              <el-radio :value="0">关闭</el-radio>
+              <el-radio :value="1">开启</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="网易云歌单Id" v-if="siteConfig.isMusic == 1">
@@ -268,8 +268,8 @@
           </el-form-item>
           <el-form-item label="聊天室">
             <el-radio-group v-model="siteConfig.isChat">
-              <el-radio :label="0">关闭</el-radio>
-              <el-radio :label="1">开启</el-radio>
+              <el-radio :value="0">关闭</el-radio>
+              <el-radio :value="1">开启</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="websocket链接" v-if="siteConfig.isChat == 1">
@@ -295,6 +295,7 @@ import {AxiosResponse} from 'axios';
 import {UploadRawFile} from 'element-plus';
 import * as imageConversion from 'image-conversion';
 import {computed, onMounted, reactive, toRefs} from 'vue';
+import {Briefcase, Flag, Opportunity, Platform, Plus, Stamp, Picture} from "@element-plus/icons-vue";
 
 const toolList = "undo redo clear | h bold italic strikethrough quote | ul ol table hr | link image code | emoji tip todo-list";
 const authorization = computed(() => {

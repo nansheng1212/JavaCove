@@ -29,7 +29,8 @@
     "vue-router": "^4.0.12",
     "vue3-danmaku": "^1.2.0",
     "vue3-lazy": "^1.0.0-alpha.1",
-    "vue3-social-share": "^0.1.7"
+    "vue3-social-share": "^0.1.7",
+    "vite-plugin-compression": "^0.5.1"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.2",

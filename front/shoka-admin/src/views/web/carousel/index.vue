@@ -75,7 +75,7 @@
             <div class="el-upload__text" v-if="carouselForm.imgUrl === ''">
               将文件拖到此处，或<em>点击上传</em>
             </div>
-            <img v-else :src="carouselForm.imgUrl" width="360"/>
+            <img v-else :src="carouselForm.imgUrl" width="360" alt=""/>
           </el-upload>
         </el-form-item>
         <el-form-item label="状态" prop="status">
@@ -106,6 +106,7 @@ import {AxiosResponse} from "axios";
 import {FormInstance, FormRules, UploadRawFile} from "element-plus";
 import * as imageConversion from 'image-conversion';
 import {computed, onMounted, reactive, ref} from 'vue';
+import {Clock, UploadFilled} from "@element-plus/icons-vue";
 
 const carouselList = ref<Carousel[]>();
 const loading = ref(false);

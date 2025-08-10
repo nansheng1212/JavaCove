@@ -2,7 +2,7 @@
   <div v-if="blog.blogInfo.siteConfig.isChat">
     <div class="chat-container" v-show="show">
       <div class="chat-header">
-        <img width="32" height="32" src="https://myblogoss2.oss-cn-beijing.aliyuncs.com/photo/05e165c224622b40bc4c0b53f1b5d09b.jpg" />
+        <img width="32" height="32" src="https://myblogoss2.oss-cn-beijing.aliyuncs.com/photo/05e165c224622b40bc4c0b53f1b5d09b.jpg"  alt=""/>
         <div style="margin-left:12px">
           <div>聊天室</div>
           <div style="font-size:12px">当前{{ onlineCount }}人在线</div>
@@ -167,21 +167,25 @@ const handleSend = () => {
   // 解析表情
   chatContent.value = chatContent.value.replace(/\[.+?\]/g, (str) => {
     if (emojiType.value === 0) {
+      // @ts-ignore
       if (emojiList[str] === undefined) {
         return str;
       }
       return (
         "<img src='" +
+        // @ts-ignore
         emojiList[str] +
         "' width='21' height='21' style='margin: 0 1px;vertical-align: text-bottom'/>"
       );
     }
     if (emojiType.value === 1) {
+      // @ts-ignore
       if (tvList[str] === undefined) {
         return str;
       }
       return (
         "<img src='" +
+        // @ts-ignore
         tvList[str] +
         "' width='21' height='21' style='margin: 0 1px;vertical-align: text-bottom'/>"
       );

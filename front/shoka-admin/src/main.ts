@@ -13,6 +13,7 @@ import "@kangc/v-md-editor/lib/plugins/emoji/emoji.css";
 import createEmojiPlugin from "@kangc/v-md-editor/lib/plugins/emoji/index";
 import createTodoListPlugin from "@kangc/v-md-editor/lib/plugins/todo-list/index";
 import "@kangc/v-md-editor/lib/plugins/todo-list/todo-list.css";
+import VMdPreview from "@kangc/v-md-editor/lib/preview";
 import "@kangc/v-md-editor/lib/style/base-editor.css";
 import "@kangc/v-md-editor/lib/theme/style/vuepress.css";
 import vuepressTheme from "@kangc/v-md-editor/lib/theme/vuepress.js";
@@ -40,7 +41,11 @@ Object.keys(directive).forEach((key) => {
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
+VMdPreview.use(vuepressTheme, {
+  Prism,
+});
 pinia.use(piniaPluginPersistedstate);
+app.use(VMdPreview);
 app.use(pinia);
 app.use(router);
 app.use(VMdEditor);

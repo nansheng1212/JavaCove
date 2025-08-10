@@ -46,24 +46,24 @@ onMounted(() => {
     let weather = res.data.lives[0].weather;
     var favicon = document.getElementById('favicon');
     const iconWeatherMap = {
-      '晴': 'sunny.svg',
-      '多云': 'cloudy.svg',
-      '阴': 'cloudy.svg',
-      '阵雨': 'rainy.svg',
-      '雷阵雨': 'rainy.svg',
-      '雷阵雨伴有冰雹': 'rainy.svg',
-      '雨夹雪': 'rainy.svg',
-      '小雨': 'rainy.svg',
-      '中雨': 'rainy.svg',
-      '大雨': 'rainy.svg',
-      '暴雨': 'rainy.svg',
-      '大暴雨': 'rainy.svg',
-      '特大暴雨': 'rainy.svg',
-      '阵雪': 'snowy.svg',
-      '小雪': 'snowy.svg',
-      '中雪': 'snowy.svg',
-      '大雪': 'snowy.svg',
-      '暴雪': 'snowy.svg'
+      '晴': '/sunny.svg',
+      '多云': '/cloudy.svg',
+      '阴': '/cloudy.svg',
+      '阵雨': '/rainy.svg',
+      '雷阵雨': '/rainy.svg',
+      '雷阵雨伴有冰雹': '/rainy.svg',
+      '雨夹雪': '/rainy.svg',
+      '小雨': '/rainy.svg',
+      '中雨': '/rainy.svg',
+      '大雨': '/rainy.svg',
+      '暴雨': '/rainy.svg',
+      '大暴雨': '/rainy.svg',
+      '特大暴雨': '/rainy.svg',
+      '阵雪': '/snowy.svg',
+      '小雪': '/snowy.svg',
+      '中雪': '/snowy.svg',
+      '大雪': '/snowy.svg',
+      '暴雪': '/snowy.svg'
     }
     // @ts-ignore
     favicon.href = iconWeatherMap[weather];

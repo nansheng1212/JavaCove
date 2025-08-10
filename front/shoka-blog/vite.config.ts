@@ -6,8 +6,7 @@ import Components from "unplugin-vue-components/vite";
 import { defineConfig } from "vite";
 import { prismjsPlugin } from "vite-plugin-prismjs";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
-
-// https://vitejs.dev/config/
+import viteCompression from 'vite-plugin-compression'
 export default defineConfig({
   css: {
     preprocessorOptions: {
@@ -55,16 +54,19 @@ export default defineConfig({
       theme: "tomorrow",
       css: true,
     }),
+    viteCompression({
+      algorithm: 'gzip',
+      ext: '.gz',
+      threshold: 10240,
+    }),
   ],
   resolve: {
-    // https://cn.vitejs.dev/config/#resolve-alias
     alias: {
       // 设置路径
       "~": path.resolve(__dirname, "./"),
       // 设置别名
       "@": path.resolve(__dirname, "./src"),
     },
-    // https://cn.vitejs.dev/config/#resolve-extensions
     extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue"],
   },
   server: {

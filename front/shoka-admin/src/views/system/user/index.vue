@@ -20,7 +20,7 @@
       <!-- 用户头像 -->
       <el-table-column prop="avatar" label="头像" align="center" width="100">
         <template #default="scope">
-          <img :src="scope.row.avatar" width="40" height="40" />
+          <img :src="scope.row.avatar" width="40" height="40"  alt=""/>
         </template>
       </el-table-column>
       <!-- 昵称 -->
@@ -118,6 +118,7 @@ import { formatDate } from "@/utils/date";
 import { messageConfirm, notifySuccess } from '@/utils/modal';
 import { FormInstance, FormRules } from 'element-plus';
 import { onMounted, reactive, ref, toRefs } from 'vue';
+import {Clock} from "@element-plus/icons-vue";
 const userFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({
   nickname: [{ required: true, message: "请输入昵称", trigger: "blur" }],

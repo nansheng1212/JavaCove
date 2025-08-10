@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar-logo-container" :class="{ collapse: isCollapse }">
         <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-            <img v-if="logo" :src="logo" class="sidebar-logo" />
+            <img v-if="logo" :src="logo" class="sidebar-logo"  alt=""/>
             <h1 v-else class="sidebar-title">Java Cove后台管理系统</h1>
         </router-link>
         <router-link v-else key="expand" class="sidebar-logo-link" to="/">

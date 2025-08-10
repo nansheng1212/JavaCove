@@ -36,6 +36,7 @@ import { TagView } from "@/store/interface";
 import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ScrollPane from "./ScrollPane.vue";
+import {Back, CircleClose, Close, Right} from "@element-plus/icons-vue";
 
 const router = useRouter();
 const route = useRoute();

@@ -63,6 +63,7 @@ import { LogQuery, VisitLog } from '@/api/log/types';
 import { formatDateTime } from '@/utils/date';
 import { messageConfirm, notifySuccess } from '@/utils/modal';
 import { onMounted, reactive, toRefs } from 'vue';
+import {Clock} from "@element-plus/icons-vue";
 
 const data = reactive({
     count: 0,

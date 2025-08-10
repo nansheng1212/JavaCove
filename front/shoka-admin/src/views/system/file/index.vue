@@ -33,7 +33,7 @@
             <el-table-column prop="isDir" width="56">
                 <template #default="scope">
                     <img v-if="scope.row.isDir === 1" src="@/assets/dir.png" @click="handleOpen(scope.row)"
-                        style="width: 30px; cursor: pointer" />
+                        style="width: 30px; cursor: pointer"  alt=""/>
                     <el-image v-else v-viewer class="article-cover" :src="scope.row.fileUrl"></el-image>
                 </template>
             </el-table-column>
@@ -110,6 +110,7 @@ import { FormInstance, FormRules, UploadRawFile, UploadRequestOptions } from 'el
 import * as imageConversion from 'image-conversion';
 import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue';
 import { useRoute } from "vue-router";
+import {Clock} from "@element-plus/icons-vue";
 
 const folderFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({

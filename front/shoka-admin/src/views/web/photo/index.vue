@@ -109,7 +109,7 @@
             <div class="el-upload__text">
               将文件拖到此处，或<em>点击上传</em>
             </div>
-            <img width="360"/>
+            <img width="360" alt="" src=""/>
           </el-upload>
         </div>
       </div>
@@ -127,7 +127,7 @@
     </el-dialog>
     <!-- 图片预览 -->
     <el-dialog v-model="dialogVisible" append-to-body>
-      <img :src="dialogImageUrl" style="max-width:100%"/>
+      <img :src="dialogImageUrl" style="max-width:100%" alt=""/>
     </el-dialog>
   </div>
 </template>
@@ -143,6 +143,7 @@ import {FormInstance, FormRules, UploadFile, UploadRawFile} from 'element-plus';
 import * as imageConversion from 'image-conversion';
 import {computed, onMounted, reactive, ref, toRefs, watch} from 'vue';
 import {useRoute} from "vue-router";
+import {MoreFilled, Plus, UploadFilled} from "@element-plus/icons-vue";
 
 const photoFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({

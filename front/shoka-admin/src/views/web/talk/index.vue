@@ -86,7 +86,7 @@
                         </template>
                         <span class="emoji-item" v-for="(value, key, index) of emojiList" :key="index"
                             @click="addEmoji(key, value)">
-                            <img :src="value" :title="key" class="emoji" width="24" height="24" />
+                            <img :src="value" :title="key" class="emoji" width="24" height="24"  alt=""/>
                         </span>
                     </el-popover>
                 </el-col>
@@ -136,7 +136,7 @@
         </el-dialog>
         <!-- 图片预览 -->
         <el-dialog v-model="dialogVisible" append-to-body>
-            <img :src="dialogImageUrl" style="max-width:100%" />
+            <img :src="dialogImageUrl" style="max-width:100%"  alt=""/>
         </el-dialog>
     </div>
 </template>
@@ -154,6 +154,7 @@ import { AxiosResponse } from "axios";
 import { UploadFile, UploadRawFile } from 'element-plus';
 import * as imageConversion from 'image-conversion';
 import { computed, onMounted, reactive, ref, toRefs } from 'vue';
+import {ArrowDown, Hide, MoreFilled, Plus} from "@element-plus/icons-vue";
 const editorRef = ref();
 const dialogImageUrl = ref('');
 const dialogVisible = ref(false);

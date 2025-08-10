@@ -37,7 +37,7 @@ const scrollDown = () => {
   });
 };
 const fetchData = () => {
-  fetch("https://v1.hitokoto.cn")
+  fetch("https://international.v1.hitokoto.cn/")
     .then((res) => {
       return res.json();
     })
